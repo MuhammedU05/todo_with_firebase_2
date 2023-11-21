@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "256001512086",
+    "project_id": "todo-with-firebase-1",
+    "storage_bucket": "todo-with-firebase-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256001512086:android:36917d9b7c426165e828b7",
+        "android_client_info": {
+          "package_name": "com.example.todo_with_firebase_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmxfhkRgTf-LizpUTsUNrd56ElRSPypDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

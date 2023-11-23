@@ -3,8 +3,7 @@ import 'package:todo_with_firebase_2/Utils/Assign/assign.dart';
 
 class ProviderClass extends ChangeNotifier {
   bool signedIn = false;
-
-  int selectedIndex = 0;
+  late int tasks;
 
   void isSignIn() {
     print("isSigned is Running Now");
@@ -15,8 +14,7 @@ class ProviderClass extends ChangeNotifier {
     }
   }
 
-  void onItemTapped(int index) {
-    selectedIndex = index;
-    notifyListeners();
+  void addTask() {
+    tasks++;
   }
 }

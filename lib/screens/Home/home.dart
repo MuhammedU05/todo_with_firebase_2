@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:todo_with_firebase_2/Utils/Assign/assign.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
-import 'package:todo_with_firebase_2/screens/Home/card.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,14 +11,49 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+@override
+void initState() {
+  // super.initState();
+  fireBaseClass.getfirebaseUser();
+  // print(fireBaseClass.);
+}
+
+int selectedIndex = 1;
+Color themeButtonColor = Colors.green;
+final TextEditingController textController = TextEditingController();
+final TextEditingController inputValue = TextEditingController();
+var changedText;
+
 class _HomePageState extends State<HomePage> {
+  void _handleSubmitted(String text) {
+    textController.clear();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
-      // body: _body(),
-      body: _widgetOptions,
-      bottomNavigationBar: _bottomNavigationBar(),
+      body: _body(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.group), label: Strings.group),
+          BottomNavigationBarItem(icon: Icon(Icons.task), label: Strings.task),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.done_outline), label: Strings.completed)
+        ],
+        selectedItemColor: themeButtonColor,
+        // unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+          print("on Tap Index : $index");
+        },
+        elevation: 20,
+      ),
     );
   }
 }
@@ -26,54 +62,75 @@ AppBar _appBar() {
   return AppBar(
     backgroundColor: Colors.blueGrey,
     centerTitle: true,
-    title: Text('Task'),
+    automaticallyImplyLeading: false,
+    title: Text('Welcome, ${currentUser!.displayName}'),
     actions: [
-      IconButton(
-          iconSize: 40,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.person,
-            color: Colors.orange,
-          ))
+      GestureDetector(
+        // child: Image.network(currentUser!.photoURL!),
+        onTap: () {},
+        child: CircleAvatar(
+            backgroundImage: Image.network(currentUser!.photoURL!).image),
+        // child: Image.network(currentUser!.photoURL!),
+      ),
     ],
   );
 }
 
 Widget _body() {
-  return Center(
-        // child: widgetOptions.elementAt(),
-        child: ,
-    
+  return Flexible(
+    child: Column(
+      children: [
+        Builder(
+          builder: (BuildContext context) => Expanded(
+            child: widgetOptions[selectedIndex],
+          ),
+        ),
+        _buildTextComposer(),
+      ],
+    ),
   );
 }
 
-BottomNavigationBar _bottomNavigationBar(){
-  return BottomNavigationBar(items: const [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.group),
-      label: 'Group'
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.task),
-        label: 'Task'
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.done_outline),
-        label: 'Completed')
-  ],
-  currentIndex: context.read<ProviderClass>().selectedIndex,
-  elevation: 20,);
+Widget _buildTextComposer() {
+  return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(children: <Widget>[
+        Expanded(
+            child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black38,
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: Row(children: <Widget>[
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    child: TextField(
+                      controller: textController,
+                      onChanged: (changedValue) {
+                        changedText = changedValue;
+                        print(changedValue);
+                      },
+                      decoration: const InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        print('Filter');
+                      },
+                      icon: Icon(MdiIcons.filter))
+                ])))
+      ]));
 }
 
-
-List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> widgetOptions = <Widget>[
     Text(
       'Group',
     ),
-    Text(
-      'Task',
-    ),
+    TaskScreen(),
     Text(
       'Complete',
     ),
   ];
-

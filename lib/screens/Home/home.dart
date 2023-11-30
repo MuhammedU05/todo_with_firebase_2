@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:todo_with_firebase_2/Utils/Assign/assign.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
+import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
+import 'package:todo_with_firebase_2/screens/Home/Tasks/AppBar/appbar.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,29 +15,29 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-@override
-void initState() {
-  // super.initState();
-  fireBaseClass.getfirebaseUser();
-  // print(fireBaseClass.);
-}
-
 int selectedIndex = 1;
 Color themeButtonColor = Colors.green;
-final TextEditingController textController = TextEditingController();
-final TextEditingController inputValue = TextEditingController();
 var changedText;
 
 class _HomePageState extends State<HomePage> {
-  void _handleSubmitted(String text) {
-    textController.clear();
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+    // context.read<ProviderClass>().startTimer();
+    // context.read<ProviderClass>().getData();
+    context.read<ProviderClass>().currentUser = FirebaseAuth.instance.currentUser;
   }
 
   @override
   Widget build(BuildContext context) {
+    void _handleSubmitted(String text) {
+      textController.clear();
+
+      setState(() {});
+    }
+
     return Scaffold(
-      appBar: _appBar(),
+      appBar: AppBarClass(context),
       body: _body(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
@@ -54,51 +58,38 @@ class _HomePageState extends State<HomePage> {
         },
         elevation: 20,
       ),
+      // floatingActionButton: const AddTask(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
 }
 
-AppBar _appBar() {
-  return AppBar(
-    backgroundColor: Colors.blueGrey,
-    centerTitle: true,
-    automaticallyImplyLeading: false,
-    title: Text('Welcome, ${currentUser!.displayName}'),
-    actions: [
-      GestureDetector(
-        // child: Image.network(currentUser!.photoURL!),
-        onTap: () {},
-        child: CircleAvatar(
-            backgroundImage: Image.network(currentUser!.photoURL!).image),
-        // child: Image.network(currentUser!.photoURL!),
-      ),
-    ],
-  );
-}
-
 Widget _body() {
-  return Flexible(
-    child: Column(
-      children: [
-        Builder(
-          builder: (BuildContext context) => Expanded(
-            child: widgetOptions[selectedIndex],
-          ),
+  return Column(
+    children: [
+      Flexible(
+        fit: FlexFit.tight,
+        flex: 1,
+        child: Builder(
+          builder: (BuildContext context) => widgetOptions[selectedIndex],
         ),
-        _buildTextComposer(),
-      ],
-    ),
+      ),
+      _buildTextComposer()
+    ],
   );
 }
 
 Widget _buildTextComposer() {
   return Container(
+      // color: Colors.transparent,
       padding: const EdgeInsets.all(8.0),
       child: Row(children: <Widget>[
         Expanded(
             child: Container(
+                // color: Colors.transparent,
                 decoration: BoxDecoration(
-                  color: Colors.black38,
+                  // backgroundBlendMode: BlendMode.dst,
+                  color: Colors.black54,
                   borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: Row(children: <Widget>[
@@ -113,6 +104,8 @@ Widget _buildTextComposer() {
                       decoration: const InputDecoration(
                         hintText: "Search",
                         border: InputBorder.none,
+                        // filled: true,
+                        // fillColor: Colors.transparent
                       ),
                     ),
                   ),
@@ -121,16 +114,17 @@ Widget _buildTextComposer() {
                         print('Filter');
                       },
                       icon: Icon(MdiIcons.filter))
-                ])))
+                ]))),
+        const AddTask()
       ]));
 }
 
-  final List<Widget> widgetOptions = <Widget>[
-    Text(
-      'Group',
-    ),
-    TaskScreen(),
-    Text(
-      'Complete',
-    ),
-  ];
+final List<Widget> widgetOptions = <Widget>[
+  const Text(
+    'Group',
+  ),
+  const TaskScreen(),
+  const Text(
+    'Complete',
+  ),
+];

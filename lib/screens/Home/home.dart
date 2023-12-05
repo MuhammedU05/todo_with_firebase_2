@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // context.read<ProviderClass>().startTimer();
     // context.read<ProviderClass>().getData();
-    context.read<ProviderClass>().currentUser = FirebaseAuth.instance.currentUser;
+    // context.read<ProviderClass>().currentUser = FirebaseAuth.instance.currentUser;
   }
 
   @override
@@ -43,10 +43,10 @@ class _HomePageState extends State<HomePage> {
         currentIndex: selectedIndex,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.group), label: Strings.group),
-          BottomNavigationBarItem(icon: Icon(Icons.task), label: Strings.task),
+              icon: Icon(Icons.group), label: TStrings.group),
+          BottomNavigationBarItem(icon: Icon(Icons.task), label: TStrings.task),
           BottomNavigationBarItem(
-              icon: Icon(Icons.done_outline), label: Strings.completed)
+              icon: Icon(Icons.done_outline), label: TStrings.completed)
         ],
         selectedItemColor: themeButtonColor,
         // unselectedItemColor: Colors.grey,

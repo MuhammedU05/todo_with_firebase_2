@@ -29,8 +29,8 @@ class LoginProviderClass extends ChangeNotifier {
     signOut(context);
     print('Signed Out');
     context.read<ProviderClass>().mapList.clear();
-    print(context.read<ProviderClass>().mapList);
-    context.read<ProviderClass>().updateuserMap();
+    print('MapList in Signout : ${context.read<ProviderClass>().mapList}');
+    context.read<ProviderClass>().updateUserMap();
 
     // Clear the data here
     print('Email : ${fireBaseClass?.getCurrentUserEmail()}');

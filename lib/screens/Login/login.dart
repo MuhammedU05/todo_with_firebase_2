@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo_with_firebase_2/screens/Home/home.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
-import 'package:todo_with_firebase_2/screens/Home/home.dart';
 
+//Login Page
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -14,6 +15,7 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+//Clearing Previous Data If There is any
 class _LoginState extends State<Login> {
   @override
   void initState() {
@@ -30,21 +32,22 @@ class _LoginState extends State<Login> {
       body: Center(
         child: TextButton(
           child: const Text(
-            Strings.gButton,
+            TStrings.gButton,
             style: TextStyle(fontSize: 60),
           ),
           onPressed: () async {
-            // print('Hello : ${fireBaseClass?.getCurrentUserEmail()}');
+            //Login Button -> Google SignIn Function
             try {
               await context.read<ProviderClass>().signInWithGoogle();
               var signedIn = context.read<ProviderClass>().signedIn;
-
+              // Updating Current User
+              context.read<ProviderClass>().updateCurrentUser();
               if (signedIn == false) {
-                context.read<ProviderClass>().updateCurrentUser();
+                // If The User is Signed in -> Navigate to HomePage
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => const HomePage()),
                 );
-                context.read<ProviderClass>().updateCurrentUser();
+                // context.read<ProviderClass>().updateCurrentUser();
               } else {
                 // Handle the case where sign-in was not successful
                 print('Google sign-in failed');

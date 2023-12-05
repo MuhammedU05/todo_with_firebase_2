@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Assign/assign.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Login/login.dart';
 
 class LoginProviderClass extends ChangeNotifier {
@@ -36,5 +37,39 @@ class LoginProviderClass extends ChangeNotifier {
     print('Email : ${fireBaseClass?.getCurrentUserEmail()}');
     print('object');
     notifyListeners(); // Notify listeners after clearing the data
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    print(" google User : $googleUser");
+    print(" Credential : $credential");
+    print(
+        'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
+    print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
+    print('Current User : ${FirebaseAuth.instance.currentUser}');
+
+    // addFirebaseDataFirst();
+    notifyListeners();
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  void dispose() {
+    super.dispose();
+    // Remove any additional cleanup code if necessary
+  }
+
+  updateCurrentUser() {
+    pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ?? defaultPic;
+    currentUserFDetails = FirebaseAuth.instance.currentUser?.displayName ?? "";
+    // currentUser = FirebaseAuth.instance.currentUser;
+    notifyListeners();
   }
 }

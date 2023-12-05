@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
@@ -21,7 +22,11 @@ class _TaskScreenState extends State<TaskScreen> {
     super.initState();
     context.read<ProviderClass>().dataFirebase;
     context.read<ProviderClass>().getFirebaseDatas();
-    // context.read<ProviderClass>().addFirebaseDataFirst();
+    // context.read<ProviderClass>().addFirebaseDataFirst();    
+    print(
+        'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
+    print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
+    print('Current User : ${FirebaseAuth.instance.currentUser}');
   }
 
   @override

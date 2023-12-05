@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
@@ -38,10 +39,10 @@ class _LoginState extends State<Login> {
           onPressed: () async {
             //Login Button -> Google SignIn Function
             try {
-              await context.read<ProviderClass>().signInWithGoogle();
+              await context.read<LoginProviderClass>().signInWithGoogle();
               var signedIn = context.read<ProviderClass>().signedIn;
               // Updating Current User
-              context.read<ProviderClass>().updateCurrentUser();
+              context.read<LoginProviderClass>().updateCurrentUser();
               if (signedIn == false) {
                 // If The User is Signed in -> Navigate to HomePage
                 Navigator.of(context).pushReplacement(

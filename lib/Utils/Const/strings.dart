@@ -19,6 +19,7 @@ class TStrings {
   //Card
   static String tCompleted = 'Completed';
   static String tNotCompleted = 'Not Completed';
+  // var checkCompleted = 
 
   //Priorities
   static const String low = 'Low';

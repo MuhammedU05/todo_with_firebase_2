@@ -5,9 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/firebase_options.dart';
+import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
 import 'package:todo_with_firebase_2/screens/Login/login.dart';
 
@@ -43,16 +47,18 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProviderClass()),
-        ChangeNotifierProvider(create: (_) => LoginProviderClass())
+        ChangeNotifierProvider(create: (_) => LoginProviderClass()),
+        ChangeNotifierProvider(create: (_) => FirebaseProviderClass())
       ],
       child: MaterialApp(
         builder: (context, widget) {
           Widget error = Container(
               height: MediaQuery.of(context).size.height,
               width: double.infinity,
-              color: Colors.black,
+              color: Colors.white,
               child: const Center(
                 child: CircularProgressIndicator()
+                // child: Text("Error"),
               ));
           if (widget is Scaffold || widget is Navigator) {
             error = Scaffold(body: Center(child: error));
@@ -62,7 +68,7 @@ class MyApp extends StatelessWidget {
           throw ('widget is null');
         },
         debugShowCheckedModeBanner: false,
-        home: const HomePage(),
+        home: const LoginChecker(),
       ),
   );
   }
@@ -84,12 +90,11 @@ class _LoginCheckerState extends State<LoginChecker> {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
 
     if (user != null &&
-        user.email != null &&
-        user.email!.isNotEmpty &&
-        user.emailVerified) {
+        user!.email != null &&
+        user!.email!.isNotEmpty &&
+        user!.emailVerified) {
       return const HomePage();
     } else {
       return const Login();

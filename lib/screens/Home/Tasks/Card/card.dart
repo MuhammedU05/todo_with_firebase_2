@@ -35,7 +35,7 @@ class _CardBuilderState extends State<CardBuilder> {
       );
     }
 
-    if (provider.mapList.isEmpty) {
+    if (provider.mapList.length == 1) {
       return const Center(
         child: Text(TStrings.addTask),
       );
@@ -51,10 +51,10 @@ class _CardBuilderState extends State<CardBuilder> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       // reverse: true,
-                      itemCount: snapshot.mapList.length - 1,
+                      itemCount: snapshot.mapList.length - 1 ,
                       itemBuilder: (context, index) {
                         String taskName =
-                            snapshot.mapList.keys.elementAt(index + 1);
+                            snapshot.mapList.keys.elementAt(index+1);
                         Map<String, dynamic> task =
                             snapshot.mapList[taskName] ?? {};
                         if (task[TStrings.priority] == TStrings.mid) {
@@ -117,13 +117,20 @@ class _CardBuilderState extends State<CardBuilder> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text(
-                                        '${TStrings.taskName} :\n  ${task[TStrings.taskName] ?? TStrings.na}',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          color: TColors.white,
-                                          fontWeight: FontWeight.w800,
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width/1.3,
+                                        child: Text(
+                                          '${TStrings.taskName} :\n  ${task[TStrings.taskName] ?? TStrings.na}',
+                                          textAlign: TextAlign.left,
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 4,
+                                          
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            color: TColors.white,
+                                            fontWeight: FontWeight.w800,
+                                          ),
                                         ),
                                       ),
                                       const Spacer(),
@@ -132,17 +139,9 @@ class _CardBuilderState extends State<CardBuilder> {
                                             CrossAxisAlignment.end,
                                         children: [
                                           Text(
-                                            '${TStrings.createdOn} ',
-                                            textAlign: TextAlign.right,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: TColors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            task[TStrings
+                                            '${TStrings.createdOn}\n ${task[TStrings
                                                     .createdTimeFirebase] ??
-                                                TStrings.na,
+                                                TStrings.na}',
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
                                               fontSize: 14,
@@ -169,7 +168,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                       SizedBox(
                                         child: Column(
                                           children: [
-                                            Text(TStrings.notCompleted,
+                                            Text(task['Is Completed'] == false ? TStrings.notCompleted : TStrings.completed,
                                                 softWrap: true,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(

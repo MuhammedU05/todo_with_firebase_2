@@ -32,7 +32,7 @@ class _CardBuilderState extends State<CardBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = context.watch<ProviderClass>();
+    // var provider = context.watch<ProviderClass>();
 
     //If Contition for checking the data is loading or not
     if (isLoading) {
@@ -108,6 +108,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                 });
                           },
                           onTap: () {
+                            isCompletedSelected = false;
                             print(
                                 'Priority on tap : ${task[TStrings.priorityFirebase]}');
                             print(

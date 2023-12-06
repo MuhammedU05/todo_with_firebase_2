@@ -54,8 +54,8 @@ class MyApp extends StatelessWidget {
               width: double.infinity,
               color: Colors.white,
               child: const Center(
-                child: CircularProgressIndicator()
-                // child: Text("Error"),
+                // child: CircularProgressIndicator()
+                child: Text(""),
               ));
           if (widget is Scaffold || widget is Navigator) {
             error = Scaffold(body: Center(child: error));

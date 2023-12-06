@@ -31,11 +31,12 @@ class _CardBuilderState extends State<CardBuilder> {
     //If Contition for checking the data is loading or not
     if (provider.isLoading) {
       return const Center(
-        child: CircularProgressIndicator(),
+        // child: CircularProgressIndicator(),
+        child: Text('error'),
       );
     }
 
-    if (provider.mapList.length == 1) {
+    if (provider.mapList.isEmpty) {
       return const Center(
         child: Text(TStrings.addTask),
       );
@@ -51,10 +52,12 @@ class _CardBuilderState extends State<CardBuilder> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       // reverse: true,
-                      itemCount: snapshot.mapList.length - 1 ,
+                      itemCount: snapshot.mapList.length - 1,
+                      // itemCount: provider.mapList.length.clamp(0, double.infinity).toInt(),
                       itemBuilder: (context, index) {
+                        print('Index : $index');
                         String taskName =
-                            snapshot.mapList.keys.elementAt(index+1);
+                            snapshot.mapList.keys.elementAt(index + 1);
                         Map<String, dynamic> task =
                             snapshot.mapList[taskName] ?? {};
                         if (task[TStrings.priority] == TStrings.mid) {
@@ -118,14 +121,15 @@ class _CardBuilderState extends State<CardBuilder> {
                                   Row(
                                     children: [
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width/1.3,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.3,
                                         child: Text(
                                           '${TStrings.taskName} :\n  ${task[TStrings.taskName] ?? TStrings.na}',
                                           textAlign: TextAlign.left,
                                           softWrap: true,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 4,
-                                          
                                           style: TextStyle(
                                             fontSize: 25,
                                             color: TColors.white,
@@ -139,9 +143,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                             CrossAxisAlignment.end,
                                         children: [
                                           Text(
-                                            '${TStrings.createdOn}\n ${task[TStrings
-                                                    .createdTimeFirebase] ??
-                                                TStrings.na}',
+                                            '${TStrings.createdOn}\n ${task[TStrings.createdTimeFirebase] ?? TStrings.na}',
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
                                               fontSize: 14,
@@ -168,7 +170,10 @@ class _CardBuilderState extends State<CardBuilder> {
                                       SizedBox(
                                         child: Column(
                                           children: [
-                                            Text(task['Is Completed'] == false ? TStrings.notCompleted : TStrings.completed,
+                                            Text(
+                                                task['Is Completed'] == false
+                                                    ? TStrings.notCompleted
+                                                    : TStrings.completed,
                                                 softWrap: true,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(

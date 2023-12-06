@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 
 //Login Page
 class Login extends StatefulWidget {
@@ -21,10 +21,10 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    context.read<ProviderClass>().mapList.clear();
+    mapList.clear();
     // context.read<ProviderClass>().allData?.clear();
     print('Email in login : ${FirebaseAuth.instance.currentUser?.email}');
-    print('All Data in login : ${context.read<ProviderClass>().mapList}');
+    print('All Data in login : $mapList');
   }
 
   @override
@@ -40,7 +40,7 @@ class _LoginState extends State<Login> {
             //Login Button -> Google SignIn Function
             try {
               await context.read<LoginProviderClass>().signInWithGoogle();
-              var signedIn = context.read<ProviderClass>().signedIn;
+              // var signedIn = context.read<ProviderClass>().signedIn;
               // Updating Current User
               context.read<LoginProviderClass>().updateCurrentUser();
               if (signedIn == false) {

@@ -1,19 +1,16 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/firebase_options.dart';
-import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
 import 'package:todo_with_firebase_2/screens/Login/login.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 
 // Connecting Firebase in Main
 Future<void> main() async {

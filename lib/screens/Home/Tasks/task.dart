@@ -3,7 +3,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Card/card.dart';
 
 final TextEditingController textController = TextEditingController();
@@ -20,8 +22,8 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProviderClass>().dataFirebase;
-    context.read<ProviderClass>().getFirebaseDatas();
+    context.read<FirebaseProviderClass>().dataFirebase;
+    context.read<FirebaseProviderClass>().getFirebaseDatas();
     // context.read<ProviderClass>().addFirebaseDataFirst();    
     print(
         'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
@@ -32,8 +34,8 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     // Use the watch method from context to access the ProviderClass
-    ProviderClass provider = context.watch<ProviderClass>();
-    bool isLoading = provider.isLoading;
+    FirebaseProviderClass provider = context.watch<FirebaseProviderClass>();
+    // bool isLoading = provider.isLoading;
 
     // return Column(
     //   children: [

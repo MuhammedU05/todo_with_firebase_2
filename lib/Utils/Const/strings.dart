@@ -19,7 +19,6 @@ class TStrings {
   //Card
   static String tCompleted = 'Completed';
   static String tNotCompleted = 'Not Completed';
-  // var checkCompleted = 
 
   //Priorities
   static const String low = 'Low';
@@ -36,4 +35,10 @@ class TStrings {
   static const String createdTimeFirebase = 'Created Time';
   static const String createdDateFirebase = 'Created Date';
   static const String isCompletedFirebase = 'Status';
+
+  //Alert Box
+  static const String edit = 'Edit';
+  static const String yes = 'Yes';
+  static const String no = 'No';
+
 }

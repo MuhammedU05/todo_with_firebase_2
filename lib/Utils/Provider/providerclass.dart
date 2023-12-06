@@ -12,99 +12,17 @@ import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 
 class ProviderClass extends ChangeNotifier {
   // var currentUser = FirebaseAuth.instance.currentUser;
-  final userCollection = FirebaseFirestore.instance.collection('Users');
-  final document = FirebaseFirestore.instance.collection("Users").snapshots();
 
-  bool isLoading = false;
-  Map<String, dynamic> mapList = {};
 
-  Future<void> addFirebaseData(String taskName, String time, String date,
-      String selectedGroup, String priority, bool isCompleted) async {
-    try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
-      var userDoc = await userDocRef.get();
-
-      if (!userDoc.exists) {
-        // If the document doesn't exist, create it
-        await userDocRef.set({'Tasks': []});
-      }
-
-      var tasksArray = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
-
-      tasksArray.add({
-        'Task Name': taskName,
-        'Created Time': time,
-        'Created Date': date,
-        'Assign To': selectedGroup,
-        'AA': firebaseInstance.currentUser!.displayName,
-        'Priority': priority,
-        'TimeStamp':
-            "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
-        'Is Completed': isCompleted
-      });
-
-      await userDocRef.update({'Tasks': tasksArray});
-
-      notifyListeners();
-    } catch (e) {
-      print("Error adding data: $e");
-    }
-  }
 
   // var currentUser = FirebaseAuth.instance.currentUser;
   // final userCollection = FirebaseFirestore.instance.collection('Users');
 
-
-  bool signedIn = false;
   // Map<String, dynamic> mapList = {};
-  updateUserMap() {
-    print('pppppppppppppppppppppppppppppppppppppppp');
-    mapList.clear();
-    notifyListeners();
-    print(mapList);
-    print('ssssssssssssssssss');
-  }
 
-  Future<void> getFirebaseDatas() async {
-    try {
-      isLoading = true;
-      mapList.clear();
-      var userDoc =
-          await userCollection.doc(firebaseInstance.currentUser!.uid).get();
 
-      if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
-        var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
-        tasks.forEach((task) {
-          // Assuming 'TimeStamp' field contains the user's name
-          var taskName = task['TimeStamp'] ?? 'N/A';
-          mapList[taskName] = task;
-          notifyListeners();
-        });
 
-        isLoading = false;
-        notifyListeners();
-      } else {
-        isLoading = false;
-        notifyListeners();
-      }
-    } catch (e) {
-      print("Error getting data: $e");
-      isLoading = false;
-      notifyListeners();
-    }
-  }
 
-  late var dataFirebase = getFirebaseDatas();
-  updateData() {
-    print('\n\nkkkkkkkkkkkkkkkk');
-    dataFirebase = getFirebaseDatas();
-
-    // print(jsonDecode(dataFirebase.toString())  );
-    print('MapList --->  $mapList');
-    notifyListeners();
-  }
 
   Future<String> getCurrentUserProfile() async {
     var pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ?? "";
@@ -113,35 +31,7 @@ class ProviderClass extends ChangeNotifier {
   }
 
 
-// To Update the Massages
-  Future<void> updateMessage(String taskTimeStamp, bool isCompleted) async {
-    try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
-      var userDoc = await userDocRef.get();
 
-      if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
-        var tasks = userDoc.data()?['Tasks'] as List<dynamic>;
-
-        // Find the task with the specified TimeStamp
-        var updatedTasks = tasks.map((task) {
-          if (task['TimeStamp'] == taskTimeStamp) {
-            task['Is Completed'] = isCompleted;
-            
-          }
-          return task;
-        }).toList();
-        // var completedChanger = tasks['Is Completed'] == true ?
-
-        // Update the Tasks field in the document
-        await userDocRef.update({'Tasks': updatedTasks});
-        notifyListeners();
-      }
-    } catch (e) {
-      print("Error updating message: $e");
-    }
-  }
 
   String getPriorityString(Priority priority) {
     for (var option in priorityOptions) {
@@ -153,69 +43,4 @@ class ProviderClass extends ChangeNotifier {
     return ''; // Default value if not found
   }
 
-  Future<void> addFirebaseDataFirst() async {
-    try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser?.uid);
-      var userDoc = await userDocRef.get();
-      print('User Doc : ${userDoc.exists}');
-      print('User Doc : ${!userDoc.exists}');
-      if (!userDoc.exists) {
-        print('User Doc is Empty');
-
-        // If the document doesn't exist, create it
-        // await userDocRef.set({'Tasks': []});
-        await userDocRef.set({'Tasks': []}, SetOptions(merge: true));
-
-        var tasksArray = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
-
-        tasksArray.add({
-          'Task Name': 'First Created',
-          'Created Time': DateTime.now().toString(),
-          'Created Date': '',
-          'Assign To': '',
-          'AA': firebaseInstance.currentUser?.displayName,
-          'Priority': '',
-          'TimeStamp': '',
-          // "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
-          'Is Completed': false
-        });
-
-        await userDocRef.update({'Tasks': tasksArray});
-        print('Created Dummy Task');
-        notifyListeners();
-      } else {
-        print('User Doc is Not Empty');
-        notifyListeners();
-      }
-      notifyListeners();
-    } catch (e) {
-      print("Error adding data First: $e");
-    }
-  }
-
-  Future<void> checkFirebaseDataExist() async {
-    var userDoc =
-        await userCollection.doc(firebaseInstance.currentUser!.uid).get();
-    print('Checking Firebase Data Exist Or Not');
-
-    if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
-      // var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
-      // tasks.forEach((task) {
-      //   // Assuming 'TimeStamp' field contains the user's name
-      //   var taskName = task['TimeStamp'] ?? 'N/A';
-      //   mapList[taskName] = task;
-      // notifyListeners();
-      // });
-      print('Firebase Data Exists');
-
-      // isLoading = false;
-      notifyListeners();
-    } else {
-      // isLoading = false;
-      addFirebaseDataFirst();
-      notifyListeners();
-    }
-  }
 }

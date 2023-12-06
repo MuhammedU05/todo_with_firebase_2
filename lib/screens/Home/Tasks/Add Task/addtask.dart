@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Assign/assign.dart';
 import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -17,39 +19,21 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-  final TextEditingController taskNameController = TextEditingController();
-  late List<String> groups = ['Me'];
-  // final List<String> priority = ['Low', 'Mid', 'High'];
-  late String? _selectedGroup;
-  var _selectedPriority;
-  String time = formatDate(DateTime.now(), [HH, ' : ', nn]);
-  String date = formatDate(DateTime.now(), [dd, ' - ', mm, ' - ', yy]);
-
-  final List<bool> _toggleButtonsSelection =
-      Priority.values.map((Priority e) => e == Priority.mid).toList();
-  // Set<Priority> _segmentedButtonSelection = <Priority>{Priority.mid};
-  final Color _selectedColor = Colors.yellow.shade400;
 
   @override
   void initState() {
     super.initState();
-    _selectedGroup = groups.isNotEmpty ? groups[0] : null;
-    if (_toggleButtonsSelection.isNotEmpty) {
-      // _selectedPriority = _toggleButtonsSelection[1];
-      _selectedPriority = 'Mid';
-    } else {
-      _selectedPriority = null;
-    }
+    selectedGroup = groups.isNotEmpty ? groups[0] : null;
   }
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          // _selectedPriority = 'Mid';
-          _toggleButtonsSelection[1] = true;
-          _toggleButtonsSelection[2] = false;
-          _toggleButtonsSelection[0] = false;
+          selectedPriority = 'Mid';
+          toggleButtonsSelection[1] = true;
+          toggleButtonsSelection[2] = false;
+          toggleButtonsSelection[0] = false;
           print(FirebaseAuth.instance.currentUser);
           showDialog(
               context: context,
@@ -70,7 +54,7 @@ class _AddTaskState extends State<AddTask> {
                             ),
                           ),
                           DropdownButton<String>(
-                            value: _selectedGroup,
+                            value: selectedGroup,
                             items: groups.map((group) {
                               return DropdownMenuItem<String>(
                                 value: group,
@@ -80,12 +64,12 @@ class _AddTaskState extends State<AddTask> {
                             onChanged: (String? newValue) {
                               if (newValue != null) {
                                 setState(() {
-                                  _selectedGroup = newValue;
+                                  selectedGroup = newValue;
                                 });
                               }
                             },
                           ),
-                          // To Set Prio
+                          // To Set Priority
                           ToggleButtons(
                               textStyle: const TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500),
@@ -93,61 +77,44 @@ class _AddTaskState extends State<AddTask> {
                               fillColor: Colors.black54,
                               borderWidth: 5,
                               selectedBorderColor: Colors.black54,
-                              selectedColor: _selectedColor,
+                              selectedColor: selectedColor,
                               constraints: const BoxConstraints(
                                 minHeight: 32.0,
                                 minWidth: 56.0,
                               ),
                               onPressed: (int value) {
                                 setState(() {
-                                  print(_toggleButtonsSelection);
+                                  print(toggleButtonsSelection);
                                   if (value == 1) {
-                                    _toggleButtonsSelection[1] = true;
-                                    _toggleButtonsSelection[2] = false;
-                                    _toggleButtonsSelection[0] = false;
-                                    _selectedPriority = 'Mid';
-                                    print(_selectedPriority);
+                                    toggleButtonsSelection[1] = true;
+                                    toggleButtonsSelection[2] = false;
+                                    toggleButtonsSelection[0] = false;
+                                    selectedPriority = 'Mid';
+                                    print(selectedPriority);
                                   } else if (value == 0) {
-                                    _toggleButtonsSelection[1] = false;
-                                    _toggleButtonsSelection[2] = false;
-                                    _toggleButtonsSelection[0] = true;
-                                    _selectedPriority = 'High';
-                                    print(_selectedPriority);
+                                    toggleButtonsSelection[1] = false;
+                                    toggleButtonsSelection[2] = false;
+                                    toggleButtonsSelection[0] = true;
+                                    selectedPriority = 'High';
+                                    print(selectedPriority);
                                   } else if (value == 2) {
-                                    _toggleButtonsSelection[1] = false;
-                                    _toggleButtonsSelection[2] = true;
-                                    _toggleButtonsSelection[0] = false;
-                                    _selectedPriority = 'Low';
-                                    print(_selectedPriority);
+                                    toggleButtonsSelection[1] = false;
+                                    toggleButtonsSelection[2] = true;
+                                    toggleButtonsSelection[0] = false;
+                                    selectedPriority = 'Low';
+                                    print(selectedPriority);
                                   } else {
-                                    _selectedPriority = 'Mid';
+                                    selectedPriority = 'Mid';
                                   }
 
-                                  print(_toggleButtonsSelection);
+                                  print(toggleButtonsSelection);
                                 });
                               },
-                              isSelected: _toggleButtonsSelection,
+                              isSelected: toggleButtonsSelection,
                               children: priorityOptions
                                   .map(((Priority, String) priorityQ) =>
                                       Text(priorityQ.$2))
                                   .toList()),
-                          // DropdownButton<String>(
-                          //   value: _selectedPriority,
-                          //   items: priority.map((priority) {
-                          //     return DropdownMenuItem<String>(
-                          //       value: priority,
-                          //       child: Text(priority),
-                          //     );
-                          //   }).toList(),
-                          //   onChanged: (String? newPriority) {
-                          //     if (newPriority != null) {
-                          //       _selectedPriority = newPriority;
-                          //       setState(() {
-                          //         // print(grou)
-                          //       });
-                          //     }
-                          //   },
-                          // ),
                         ],
                       ),
                       actions: [
@@ -162,30 +129,30 @@ class _AddTaskState extends State<AddTask> {
                         const Spacer(),
                         ElevatedButton(
                           onPressed: () {
-
-                // context.read<ProviderClass>().addFirebaseDataFirst();
                             if (taskNameController.text.isNotEmpty) {
                               setState(() {
-                                context.read<ProviderClass>().addFirebaseData(
+                                context.read<FirebaseProviderClass>().addFirebaseData(
+                                  //Task Name
                                     taskNameController.text.toString(),
+                                  //Created Time
                                     formatDate(DateTime.now(), [HH, ' : ', nn]),
+                                  //Created Date
                                     formatDate(DateTime.now(),
                                         [dd, ' - ', mm, ' - ', yy]),
-                                    _selectedGroup!,
-                                    _selectedPriority!,
+                                  //Selected Group
+                                    selectedGroup!,
+                                  //Selected Priority
+                                    selectedPriority!,
+                                  //Is Completed
                                     false
-                                    // priority
                                     );
 
                                 print("Added");
 
-                                context.read<ProviderClass>().updateData();
-                                // context.read<ProviderClass>().notifyListeners();
+                                context.read<FirebaseProviderClass>().updateData();
 
                                 print("testing");
                                 taskNameController.clear();
-                                // context.read<ProviderClass>().dataFirebase;
-                                // print('Maplist : ${context.read<ProviderClass>().mapList}');
                                 Navigator.of(context).pop();
                               });
                             }

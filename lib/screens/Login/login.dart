@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
+import 'package:todo_with_firebase_2/Utils/custom/loginbutton.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
@@ -31,12 +32,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: TextButton(
-          child: const Text(
-            TStrings.gButton,
-            style: TextStyle(fontSize: 60),
+        child: GestureDetector(
+          child: SizedBox(
+            width: 100,
+            child: Image.asset('lib/assets/GoogleLogo.png'),
           ),
-          onPressed: () async {
+          onTap: () async {
             //Login Button -> Google SignIn Function
             try {
               await context.read<LoginProviderClass>().signInWithGoogle();

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, void_checks
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +9,7 @@ import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/Utils/custom/button.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
+import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
 
 //Card Class
 class CardBuilder extends StatefulWidget {
@@ -28,6 +29,7 @@ class _CardBuilderState extends State<CardBuilder> {
     super.initState();
     context.read<FirebaseProviderClass>().dataFirebase;
     context.read<FirebaseProviderClass>().checkFirebaseDataExist();
+    taskNameController.clear();
   }
 
   @override
@@ -35,12 +37,12 @@ class _CardBuilderState extends State<CardBuilder> {
     // var provider = context.watch<ProviderClass>();
 
     //If Contition for checking the data is loading or not
-    if (isLoading) {
-      return const Center(
-        // child: CircularProgressIndicator(),
-        child: Text('error'),
-      );
-    }
+    // if (isLoading) {
+    //   return const Center(
+    //     // child: CircularProgressIndicator(),
+    //     child: Text('error'),
+    //   );
+    // }
 
     if (mapList.isEmpty) {
       return const Center(
@@ -49,6 +51,7 @@ class _CardBuilderState extends State<CardBuilder> {
     }
     //Card
     return FutureBuilder(
+        // initialData: context.read<FirebaseProviderClass>().checkFirebaseDataExist(),
         future: getDataFirebase,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return Consumer<ProviderClass>(
@@ -109,6 +112,7 @@ class _CardBuilderState extends State<CardBuilder> {
                           },
                           onTap: () {
                             isCompletedSelected = false;
+                            taskNameController.text = task['Task Name'];
                             print(
                                 'Priority on tap : ${task[TStrings.priorityFirebase]}');
                             print(
@@ -138,14 +142,14 @@ class _CardBuilderState extends State<CardBuilder> {
                                   return StatefulBuilder(
                                       builder: (context, StateSetter setState) {
                                     return AlertDialog(
-                                      title: const Text(TStrings.addTask),
+                                      title: const Text(TStrings.edit),
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           TextFormField(
                                             controller: taskNameController,
                                             decoration: InputDecoration(
-                                              labelText: TStrings.addTask,
+                                              labelText: TStrings.edit,
                                               icon: profileIcon,
                                             ),
                                           ),
@@ -254,17 +258,33 @@ class _CardBuilderState extends State<CardBuilder> {
                                             context
                                                 .read<FirebaseProviderClass>()
                                                 .completeTask();
-                                            if (isCompletedSelected == true) {
                                               context
                                                   .read<FirebaseProviderClass>()
                                                   .updateMessage(
-                                                      task['TimeStamp'], true);
-                                            }
+                                                      task['TimeStamp'],
+                                                      isCompletedSelected,
+                                                      taskNameController.text,
+                                                      selectedGroup ?? 'Me',
+                                                      //Created Time
+                                                      formatDate(DateTime.now(),
+                                                          [HH, ' : ', nn]),
+                                                      //Created Date
+                                                      formatDate(
+                                                          DateTime.now(), [
+                                                        dd,
+                                                        ' - ',
+                                                        mm,
+                                                        ' - ',
+                                                        yy
+                                                      ]),
+                                                      selectedPriority);
+                                            
 
                                             context
                                                 .read<FirebaseProviderClass>()
                                                 .updateData();
                                             Navigator.of(context).pop();
+                                            textController.clear();
                                           },
                                           child: const Text(TStrings.submit),
                                         ),

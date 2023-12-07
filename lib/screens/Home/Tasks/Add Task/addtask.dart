@@ -142,7 +142,11 @@ class _AddTaskState extends State<AddTask> {
                                   //Selected Priority
                                     selectedPriority!,
                                   //Is Completed
-                                    false
+                                    false,
+                                  //Completed Date
+                                    '',
+                                  //Completed Time
+                                    ''
                                     );
 
                                 print("Added");

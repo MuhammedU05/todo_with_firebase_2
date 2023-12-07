@@ -34,7 +34,7 @@ final Color selectedColor = Colors.yellow.shade400;
 final userCollection = FirebaseFirestore.instance.collection('Users');
 final document = FirebaseFirestore.instance.collection("Users").snapshots();
 
-bool isLoading = false;
+bool isLoading = true;
 late bool isCompletedSelected;
   bool selected = false;
 bool signedIn = false;

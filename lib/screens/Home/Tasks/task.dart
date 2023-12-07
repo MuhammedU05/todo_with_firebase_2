@@ -28,7 +28,7 @@ class _TaskScreenState extends State<TaskScreen> {
     print(
         'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
     print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
-    print('Current User : ${FirebaseAuth.instance.currentUser}');
+    print('Current User In Task : ${FirebaseAuth.instance.currentUser}');
   }
 
   @override
@@ -41,7 +41,8 @@ class _TaskScreenState extends State<TaskScreen> {
     //   children: [
     //     _buildTextComposer(),
     return isLoading
-        ? CircularProgressIndicator() // Show a loading indicator while data is being retrieved
+        // ? CircularProgressIndicator() // Show a loading indicator while data is being retrieved
+        ? Text('Loading Please wait...')
         : CardBuilder();
     // const SizedBox(height: 16),
 

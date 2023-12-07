@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/AppBar/appbar.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
@@ -84,8 +83,8 @@ Widget _buildTextComposer() {
       // color: Colors.transparent,
       padding: const EdgeInsets.all(8.0),
       child: Row(children: <Widget>[
-        Expanded(
-            child: Container(
+        Expanded(child: 
+        Container(
                 // color: Colors.transparent,
                 decoration: BoxDecoration(
                   // backgroundBlendMode: BlendMode.dst,
@@ -114,7 +113,9 @@ Widget _buildTextComposer() {
                         print('Filter');
                       },
                       icon: Icon(MdiIcons.filter))
-                ]))),
+                ])
+                )
+                ),
         const AddTask()
       ]));
 }

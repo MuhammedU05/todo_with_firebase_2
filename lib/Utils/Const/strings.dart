@@ -1,6 +1,6 @@
 class TStrings {
   //Login
-  static const String gButton = 'Google SignIn';
+  static const String gButton = 'G';
 
   //Home
   static const String task = "Tasks";
@@ -34,10 +34,15 @@ class TStrings {
   static const String priorityFirebase = 'Priority';
   static const String createdTimeFirebase = 'Created Time';
   static const String createdDateFirebase = 'Created Date';
-  static const String isCompletedFirebase = 'Status';
+  static const String isCompletedFirebase = 'Is Completed';
+  static const String completedTimeFirebase = 'Completed Time';
+  static const String completedDateFirebase = 'Completed Date';
+  static const String timeStampFirebase = 'TimeStamp';
+  static const String taskNameFirebase = 'Task Name';
+  static const String assignedToFirebase = 'Assign To';
 
   //Alert Box
-  static const String edit = 'Edit';
+  static const String edit = 'Edit Task';
   static const String yes = 'Yes';
   static const String no = 'No';
 

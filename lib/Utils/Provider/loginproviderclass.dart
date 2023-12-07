@@ -54,7 +54,7 @@ class LoginProviderClass extends ChangeNotifier {
     print(
         'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
     print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
-    print('Current User : ${FirebaseAuth.instance.currentUser}');
+    print('Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
 
     // addFirebaseDataFirst();
     notifyListeners();

@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Card/card.dart';
 

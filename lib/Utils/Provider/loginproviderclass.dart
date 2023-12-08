@@ -19,6 +19,7 @@ class LoginProviderClass extends ChangeNotifier {
       Navigator.of(context).push(
           MaterialPageRoute(builder: (BuildContext context) => const Login()));
       mapList.clear();
+      mapListCompleted.clear();
       print('Map List Cleared : $mapList');
       notifyListeners();
     } catch (e) {
@@ -30,6 +31,7 @@ class LoginProviderClass extends ChangeNotifier {
     signOut(context);
     print('Signed Out');
     mapList.clear();
+    mapListCompleted.clear();
     print('MapList in Signout : $mapList');
     context.read<FirebaseProviderClass>().updateUserMap();
 
@@ -54,17 +56,18 @@ class LoginProviderClass extends ChangeNotifier {
     print(
         'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
     print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
-    print('Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
+    print(
+        'Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
 
     // addFirebaseDataFirst();
     notifyListeners();
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  void dispose() {
-    super.dispose();
-    // Remove any additional cleanup code if necessary
-  }
+  // void dispose() {
+  //   super.dispose();
+  //   // Remove any additional cleanup code if necessary
+  // }
 
   updateCurrentUser() {
     pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ?? defaultPic;

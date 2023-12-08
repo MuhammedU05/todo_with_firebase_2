@@ -6,7 +6,7 @@ Icon addTaskPlusIcon = const Icon(
   color: Colors.black,
   size: 55,
 );
-Icon profileIcon = Icon(Icons.account_box);
+Icon profileIcon = const Icon(Icons.account_box);
 Icon completed =
     const Icon(Icons.done_outline_sharp, color: Colors.lightGreen, fill: 1);
 // Icon profileIcon = Icon(Icons.account_box);

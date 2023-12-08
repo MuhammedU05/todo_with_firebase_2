@@ -15,6 +15,8 @@ class TStrings {
   static const String addTask = 'Add Task';
   static const String cancel = 'Cancel';
   static const String submit = 'Submit';
+  static const String noTaskCompleted = 'No Tasks Completed';
+
 
   //Card
   static String tCompleted = 'Completed';

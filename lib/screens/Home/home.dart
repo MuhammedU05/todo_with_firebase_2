@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
+import 'package:todo_with_firebase_2/screens/Home/Complete/completed.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/AppBar/appbar.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
@@ -14,9 +16,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-int selectedIndex = 1;
-Color themeButtonColor = Colors.green;
-var changedText;
+
 
 class _HomePageState extends State<HomePage> {
   @override
@@ -29,11 +29,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    void _handleSubmitted(String text) {
-      textController.clear();
-
-      setState(() {});
-    }
 
     return Scaffold(
       appBar: AppBarClass(context),
@@ -125,7 +120,5 @@ final List<Widget> widgetOptions = <Widget>[
     'Group',
   ),
   const TaskScreen(),
-  const Text(
-    'Complete',
-  ),
+  const CompletedTaskScreen()
 ];

@@ -7,8 +7,6 @@ import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Card/card.dart';
 
-final TextEditingController textController = TextEditingController();
-final TextEditingController inputValue = TextEditingController();
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({super.key});
@@ -23,7 +21,7 @@ class _TaskScreenState extends State<TaskScreen> {
     super.initState();
     context.read<FirebaseProviderClass>().dataFirebase;
     context.read<FirebaseProviderClass>().getFirebaseDatas();
-    // context.read<ProviderClass>().addFirebaseDataFirst();    
+      context.read<FirebaseProviderClass>().updateData();
     print(
         'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
     print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
@@ -34,18 +32,9 @@ class _TaskScreenState extends State<TaskScreen> {
   Widget build(BuildContext context) {
     // Use the watch method from context to access the ProviderClass
     FirebaseProviderClass provider = context.watch<FirebaseProviderClass>();
-    // bool isLoading = provider.isLoading;
-
-    // return Column(
-    //   children: [
-    //     _buildTextComposer(),
     return isLoading
         // ? CircularProgressIndicator() // Show a loading indicator while data is being retrieved
         ? Text('Loading Please wait...')
         : CardBuilder();
-    // const SizedBox(height: 16),
-
-    //   ],
-    // );
   }
 }

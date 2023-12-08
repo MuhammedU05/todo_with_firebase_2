@@ -28,7 +28,7 @@ Future<void> main() async {
       alignment: Alignment.center,
       child: Text(
         'Error!\n${details.exception}',
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.teal),
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
       ),

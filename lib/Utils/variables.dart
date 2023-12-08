@@ -19,7 +19,8 @@ var userDocData;
 var tasks;
 
 final user = FirebaseAuth.instance.currentUser;
-
+final TextEditingController textController = TextEditingController();
+final TextEditingController inputValue = TextEditingController();
 final TextEditingController taskNameController = TextEditingController();
 List<String> groups = ['Me'];
 late String? selectedGroup;
@@ -32,10 +33,18 @@ List<bool> toggleButtonsSelection =
 final Color selectedColor = Colors.yellow.shade400;
 
 final userCollection = FirebaseFirestore.instance.collection('Users');
-final document = FirebaseFirestore.instance.collection("Users").snapshots();
+// var documentSnapshot = FirebaseFirestore.instance.collection("Users").doc(user!.uid).snapshots();
 
 bool isLoading = true;
+bool isLoadingCompleted = true;
 late bool isCompletedSelected;
-  bool selected = false;
+bool selected = false;
 bool signedIn = false;
 Map<String, dynamic> mapList = {};
+Map<String, dynamic> mapListCompleted = {};
+
+const String googleLogo = 'assets/GoogleLogo.png';
+
+int selectedIndex = 1;
+Color themeButtonColor = Colors.green;
+var changedText;

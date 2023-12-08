@@ -23,6 +23,8 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     mapList.clear();
+    mapListCompleted.clear();
+    selectedIndex = 1;
     // context.read<ProviderClass>().allData?.clear();
     print('Email in login : ${FirebaseAuth.instance.currentUser?.email}');
     print('All Data in login : $mapList');
@@ -35,7 +37,7 @@ class _LoginState extends State<Login> {
         child: GestureDetector(
           child: SizedBox(
             width: 100,
-            child: Image.asset('lib/assets/GoogleLogo.png'),
+            child: Image.asset(googleLogo),
           ),
           onTap: () async {
             //Login Button -> Google SignIn Function

@@ -8,6 +8,7 @@ import 'package:todo_with_firebase_2/Utils/variables.dart';
 
 class FirebaseProviderClass extends ChangeNotifier {
   late var dataFirebase = getFirebaseDatas();
+  // late var dataCompletedFirebase = getCompletedFirebaseDatas();
 
   Future<void> addFirebaseData(
       String taskName,
@@ -27,23 +28,23 @@ class FirebaseProviderClass extends ChangeNotifier {
       if (!userDoc.exists) {
         // If the Tasks doesn't exist, create it
         await userDocRef.set({'Tasks': []});
-        await userDocRef.set({'zCompleted Tasks': []}, SetOptions(merge: true));
+        await userDocRef.set({'Completed Tasks': []}, SetOptions(merge: true));
       }
 
       var tasksArray = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
 
       tasksArray.add({
-        'Task Name': taskName,
+        TStrings.taskNameFirebase: taskName,
         'Created Time': time,
         'Created Date': date,
-        'Assign To': selectedGroup,
+        TStrings.assignedToFirebase: selectedGroup,
         'AA': firebaseInstance.currentUser!.displayName,
-        'Priority': priority,
-        'TimeStamp':
-            "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
-        'Is Completed': isCompleted,
-        'Completed Date': 'Not Completed',
-        'Completed Time': 'Not Completed'
+        TStrings.priorityFirebase: priority,
+        TStrings.timeStampFirebase:
+            "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}${DateTime.timestamp()}",
+        TStrings.isCompletedFirebase: isCompleted,
+        TStrings.completedDateFirebase: 'Not Completed',
+        TStrings.completedTimeFirebase: 'Not Completed'
       });
 
       await userDocRef.update({'Tasks': tasksArray});
@@ -60,17 +61,18 @@ class FirebaseProviderClass extends ChangeNotifier {
       // print('MapList Length : ${mapList.length}');
 
       mapList.clear();
+      mapListCompleted.clear();
       var userDoc =
           await userCollection.doc(firebaseInstance.currentUser!.uid).get();
 
       if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
         var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
-        tasks.forEach((task) {
-          // Assuming 'TimeStamp' field contains the user's name
-          var taskName = task['TimeStamp'] ?? 'N/A';
+        for (var task in tasks) {
+          // Assuming TStrings.timeStampFirebase field contains the user's name
+          var taskName = task[TStrings.timeStampFirebase] ?? 'N/A';
           mapList[taskName] = task;
           // notifyListeners();
-        });
+        }
         // print('MapList Length : ${mapList.length}');
         // if (mapList.length > 1) {
         //   isLoading = false;
@@ -83,6 +85,30 @@ class FirebaseProviderClass extends ChangeNotifier {
         notifyListeners();
       } else {
         isLoading = false;
+        notifyListeners();
+      }
+      isLoadingCompleted = true;
+
+      if (userDoc.exists && userDoc.data()!.containsKey('Completed Tasks')) {
+        var tasks = (userDoc.data()?['Completed Tasks'] ?? []) as List<dynamic>;
+        for (var task in tasks) {
+          // Assuming TStrings.timeStampFirebase field contains the user's name
+          var taskName = task[TStrings.timeStampFirebase] ?? 'N/A';
+          mapListCompleted[taskName] = task;
+          // notifyListeners();
+        }
+        // print('MapList Length : ${mapList.length}');
+        // if (mapList.length > 1) {
+        //   isLoading = false;
+        // } else if (mapList.length == 1) {
+        //   isLoading = false;
+        // } else {
+        //   isLoading = true;
+        // }
+        isLoadingCompleted = false;
+        notifyListeners();
+      } else {
+        isLoadingCompleted = false;
         notifyListeners();
       }
     } catch (e) {
@@ -109,27 +135,60 @@ class FirebaseProviderClass extends ChangeNotifier {
 
       if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
         var tasks = userDoc.data()?['Tasks'] as List<dynamic>;
+        var completedMap = userDoc.data()?['Completed Tasks'] as List<dynamic>;
 
         // Find the task with the specified TimeStamp
-        var updatedTasks = tasks.map((task) {
-          if (task['TimeStamp'] == taskTimeStamp) {
+        var updatedTasks = tasks.map((task) async {
+          if (task[TStrings.timeStampFirebase] == taskTimeStamp) {
             print(
-                '${isCompleted}\n${selectedGroup}\n${taskName}\n${priority}\n${completedDate}\n${completedTime}\n${taskTimeStamp}');
+                '$isCompleted\n$selectedGroup\n$taskName\n$priority\n$completedDate\n$completedTime\n$taskTimeStamp');
 
-            task['Is Completed'] = isCompleted;
-            task['Assign To'] = selectedGroup;
-            task['Task Name'] = taskName;
-            task['Priority'] = priority;
-
-            task['Completed Date'] = completedDate;
-            task['Completed Time'] = completedTime;
+            task[TStrings.isCompletedFirebase] = isCompleted;
+            task[TStrings.assignedToFirebase] = selectedGroup;
+            task[TStrings.taskNameFirebase] = taskName;
+            task[TStrings.priorityFirebase] = priority;
+            task[TStrings.completedDateFirebase] = completedDate;
+            task[TStrings.completedTimeFirebase] = completedTime;
             print(
-                '${isCompleted}\n${selectedGroup}\n${taskName}\n${priority}\n${completedDate}\n${completedTime}\n${taskTimeStamp}');
+                '$isCompleted\n$selectedGroup\n$taskName\n$priority\n$completedDate\n$completedTime\n$taskTimeStamp');
+            if (isCompleted == true) {
+              completedMap.add({
+                TStrings.taskNameFirebase: taskName,
+                'Created Time': task[TStrings.createdTimeFirebase],
+                'Created Date': task[TStrings.createdDateFirebase],
+                TStrings.assignedToFirebase: selectedGroup,
+                'AA': firebaseInstance.currentUser?.displayName,
+                TStrings.priorityFirebase: priority,
+                TStrings.timeStampFirebase: task[TStrings.timeStampFirebase],
+                TStrings.isCompletedFirebase: true,
+                TStrings.completedDateFirebase: completedDate,
+                TStrings.completedTimeFirebase: completedTime,
+              });
+              await userDocRef.update({'Completed Tasks': completedMap});
+              deleteTask(taskTimeStamp);
+              updateData();
+              // notifyListeners();
+            }
+            // if (task[TStrings.isCompletedFirebase] == true) {
+            //   completedMap.add({
+            //     TStrings.taskNameFirebase: taskName,
+            //     'Created Time': task[TStrings.createdTimeFirebase],
+            //     'Created Date': task[TStrings.createdDateFirebase],
+            //     TStrings.assignedToFirebase: selectedGroup,
+            //     'AA': firebaseInstance.currentUser?.displayName,
+            //     TStrings.priorityFirebase: priority,
+            //     TStrings.timeStampFirebase: task[TStrings.timeStampFirebase],
+            //     TStrings.isCompletedFirebase: true,
+            //     TStrings.completedDateFirebase: completedDate,
+            //     TStrings.completedTimeFirebase: completedTime,
+            //   });
+            //   await userDocRef.update({'Completed Tasks': completedMap});
+            // }
             notifyListeners();
           }
           return task;
         }).toList();
-        // var completedChanger = tasks['Is Completed'] == true ?
+        // var completedChanger = tasks[TStrings.isCompletedFirebase] == true ?
 
         // Update the Tasks field in the document
         await userDocRef.update({'Tasks': updatedTasks});
@@ -152,8 +211,8 @@ class FirebaseProviderClass extends ChangeNotifier {
         var tasks = userDoc.data()?['Tasks'] as List<dynamic>;
 
         // Find the index of the task with the specified TimeStamp
-        int indexOfTaskToDelete =
-            tasks.indexWhere((task) => task['TimeStamp'] == taskTimeStamp);
+        int indexOfTaskToDelete = tasks.indexWhere(
+            (task) => task[TStrings.timeStampFirebase] == taskTimeStamp);
 
         if (indexOfTaskToDelete != -1) {
           // Task found, remove it from the list
@@ -174,44 +233,75 @@ class FirebaseProviderClass extends ChangeNotifier {
   }
 
   Future<void> checkFirebaseDataExist() async {
-    var userDoc =
-        await userCollection.doc(firebaseInstance.currentUser!.uid).get();
-    print('Checking Firebase Data Exist Or Not');
+    try {
+      var userDoc =
+          await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+      print('Checking Firebase Data Exist Or Not');
 
-    if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
-      // var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
-      // tasks.forEach((task) {
-      //   // Assuming 'TimeStamp' field contains the user's name
-      //   var taskName = task['TimeStamp'] ?? 'N/A';
-      //   mapList[taskName] = task;
-      // notifyListeners();
-      // });
-      print('Firebase Data Exists');
+      if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
+        // var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
+        // tasks.forEach((task) {
+        //   // Assuming TStrings.timeStampFirebase field contains the user's name
+        //   var taskName = task[TStrings.timeStampFirebase] ?? 'N/A';
+        //   mapList[taskName] = task;
+        // notifyListeners();
+        // });
+        print('Firebase Data Tasks Exists');
 
-      // isLoading = false;
-      notifyListeners();
-    } else {
-      // isLoading = false;
-      addFirebaseDataFirst();
-      notifyListeners();
+        // isLoading = false;
+        notifyListeners();
+      } else {
+        // isLoading = false;
+        addFirebaseDataFirst();
+        notifyListeners();
+      }
+      if (userDoc.exists && userDoc.data()!.containsKey('Completed Tasks')) {
+        // var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
+        // tasks.forEach((task) {
+        //   // Assuming TStrings.timeStampFirebase field contains the user's name
+        //   var taskName = task[TStrings.timeStampFirebase] ?? 'N/A';
+        //   mapList[taskName] = task;
+        // notifyListeners();
+        // });
+        print('Firebase Data Completed Tasks Exists');
+
+        // isLoading = false;
+        notifyListeners();
+      } else {
+        // isLoading = false;
+        addFirebaseDataFirst();
+        notifyListeners();
+      }
+    } on Exception catch (e) {
+      print('Error Chacking If Firebase Data Exists : $e');
     }
   }
 
   updateData() {
-    print('\n\nkkkkkkkkkkkkkkkk');
-    dataFirebase = getFirebaseDatas();
-
-    // print(jsonDecode(dataFirebase.toString()));
-    print('MapList --->  $mapList');
-    notifyListeners();
+    try {
+      print('\n\nkkkkkkkkkkkkkkkk');
+      dataFirebase = getFirebaseDatas();
+      // dataCompletedFirebase = getCompletedFirebaseDatas();
+      // isLoadingCompleted = false;
+      // print(jsonDecode(dataFirebase.toString()));
+      print('MapList --->  $mapList');
+      notifyListeners();
+    } on Exception catch (e) {
+      print('Data updating Error : $e');
+    }
   }
 
   updateUserMap() {
-    print('pppppppppppppppppppppppppppppppppppppppp');
-    mapList.clear();
-    notifyListeners();
-    print(mapList);
-    print('ssssssssssssssssss');
+    try {
+      print('pppppppppppppppppppppppppppppppppppppppp');
+      mapList.clear();
+      mapListCompleted.clear();
+      notifyListeners();
+      print(mapList);
+      print('ssssssssssssssssss');
+    } on Exception catch (e) {
+      print('Updating User Map Error : $e');
+    }
   }
 
   void completeTask() {
@@ -241,20 +331,21 @@ class FirebaseProviderClass extends ChangeNotifier {
         var tasksArray = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
 
         tasksArray.add({
-          'Task Name': 'First Created',
+          TStrings.taskNameFirebase: 'First Created',
           'Created Time': DateTime.now().toString(),
           'Created Date': '',
-          'Assign To': '',
+          TStrings.assignedToFirebase: '',
           'AA': firebaseInstance.currentUser?.displayName,
-          'Priority': '',
-          'TimeStamp': '',
+          TStrings.priorityFirebase: '',
+          TStrings.timeStampFirebase: '',
           // "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
-          'Is Completed': false,
-          'Completed Date': '',
-          'Completed Time': ''
+          TStrings.isCompletedFirebase: '',
+          TStrings.completedDateFirebase: '',
+          TStrings.completedTimeFirebase: ''
         });
 
         await userDocRef.update({'Tasks': tasksArray});
+        await userDocRef.update({'Completed Tasks': tasksArray});
         print('Created Dummy Task');
         notifyListeners();
       } else {
@@ -267,40 +358,83 @@ class FirebaseProviderClass extends ChangeNotifier {
     }
   }
 
-  // To Update the Massages
-  Future<void> checkCompleted(String taskTimeStamp) async {
-    try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
-      var userDoc = await userDocRef.get();
+  // // To Update the Massages
+  // Future<void> checkCompleted(String taskTimeStamp) async {
+  //   try {
+  //     var userDocRef = FirebaseFirestore.instance
+  //         .collection('Users')
+  //         .doc(firebaseInstance.currentUser!.uid);
+  //     var userDoc = await userDocRef.get();
 
-      if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
-        var tasks = userDoc.data()?['Tasks'] as List<dynamic>;
+  //     if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
+  //       var tasks = userDoc.data()?['Tasks'] as List<dynamic>;
+  //       var completedMap = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
 
-        // Find the task with the specified TimeStamp
-        var updatedTasks = tasks.map((task) async {
-          if (task['Is Completed'] == true) {
-            addFirebaseData(
-                task[TStrings.taskNameFirebase],
-                task[TStrings.createdTimeFirebase],
-                task[TStrings.createdDateFirebase],
-                task[TStrings.assignedToFirebase],
-                task[TStrings.priorityFirebase],
-                task[TStrings.isCompletedFirebase],
-                task[TStrings.completedDateFirebase],
-                task[TStrings.completedTimeFirebase]);
-          }
-          return task;
-        }).toList();
-        // var completedChanger = tasks['Is Completed'] == true ?
+  //       // Find the task with the specified TimeStamp
+  //       var updatedTasks = tasks.map((task) async {
+  //         if (task[TStrings.isCompletedFirebase] == true) {
+  //           // addFirebaseData(
+  //           // task[TStrings.taskNameFirebase],
+  //           // task[TStrings.createdTimeFirebase],
+  //           // task[TStrings.createdDateFirebase],
+  //           // task[TStrings.assignedToFirebase],
+  //           // task[TStrings.priorityFirebase],
+  //           // task[TStrings.isCompletedFirebase],
+  //           // task[TStrings.completedDateFirebase],
+  //           // task[TStrings.completedTimeFirebase]);
+  //         }
+  //         return task;
+  //       }).toList();
+  //       // var completedChanger = tasks[TStrings.isCompletedFirebase] == true ?
 
-        // Update the Tasks field in the document
-        await userDocRef.update({'Tasks': updatedTasks});
-        notifyListeners();
-      }
-    } catch (e) {
-      print("Error updating message: $e");
-    }
-  }
+  //       // Update the Tasks field in the document
+  //       await userDocRef.update({'Completed Tasks': updatedTasks});
+  //       notifyListeners();
+  //     }
+  //   } catch (e) {
+  //     print("Error updating message: $e");
+  //   }
+  // }
+
+  // Future<void> getCompletedFirebaseDatas() async {
+  //   try {
+  //     isLoadingCompleted = true;
+  //     // print('MapList Length : ${mapList.length}');
+  //     mapList.clear();
+  //     mapListCompleted.clear();
+  //     print('Running getCompletedFirebaseDatas');
+  //     var userDoc =
+  //         await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+
+  //     if (userDoc.exists && userDoc.data()!.containsKey('Completed Tasks')) {
+  //       var tasksCompleted =
+  //           (userDoc.data()?['Completed Tasks'] ?? []) as List<dynamic>;
+  //       for (var taskCompleted in tasksCompleted) {
+  //         // Assuming TStrings.timeStampFirebase field contains the user's name
+  //         var taskNameCompleted =
+  //             taskCompleted[TStrings.timeStampFirebase] ?? 'N/A';
+  //         mapListCompleted[taskNameCompleted] = taskCompleted;
+  //         // notifyListeners();
+  //       }
+  //       print('MapListCompleted Length : ${mapListCompleted.length}');
+  //       print('MapListCompleted : $mapListCompleted');
+  //       // if (mapList.length > 1) {
+  //       //   isLoading = false;
+  //       // } else if (mapList.length == 1) {
+  //       //   isLoading = false;
+  //       // } else {
+  //       //   isLoading = true;
+  //       // }
+  //       isLoadingCompleted = false;
+  //       notifyListeners();
+  //     } else {
+  //       isLoadingCompleted = false;
+  //       notifyListeners();
+  //     }
+  //   } catch (e) {
+  //     print("Error getting data: $e");
+  //     isLoadingCompleted = false;
+  //     notifyListeners();
+  //   }
+  // }
 }

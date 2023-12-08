@@ -1,13 +1,12 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
-import 'package:date_format/date_format.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:date_format/date_format.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
-import 'package:todo_with_firebase_2/Utils/variables.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -32,7 +31,7 @@ class _AddTaskState extends State<AddTask> {
           toggleButtonsSelection[1] = true;
           toggleButtonsSelection[2] = false;
           toggleButtonsSelection[0] = false;
-          print(FirebaseAuth.instance.currentUser);
+          // print(FirebaseAuth.instance.currentUser);
           showDialog(
               context: context,
               builder: (BuildContext context) {

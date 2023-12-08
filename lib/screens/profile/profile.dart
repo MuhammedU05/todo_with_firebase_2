@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

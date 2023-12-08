@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 
 class FirebaseProviderClass extends ChangeNotifier {
   late var dataFirebase = getFirebaseDatas();

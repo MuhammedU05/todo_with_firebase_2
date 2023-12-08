@@ -9,12 +9,6 @@ Icon addTaskPlusIcon = const Icon(
 Icon profileIcon = const Icon(Icons.account_box);
 Icon completed =
     const Icon(Icons.done_outline_sharp, color: Colors.lightGreen, fill: 1);
-// Icon profileIcon = Icon(Icons.account_box);
-// Icon profileIcon = Icon(Icons.account_box);
-// Icon profileIcon = Icon(Icons.account_box);
-// Icon profileIcon = Icon(Icons.account_box);
-// Icon profileIcon = Icon(Icons.account_box);
-// Icon profileIcon = Icon(Icons.account_box);
 
 enum Priority { high, mid, low }
 

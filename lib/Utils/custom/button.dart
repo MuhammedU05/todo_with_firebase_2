@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 
 class SelectableButton extends StatefulWidget {
   const SelectableButton({

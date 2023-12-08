@@ -1,13 +1,12 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_with_firebase_2/Utils/Assign/assign.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Login/login.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 
 class LoginProviderClass extends ChangeNotifier {
   void signOut(BuildContext context) async {
@@ -70,8 +69,8 @@ class LoginProviderClass extends ChangeNotifier {
   // }
 
   updateCurrentUser() {
-    pic = user?.photoURL?.toString() ?? defaultPic;
-    currentUserFDetails = user?.displayName ?? "";
+    pic = firebaseAuthInstance.currentUser?.photoURL?.toString() ?? defaultPic;
+    currentUserFDetails = firebaseAuthInstance.currentUser?.displayName ?? "";
     // currentUser = FirebaseAuth.instance.currentUser;
     notifyListeners();
   }

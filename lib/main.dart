@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
               width: double.infinity,
               color: Colors.white,
               child: const Center(
-                // child: CircularProgressIndicator()
                 child: Text(""),
               ));
           if (widget is Scaffold || widget is Navigator) {
@@ -88,10 +87,10 @@ class _LoginCheckerState extends State<LoginChecker> {
   @override
   Widget build(BuildContext context) {
 
-    if (user != null &&
-        user!.email != null &&
-        user!.email!.isNotEmpty &&
-        user!.emailVerified) {
+    if (firebaseAuthInstance.currentUser != null &&
+        firebaseAuthInstance.currentUser!.email != null &&
+        firebaseAuthInstance.currentUser!.email!.isNotEmpty &&
+        firebaseAuthInstance.currentUser!.emailVerified) {
       return const HomePage();
     } else {
       return const Login();

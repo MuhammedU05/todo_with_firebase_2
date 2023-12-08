@@ -2,8 +2,8 @@
 
 // ignore_for_file: avoid_print
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
 
 class ProviderClass extends ChangeNotifier {

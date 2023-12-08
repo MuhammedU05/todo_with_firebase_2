@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
-import 'package:todo_with_firebase_2/Utils/custom/loginbutton.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
-import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 
 //Login Page
 class Login extends StatefulWidget {

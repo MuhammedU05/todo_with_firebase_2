@@ -70,8 +70,8 @@ class LoginProviderClass extends ChangeNotifier {
   // }
 
   updateCurrentUser() {
-    pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ?? defaultPic;
-    currentUserFDetails = FirebaseAuth.instance.currentUser?.displayName ?? "";
+    pic = user?.photoURL?.toString() ?? defaultPic;
+    currentUserFDetails = user?.displayName ?? "";
     // currentUser = FirebaseAuth.instance.currentUser;
     notifyListeners();
   }

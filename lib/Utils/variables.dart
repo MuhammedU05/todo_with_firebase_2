@@ -1,50 +1,59 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
 
-const String defaultPic =
-    "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";
-
-String pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ??
-    "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";
-
-String currentUserFDetails =
-    FirebaseAuth.instance.currentUser?.displayName ?? "";
-
-var userDocData;
+//vars
 var tasks;
-
-final user = FirebaseAuth.instance.currentUser;
-final TextEditingController textController = TextEditingController();
-final TextEditingController inputValue = TextEditingController();
-final TextEditingController taskNameController = TextEditingController();
-List<String> groups = ['Me'];
-late String? selectedGroup;
+var userDocData;
+var changedText;
 var selectedPriority;
-String time = formatDate(DateTime.now(), [HH, ' : ', nn]);
-String date = formatDate(DateTime.now(), [dd, ' - ', mm, ' - ', yy]);
+var userDocRef = firestoreInstance
+    .collection('Users')
+    .doc(firebaseAuthInstance.currentUser!.uid);
 
-List<bool> toggleButtonsSelection =
-    Priority.values.map((Priority e) => e == Priority.mid).toList();
-final Color selectedColor = Colors.yellow.shade400;
+//ints
+int selectedIndex = 1;
 
-final userCollection = FirebaseFirestore.instance.collection('Users');
-// var documentSnapshot = FirebaseFirestore.instance.collection("Users").doc(user!.uid).snapshots();
-
+//bools
 bool isLoading = true;
-bool isLoadingCompleted = true;
-late bool isCompletedSelected;
 bool selected = false;
 bool signedIn = false;
+late bool isCompletedSelected;
+bool isLoadingCompleted = true;
+
+//maps
 Map<String, dynamic> mapList = {};
 Map<String, dynamic> mapListCompleted = {};
 
-const String googleLogo = 'assets/GoogleLogo.png';
-
-int selectedIndex = 1;
+//colors
 Color themeButtonColor = Colors.green;
-var changedText;
+final Color selectedColor = Colors.yellow.shade400;
+
+//lists
+List<String> groups = ['Me'];
+List<bool> toggleButtonsSelection =
+    Priority.values.map((Priority e) => e == Priority.mid).toList();
+
+//finals
+final firebaseAuthInstance = FirebaseAuth.instance;
+final firestoreInstance = FirebaseFirestore.instance;
+final user = firebaseAuthInstance.currentUser;
+final TextEditingController inputValue = TextEditingController();
+final TextEditingController textController = TextEditingController();
+final userCollection = firestoreInstance.collection('Users');
+final TextEditingController taskNameController = TextEditingController();
+
+//strings
+late String? selectedGroup;
+const String googleLogo = 'assets/GoogleLogo.png';
+String currentUserFDetails = user?.displayName ?? "";
+String time = formatDate(DateTime.now(), [HH, ' : ', nn]);
+String date = formatDate(DateTime.now(), [dd, ' - ', mm, ' - ', yy]);
+const String defaultPic =
+    "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";
+String pic = user?.photoURL?.toString() ??
+    "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";

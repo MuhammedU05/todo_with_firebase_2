@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import 'package:todo_with_firebase_2/Firebase/things.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
@@ -20,9 +19,7 @@ class FirebaseProviderClass extends ChangeNotifier {
       String completedDate,
       String completedTime) async {
     try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
+
       var userDoc = await userDocRef.get();
 
       if (!userDoc.exists) {
@@ -38,7 +35,7 @@ class FirebaseProviderClass extends ChangeNotifier {
         'Created Time': time,
         'Created Date': date,
         TStrings.assignedToFirebase: selectedGroup,
-        'AA': firebaseInstance.currentUser!.displayName,
+        'AA': firebaseAuthInstance.currentUser!.displayName,
         TStrings.priorityFirebase: priority,
         TStrings.timeStampFirebase:
             "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}${DateTime.timestamp()}",
@@ -63,7 +60,7 @@ class FirebaseProviderClass extends ChangeNotifier {
       mapList.clear();
       mapListCompleted.clear();
       var userDoc =
-          await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+          await userCollection.doc(firebaseAuthInstance.currentUser!.uid).get();
 
       if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
         var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
@@ -97,14 +94,6 @@ class FirebaseProviderClass extends ChangeNotifier {
           mapListCompleted[taskName] = task;
           // notifyListeners();
         }
-        // print('MapList Length : ${mapList.length}');
-        // if (mapList.length > 1) {
-        //   isLoading = false;
-        // } else if (mapList.length == 1) {
-        //   isLoading = false;
-        // } else {
-        //   isLoading = true;
-        // }
         isLoadingCompleted = false;
         notifyListeners();
       } else {
@@ -128,9 +117,6 @@ class FirebaseProviderClass extends ChangeNotifier {
       String completedDate,
       String priority) async {
     try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
       var userDoc = await userDocRef.get();
 
       if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
@@ -157,7 +143,7 @@ class FirebaseProviderClass extends ChangeNotifier {
                 'Created Time': task[TStrings.createdTimeFirebase],
                 'Created Date': task[TStrings.createdDateFirebase],
                 TStrings.assignedToFirebase: selectedGroup,
-                'AA': firebaseInstance.currentUser?.displayName,
+                'AA': firebaseAuthInstance.currentUser?.displayName,
                 TStrings.priorityFirebase: priority,
                 TStrings.timeStampFirebase: task[TStrings.timeStampFirebase],
                 TStrings.isCompletedFirebase: true,
@@ -167,29 +153,11 @@ class FirebaseProviderClass extends ChangeNotifier {
               await userDocRef.update({'Completed Tasks': completedMap});
               deleteTask(taskTimeStamp);
               updateData();
-              // notifyListeners();
             }
-            // if (task[TStrings.isCompletedFirebase] == true) {
-            //   completedMap.add({
-            //     TStrings.taskNameFirebase: taskName,
-            //     'Created Time': task[TStrings.createdTimeFirebase],
-            //     'Created Date': task[TStrings.createdDateFirebase],
-            //     TStrings.assignedToFirebase: selectedGroup,
-            //     'AA': firebaseInstance.currentUser?.displayName,
-            //     TStrings.priorityFirebase: priority,
-            //     TStrings.timeStampFirebase: task[TStrings.timeStampFirebase],
-            //     TStrings.isCompletedFirebase: true,
-            //     TStrings.completedDateFirebase: completedDate,
-            //     TStrings.completedTimeFirebase: completedTime,
-            //   });
-            //   await userDocRef.update({'Completed Tasks': completedMap});
-            // }
             notifyListeners();
           }
           return task;
         }).toList();
-        // var completedChanger = tasks[TStrings.isCompletedFirebase] == true ?
-
         // Update the Tasks field in the document
         await userDocRef.update({'Tasks': updatedTasks});
         notifyListeners();
@@ -202,9 +170,6 @@ class FirebaseProviderClass extends ChangeNotifier {
 // To Delete the Task
   Future<void> deleteTask(String taskTimeStamp) async {
     try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
       var userDoc = await userDocRef.get();
 
       if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
@@ -235,7 +200,7 @@ class FirebaseProviderClass extends ChangeNotifier {
   Future<void> checkFirebaseDataExist() async {
     try {
       var userDoc =
-          await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+          await userCollection.doc(firebaseAuthInstance.currentUser!.uid).get();
       print('Checking Firebase Data Exist Or Not');
 
       if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
@@ -315,9 +280,6 @@ class FirebaseProviderClass extends ChangeNotifier {
 
   Future<void> addFirebaseDataFirst() async {
     try {
-      var userDocRef = FirebaseFirestore.instance
-          .collection('Users')
-          .doc(firebaseInstance.currentUser?.uid);
       var userDoc = await userDocRef.get();
       print('User Doc : ${userDoc.exists}');
       print('User Doc : ${!userDoc.exists}');
@@ -335,7 +297,7 @@ class FirebaseProviderClass extends ChangeNotifier {
           'Created Time': DateTime.now().toString(),
           'Created Date': '',
           TStrings.assignedToFirebase: '',
-          'AA': firebaseInstance.currentUser?.displayName,
+          'AA': firebaseAuthInstance.currentUser?.displayName,
           TStrings.priorityFirebase: '',
           TStrings.timeStampFirebase: '',
           // "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
@@ -357,84 +319,4 @@ class FirebaseProviderClass extends ChangeNotifier {
       print("Error adding data First: $e");
     }
   }
-
-  // // To Update the Massages
-  // Future<void> checkCompleted(String taskTimeStamp) async {
-  //   try {
-  //     var userDocRef = FirebaseFirestore.instance
-  //         .collection('Users')
-  //         .doc(firebaseInstance.currentUser!.uid);
-  //     var userDoc = await userDocRef.get();
-
-  //     if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
-  //       var tasks = userDoc.data()?['Tasks'] as List<dynamic>;
-  //       var completedMap = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
-
-  //       // Find the task with the specified TimeStamp
-  //       var updatedTasks = tasks.map((task) async {
-  //         if (task[TStrings.isCompletedFirebase] == true) {
-  //           // addFirebaseData(
-  //           // task[TStrings.taskNameFirebase],
-  //           // task[TStrings.createdTimeFirebase],
-  //           // task[TStrings.createdDateFirebase],
-  //           // task[TStrings.assignedToFirebase],
-  //           // task[TStrings.priorityFirebase],
-  //           // task[TStrings.isCompletedFirebase],
-  //           // task[TStrings.completedDateFirebase],
-  //           // task[TStrings.completedTimeFirebase]);
-  //         }
-  //         return task;
-  //       }).toList();
-  //       // var completedChanger = tasks[TStrings.isCompletedFirebase] == true ?
-
-  //       // Update the Tasks field in the document
-  //       await userDocRef.update({'Completed Tasks': updatedTasks});
-  //       notifyListeners();
-  //     }
-  //   } catch (e) {
-  //     print("Error updating message: $e");
-  //   }
-  // }
-
-  // Future<void> getCompletedFirebaseDatas() async {
-  //   try {
-  //     isLoadingCompleted = true;
-  //     // print('MapList Length : ${mapList.length}');
-  //     mapList.clear();
-  //     mapListCompleted.clear();
-  //     print('Running getCompletedFirebaseDatas');
-  //     var userDoc =
-  //         await userCollection.doc(firebaseInstance.currentUser!.uid).get();
-
-  //     if (userDoc.exists && userDoc.data()!.containsKey('Completed Tasks')) {
-  //       var tasksCompleted =
-  //           (userDoc.data()?['Completed Tasks'] ?? []) as List<dynamic>;
-  //       for (var taskCompleted in tasksCompleted) {
-  //         // Assuming TStrings.timeStampFirebase field contains the user's name
-  //         var taskNameCompleted =
-  //             taskCompleted[TStrings.timeStampFirebase] ?? 'N/A';
-  //         mapListCompleted[taskNameCompleted] = taskCompleted;
-  //         // notifyListeners();
-  //       }
-  //       print('MapListCompleted Length : ${mapListCompleted.length}');
-  //       print('MapListCompleted : $mapListCompleted');
-  //       // if (mapList.length > 1) {
-  //       //   isLoading = false;
-  //       // } else if (mapList.length == 1) {
-  //       //   isLoading = false;
-  //       // } else {
-  //       //   isLoading = true;
-  //       // }
-  //       isLoadingCompleted = false;
-  //       notifyListeners();
-  //     } else {
-  //       isLoadingCompleted = false;
-  //       notifyListeners();
-  //     }
-  //   } catch (e) {
-  //     print("Error getting data: $e");
-  //     isLoadingCompleted = false;
-  //     notifyListeners();
-  //   }
-  // }
 }

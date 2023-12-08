@@ -31,8 +31,6 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Use the watch method from context to access the ProviderClass
-    FirebaseProviderClass provider = context.watch<FirebaseProviderClass>();
     return isLoading
         // ? CircularProgressIndicator() // Show a loading indicator while data is being retrieved
         ? Text('Loading Please wait...')

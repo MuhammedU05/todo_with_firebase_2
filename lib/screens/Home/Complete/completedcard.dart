@@ -1,15 +1,10 @@
 // ignore_for_file: avoid_print, void_checks
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/Utils/Const/colors.dart';
-import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
-import 'package:todo_with_firebase_2/Utils/custom/button.dart';
-import 'package:todo_with_firebase_2/Utils/variables.dart';
-import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
 
 //Card Class
 class CompletedCardBuilder extends StatefulWidget {

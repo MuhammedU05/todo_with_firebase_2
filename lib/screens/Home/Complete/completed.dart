@@ -1,19 +1,14 @@
 // ignore_for_file: avoid_print, void_checks
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Const/colors.dart';
-import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
-import 'package:todo_with_firebase_2/Utils/custom/button.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 // ignore_for_file: prefer_const_constructors
-
 
 class TaskScreenCompleted extends StatefulWidget {
   const TaskScreenCompleted({super.key});
@@ -28,7 +23,7 @@ class _TaskScreenCompletedState extends State<TaskScreenCompleted> {
     super.initState();
     context.read<FirebaseProviderClass>().dataFirebaseC;
     context.read<FirebaseProviderClass>().getFirebaseDatasCompleted();
-    // context.read<ProviderClass>().addFirebaseDataFirst();    
+    // context.read<ProviderClass>().addFirebaseDataFirst();
     print(
         'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
     print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
@@ -39,24 +34,14 @@ class _TaskScreenCompletedState extends State<TaskScreenCompleted> {
   Widget build(BuildContext context) {
     // Use the watch method from context to access the ProviderClass
     FirebaseProviderClass provider = context.watch<FirebaseProviderClass>();
-    // bool isLoading = provider.isLoading;
+    context.read<FirebaseProviderClass>().dataFirebaseC;
 
-    // return Column(
-    //   children: [
-    //     _buildTextComposer(),
     return isLoadingCompleted
         // ? CircularProgressIndicator() // Show a loading indicator while data is being retrieved
         ? Text('Loading Please wait...')
         : CompletedCardBuilder();
-    // const SizedBox(height: 16),
-
-    //   ],
-    // );
   }
 }
-
-
-
 
 //Card Class
 class CompletedCardBuilder extends StatefulWidget {
@@ -81,16 +66,6 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    // var provider = context.watch<ProviderClass>();
-
-    //If Contition for checking the data is loading or not
-    // if (isLoading) {
-    //   return const Center(
-    //     // child: CircularProgressIndicator(),
-    //     child: Text('error'),
-    //   );
-    // }
-
     if (mapListCompleted.length <= 1) {
       return const Center(
         child: Text(TStrings.notCompleted),
@@ -98,7 +73,6 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
     }
     //Card
     return FutureBuilder(
-        // initialData: context.read<FirebaseProviderClass>().checkFirebaseDataExist(),
         future: getDataFirebaseC,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return Consumer<ProviderClass>(
@@ -111,8 +85,10 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
                       itemCount: mapListCompleted.length - 1,
                       itemBuilder: (context, index) {
                         print('Index : $index');
-                        String taskName = mapListCompleted.keys.elementAt(index + 1);
-                        Map<String, dynamic> task = mapListCompleted[taskName] ?? {};
+                        String taskName =
+                            mapListCompleted.keys.elementAt(index + 1);
+                        Map<String, dynamic> task =
+                            mapListCompleted[taskName] ?? {};
                         if (task[TStrings.priority] == TStrings.mid) {
                           priorityColor = TColors.white;
                         } else if (task[TStrings.priority] == TStrings.low) {
@@ -138,9 +114,8 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width /
-                                              1.3,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.3,
                                       child: Text(
                                         '${TStrings.taskName} :\n  ${task[TStrings.taskName] ?? TStrings.na}',
                                         textAlign: TextAlign.left,
@@ -197,12 +172,6 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
                                                   color: TColors.green,
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 20)),
-                                          // Text(
-                                          //   TStrings.tNotCompleted,
-                                          //   style: TextStyle(color: TColors.green),
-                                          //   // icon: completed,
-                                          //   // iconSize: 40,
-                                          // ),
                                         ],
                                       ),
                                     )

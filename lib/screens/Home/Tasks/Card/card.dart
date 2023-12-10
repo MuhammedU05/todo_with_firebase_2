@@ -9,7 +9,6 @@ import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/Utils/custom/button.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
-import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
 
 //Card Class
 class CardBuilder extends StatefulWidget {

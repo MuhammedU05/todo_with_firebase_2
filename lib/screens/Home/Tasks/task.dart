@@ -32,6 +32,8 @@ class _TaskScreenState extends State<TaskScreen> {
     // Use the watch method from context to access the ProviderClass
     FirebaseProviderClass provider = context.watch<FirebaseProviderClass>();
     // bool isLoading = provider.isLoading;
+    
+    context.read<FirebaseProviderClass>().dataFirebase;
 
     // return Column(
     //   children: [

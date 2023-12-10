@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
-import 'package:todo_with_firebase_2/Utils/custom/loginbutton.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
-import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 
 //Login Page
 class Login extends StatefulWidget {
@@ -41,7 +39,6 @@ class _LoginState extends State<Login> {
             //Login Button -> Google SignIn Function
             try {
               await context.read<LoginProviderClass>().signInWithGoogle();
-              // var signedIn = context.read<ProviderClass>().signedIn;
               // Updating Current User
               context.read<LoginProviderClass>().updateCurrentUser();
               if (signedIn == false) {
@@ -49,7 +46,6 @@ class _LoginState extends State<Login> {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => const HomePage()),
                 );
-                // context.read<ProviderClass>().updateCurrentUser();
               } else {
                 // Handle the case where sign-in was not successful
                 print('Google sign-in failed');

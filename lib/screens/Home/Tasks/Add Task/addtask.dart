@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, use_build_context_synchronously
 
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +17,6 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-
   @override
   void initState() {
     super.initState();
@@ -46,6 +45,7 @@ class _AddTaskState extends State<AddTask> {
                         children: [
                           TextFormField(
                             controller: taskNameController,
+                            autofocus: true,
                             decoration: InputDecoration(
                               labelText: TStrings.addTask,
                               icon: profileIcon,
@@ -128,31 +128,37 @@ class _AddTaskState extends State<AddTask> {
                         ElevatedButton(
                           onPressed: () {
                             if (taskNameController.text.isNotEmpty) {
-                              setState(() {
-                                context.read<FirebaseProviderClass>().addFirebaseData(
-                                  //Task Name
-                                    taskNameController.text.toString(),
-                                  //Created Time
-                                    formatDate(DateTime.now(), [HH, ' : ', nn]),
-                                  //Created Date
-                                    formatDate(DateTime.now(),
-                                        [dd, ' - ', mm, ' - ', yy]),
-                                  //Selected Group
-                                    selectedGroup!,
-                                  //Selected Priority
-                                    selectedPriority!,
-                                  //Is Completed
-                                    false,
-                                  //Completed Date
-                                    '',
-                                  //Completed Time
-                                    ''
-                                    );
+                              setState(() async {
+                                context
+                                    .read<FirebaseProviderClass>()
+                                    .addFirebaseData(
+                                        //Task Name
+                                        taskNameController.text.toString(),
+                                        //Created Time
+                                        formatDate(
+                                            DateTime.now(), [HH, ' : ', nn]),
+                                        //Created Date
+                                        formatDate(DateTime.now(),
+                                            [dd, ' - ', mm, ' - ', yy]),
+                                        //Selected Group
+                                        selectedGroup!,
+                                        //Selected Priority
+                                        selectedPriority!,
+                                        //Is Completed
+                                        false,
+                                        //Completed Date
+                                        '',
+                                        //Completed Time
+                                        '');
 
                                 print("Added");
 
-                                context.read<FirebaseProviderClass>().updateData();
-
+                                await context
+                                    .read<FirebaseProviderClass>()
+                                    .updateData();
+                                await context
+                                    .read<FirebaseProviderClass>()
+                                    .getFirebaseDatasCompleted();
                                 print("testing");
                                 taskNameController.clear();
                                 Navigator.of(context).pop();

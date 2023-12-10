@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
+import 'package:todo_with_firebase_2/screens/Home/Complete/completed.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/AppBar/appbar.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
@@ -125,7 +127,5 @@ final List<Widget> widgetOptions = <Widget>[
     'Group',
   ),
   const TaskScreen(),
-  const Text(
-    'Complete',
-  ),
+  const TaskScreenCompleted()
 ];

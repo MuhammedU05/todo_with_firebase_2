@@ -8,6 +8,7 @@ import 'package:todo_with_firebase_2/Utils/variables.dart';
 
 class FirebaseProviderClass extends ChangeNotifier {
   late var dataFirebase = getFirebaseDatas();
+  late var dataFirebaseC = getFirebaseDatasCompleted();
 
   Future<void> addFirebaseData(
       String taskName,
@@ -92,6 +93,37 @@ class FirebaseProviderClass extends ChangeNotifier {
     }
   }
 
+    Future<void> getFirebaseDatasCompleted() async {
+    try {
+      isLoadingCompleted = true;
+      // print('MapList Length : ${mapList.length}');
+
+      mapListCompleted.clear();
+      var userDoc =
+          await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+
+      if (userDoc.exists && userDoc.data()!.containsKey('Completed Tasks')) {
+        var tasks = (userDoc.data()?['Completed Tasks'] ?? []) as List<dynamic>;
+        tasks.forEach((task) {
+          // Assuming 'TimeStamp' field contains the user's name
+          var taskName = task['TimeStamp'] ?? 'N/A';
+          mapListCompleted[taskName] = task;
+          // notifyListeners();
+        });
+
+        isLoadingCompleted = false;
+        notifyListeners();
+      } else {
+        isLoadingCompleted = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      print("Error getting data: $e");
+      isLoadingCompleted = false;
+      notifyListeners();
+    }
+  }
+
   // To Update the Massages
   Future<void> updateMessage(
       String taskTimeStamp,
@@ -107,11 +139,14 @@ class FirebaseProviderClass extends ChangeNotifier {
           .doc(firebaseInstance.currentUser!.uid);
       var userDoc = await userDocRef.get();
 
-      if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
+      if (userDoc.exists &&
+          userDoc.data()?['Tasks'] != null &&
+          userDoc.data()?['Completed Tasks'] != null) {
         var tasks = userDoc.data()?['Tasks'] as List<dynamic>;
+        var completedMap = userDoc.data()?['Completed Tasks'] as List<dynamic>;
 
         // Find the task with the specified TimeStamp
-        var updatedTasks = tasks.map((task) {
+        var updatedTasks = tasks.map((task) async {
           if (task['TimeStamp'] == taskTimeStamp) {
             print(
                 '${isCompleted}\n${selectedGroup}\n${taskName}\n${priority}\n${completedDate}\n${completedTime}\n${taskTimeStamp}');
@@ -126,14 +161,33 @@ class FirebaseProviderClass extends ChangeNotifier {
             print(
                 '${isCompleted}\n${selectedGroup}\n${taskName}\n${priority}\n${completedDate}\n${completedTime}\n${taskTimeStamp}');
             notifyListeners();
+            if (isCompleted == true) {
+              completedMap.add({
+                TStrings.taskNameFirebase: taskName,
+                'Created Time': task[TStrings.createdTimeFirebase],
+                'Created Date': task[TStrings.createdDateFirebase],
+                TStrings.assignedToFirebase: selectedGroup,
+                'AA': firebaseInstance.currentUser?.displayName,
+                TStrings.priorityFirebase: priority,
+                TStrings.timeStampFirebase: task[TStrings.timeStampFirebase],
+                TStrings.isCompletedFirebase: true,
+                TStrings.completedDateFirebase: completedDate,
+                TStrings.completedTimeFirebase: completedTime,
+              });
+              await userDocRef.update({'Completed Tasks': completedMap});
+              deleteTask(taskTimeStamp);
+              updateData();
+
+              // Update the Tasks field in the document
+
+              notifyListeners();
+            }
           }
           return task;
         }).toList();
         // var completedChanger = tasks['Is Completed'] == true ?
 
-        // Update the Tasks field in the document
         await userDocRef.update({'Tasks': updatedTasks});
-        notifyListeners();
       }
     } catch (e) {
       print("Error updating message: $e");
@@ -200,15 +254,18 @@ class FirebaseProviderClass extends ChangeNotifier {
   updateData() {
     print('\n\nkkkkkkkkkkkkkkkk');
     dataFirebase = getFirebaseDatas();
+    dataFirebaseC = getFirebaseDatasCompleted();
 
     // print(jsonDecode(dataFirebase.toString()));
     print('MapList --->  $mapList');
+    print('MapList Completed --->  $mapListCompleted');
     notifyListeners();
   }
 
   updateUserMap() {
     print('pppppppppppppppppppppppppppppppppppppppp');
     mapList.clear();
+    mapListCompleted.clear();
     notifyListeners();
     print(mapList);
     print('ssssssssssssssssss');
@@ -255,6 +312,7 @@ class FirebaseProviderClass extends ChangeNotifier {
         });
 
         await userDocRef.update({'Tasks': tasksArray});
+        await userDocRef.update({'Completed Tasks': tasksArray});
         print('Created Dummy Task');
         notifyListeners();
       } else {

@@ -7,9 +7,6 @@ import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Card/card.dart';
 
-final TextEditingController textController = TextEditingController();
-final TextEditingController inputValue = TextEditingController();
-
 class TaskScreen extends StatefulWidget {
   const TaskScreen({super.key});
 

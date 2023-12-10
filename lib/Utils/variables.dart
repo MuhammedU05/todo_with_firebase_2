@@ -33,9 +33,14 @@ final Color selectedColor = Colors.yellow.shade400;
 
 final userCollection = FirebaseFirestore.instance.collection('Users');
 final document = FirebaseFirestore.instance.collection("Users").snapshots();
+final TextEditingController textController = TextEditingController();
+final TextEditingController inputValue = TextEditingController();
+
 
 bool isLoading = true;
+bool isLoadingCompleted = true;
 late bool isCompletedSelected;
   bool selected = false;
 bool signedIn = false;
 Map<String, dynamic> mapList = {};
+Map<String, dynamic> mapListCompleted = {};

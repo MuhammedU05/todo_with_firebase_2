@@ -44,7 +44,7 @@ class _CardBuilderState extends State<CardBuilder> {
     //   );
     // }
 
-    if (mapList.isEmpty) {
+    if (mapList.length <= 1) {
       return const Center(
         child: Text(TStrings.addTask),
       );

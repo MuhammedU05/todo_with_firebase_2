@@ -417,7 +417,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                             )
                                           ],
                                         ),
-                                        LinearProgressIndicator(color: Colors.green,minHeight: 5,)
+                                        // LinearProgressIndicator(color: Colors.green,minHeight: 5,)
                                       ],
                                     ),
                                   ),

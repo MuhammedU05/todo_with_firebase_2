@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage> {
 
 Widget _body() {
   return Column(
+    // fit: StackFit.passthrough,
     children: [
       Flexible(
         fit: FlexFit.tight,
@@ -76,50 +77,57 @@ Widget _body() {
         ),
       ),
       _buildTextComposer()
+      //  const Center(child: AddTask())
     ],
   );
 }
 
 Widget _buildTextComposer() {
-  return Container(
+  if (selectedIndex != 1) {
+    print('Not Selected Tasks');
+    return Container();
+  }
+  return const Center(child: AddTask());
+  // Container(
       // color: Colors.transparent,
-      padding: const EdgeInsets.all(8.0),
-      child: Row(children: <Widget>[
-        Expanded(child: 
-        Container(
-                // color: Colors.transparent,
-                decoration: BoxDecoration(
-                  // backgroundBlendMode: BlendMode.dst,
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                child: Row(children: <Widget>[
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    child: TextField(
-                      controller: textController,
-                      onChanged: (changedValue) {
-                        changedText = changedValue;
-                        print(changedValue);
-                      },
-                      decoration: const InputDecoration(
-                        hintText: "Search",
-                        border: InputBorder.none,
-                        // filled: true,
-                        // fillColor: Colors.transparent
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        print('Filter');
-                      },
-                      icon: Icon(MdiIcons.filter))
-                ])
-                )
-                ),
-        const AddTask()
-      ]));
+      // padding: const EdgeInsets.all(8.0),
+      // child: Row(children: <Widget>[
+      //   Expanded(child:
+      //   Container(
+      //           // color: Colors.transparent,
+      //           decoration: BoxDecoration(
+      //             // backgroundBlendMode: BlendMode.dst,
+      //             color: Colors.black54,
+      //             borderRadius: BorderRadius.circular(25.0),
+      //           ),
+      //           child: Row(children: <Widget>[
+      //             const SizedBox(width: 10.0),
+      //             Expanded(
+      //               child: TextField(
+      //                 controller: textController,
+      //                 onChanged: (changedValue) {
+      //                   changedText = changedValue;
+      //                   // print(changedValue);
+      //                 },
+      //                 decoration: const InputDecoration(
+      //                   hintText: "Search",
+      //                   border: InputBorder.none,
+      //                   // filled: true,
+      //                   // fillColor: Colors.transparent
+      //                 ),
+      //               ),
+      //             ),
+      //             IconButton(
+      //                 onPressed: () {
+      //                   print('Filter');
+      //                 },
+      //                 icon: Icon(MdiIcons.filter))
+      //           ])
+      //           )
+      //           ),
+      // child: const Center(child: AddTask())
+      // ])
+      // );
 }
 
 final List<Widget> widgetOptions = <Widget>[

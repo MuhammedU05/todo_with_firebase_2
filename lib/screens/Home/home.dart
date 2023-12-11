@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -37,30 +37,42 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     }
 
-    return Scaffold(
-      appBar: AppBarClass(context),
-      body: _body(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.group), label: TStrings.group),
-          BottomNavigationBarItem(icon: Icon(Icons.task), label: TStrings.task),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.done_outline), label: TStrings.completed)
-        ],
-        selectedItemColor: themeButtonColor,
-        // unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-          print("on Tap Index : $index");
-        },
-        elevation: 20,
+    return WillPopScope(
+      onWillPop: () async {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('SignOut To Go Back'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBarClass(context),
+        body: _body(),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.group), label: TStrings.group),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.task), label: TStrings.task),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.done_outline), label: TStrings.completed)
+          ],
+          selectedItemColor: themeButtonColor,
+          // unselectedItemColor: Colors.grey,
+          onTap: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+            print("on Tap Index : $index");
+          },
+          elevation: 20,
+        ),
+        // floatingActionButton: const AddTask(),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       ),
-      // floatingActionButton: const AddTask(),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
 }
@@ -77,7 +89,6 @@ Widget _body() {
         ),
       ),
       _buildTextComposer()
-      //  const Center(child: AddTask())
     ],
   );
 }
@@ -87,53 +98,48 @@ Widget _buildTextComposer() {
     print('Not Selected Tasks');
     return Container();
   }
-  return const Center(child: AddTask());
-  // Container(
-      // color: Colors.transparent,
-      // padding: const EdgeInsets.all(8.0),
-      // child: Row(children: <Widget>[
-      //   Expanded(child:
-      //   Container(
-      //           // color: Colors.transparent,
-      //           decoration: BoxDecoration(
-      //             // backgroundBlendMode: BlendMode.dst,
-      //             color: Colors.black54,
-      //             borderRadius: BorderRadius.circular(25.0),
-      //           ),
-      //           child: Row(children: <Widget>[
-      //             const SizedBox(width: 10.0),
-      //             Expanded(
-      //               child: TextField(
-      //                 controller: textController,
-      //                 onChanged: (changedValue) {
-      //                   changedText = changedValue;
-      //                   // print(changedValue);
-      //                 },
-      //                 decoration: const InputDecoration(
-      //                   hintText: "Search",
-      //                   border: InputBorder.none,
-      //                   // filled: true,
-      //                   // fillColor: Colors.transparent
-      //                 ),
-      //               ),
-      //             ),
-      //             IconButton(
-      //                 onPressed: () {
-      //                   print('Filter');
-      //                 },
-      //                 icon: Icon(MdiIcons.filter))
-      //           ])
-      //           )
-      //           ),
-      // child: const Center(child: AddTask())
-      // ])
-      // );
+  // return const Center(child: AddTask());
+  return Container(
+      color: Colors.transparent,
+      padding: const EdgeInsets.all(8.0),
+      child: Row(children: <Widget>[
+        Expanded(
+            child: Container(
+                // color: Colors.transparent,
+                decoration: BoxDecoration(
+                  // backgroundBlendMode: BlendMode.dst,
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: Row(children: <Widget>[
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    child: TextField(
+                      controller: textController,
+                      onChanged: (changedValue) {
+                        changedText = changedValue;
+                        // print(changedValue);
+                      },
+                      decoration: const InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        // filled: true,
+                        // fillColor: Colors.transparent
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        print('Filter');
+                      },
+                      icon: Icon(MdiIcons.filter))
+                ]))),
+        const Center(child: AddTask())
+      ]));
 }
 
 final List<Widget> widgetOptions = <Widget>[
-  const Text(
-    'Group',
-  ),
+  const Text('Group'),
   const TaskScreen(),
   const TaskScreenCompleted()
 ];

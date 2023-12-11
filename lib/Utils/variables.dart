@@ -18,9 +18,6 @@ String currentUserFDetails =
 var userDocData;
 var tasks;
 
-final user = FirebaseAuth.instance.currentUser;
-
-final TextEditingController taskNameController = TextEditingController();
 List<String> groups = ['Me'];
 late String? selectedGroup;
 var selectedPriority;
@@ -29,8 +26,11 @@ String date = formatDate(DateTime.now(), [dd, ' - ', mm, ' - ', yy]);
 
 List<bool> toggleButtonsSelection =
     Priority.values.map((Priority e) => e == Priority.mid).toList();
-final Color selectedColor = Colors.yellow.shade400;
 
+
+final user = FirebaseAuth.instance.currentUser;
+final TextEditingController taskNameController = TextEditingController();
+final selectedColor = Colors.yellow.shade400;
 final userCollection = FirebaseFirestore.instance.collection('Users');
 final document = FirebaseFirestore.instance.collection("Users").snapshots();
 final TextEditingController textController = TextEditingController();
@@ -39,8 +39,8 @@ final TextEditingController inputValue = TextEditingController();
 
 bool isLoading = true;
 bool isLoadingCompleted = true;
-late bool isCompletedSelected;
-  bool selected = false;
+bool selected = false;
 bool signedIn = false;
+late bool isCompletedSelected;
 Map<String, dynamic> mapList = {};
 Map<String, dynamic> mapListCompleted = {};

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/themeprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/firebase_options.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
@@ -42,32 +43,38 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ProviderClass()),
-        ChangeNotifierProvider(create: (_) => LoginProviderClass()),
-        ChangeNotifierProvider(create: (_) => FirebaseProviderClass())
-      ],
-      child: MaterialApp(
-        builder: (context, widget) {
-          Widget error = Container(
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              color: Colors.white,
-              child: const Center(
-                // child: CircularProgressIndicator()
-                child: Text(""),
-              ));
-          if (widget is Scaffold || widget is Navigator) {
-            error = Scaffold(body: Center(child: error));
-          }
-          ErrorWidget.builder = (errorDetails) => error;
-          if (widget != null) return widget;
-          throw ('widget is null');
-        },
-        debugShowCheckedModeBanner: false,
-        home: const LoginChecker(),
-      ),
-  );
+        providers: [
+          ChangeNotifierProvider(create: (_) => ProviderClass()),
+          ChangeNotifierProvider(create: (_) => LoginProviderClass()),
+          ChangeNotifierProvider(create: (_) => FirebaseProviderClass()),
+          ChangeNotifierProvider(create: (_) => ThemeProviderClass()),
+        ],
+        child: Consumer<ThemeProviderClass>(
+            builder: (context, themeProvider, child) {
+          return MaterialApp(
+            // theme: ThemeData.light(), //or create your own lightTheme
+            // darkTheme: ThemeData.dark(), //or create your own darkTheme
+            // themeMode: ThemeMode.system,
+            builder: (context, widget) {
+              Widget error = Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: double.infinity,
+                  // color: Colors.white,
+                  child: const Center(
+                    // child: CircularProgressIndicator()
+                    child: Text(""),
+                  ));
+              if (widget is Scaffold || widget is Navigator) {
+                error = Scaffold(body: Center(child: error));
+              }
+              ErrorWidget.builder = (errorDetails) => error;
+              if (widget != null) return widget;
+              throw ('widget is null');
+            },
+            debugShowCheckedModeBanner: false,
+            home: const LoginChecker(),
+          );
+        }));
   }
 }
 
@@ -87,7 +94,6 @@ class _LoginCheckerState extends State<LoginChecker> {
 
   @override
   Widget build(BuildContext context) {
-
     if (user != null &&
         user!.email != null &&
         user!.email!.isNotEmpty &&

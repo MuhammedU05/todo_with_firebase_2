@@ -33,7 +33,7 @@ class _AddTaskState extends State<AddTask> {
           toggleButtonsSelection[0] = false;
           print(FirebaseAuth.instance.currentUser);
           showBottomSheet(
-            backgroundColor: Colors.grey.shade300,
+              backgroundColor: Colors.grey.shade300,
               context: context,
               builder: (BuildContext context) {
                 //To Change State of the AlertDialog
@@ -41,7 +41,7 @@ class _AddTaskState extends State<AddTask> {
                     builder: (context, StateSetter setState) {
                   return Column(mainAxisSize: MainAxisSize.min, children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width/1.7,
+                      width: MediaQuery.of(context).size.width / 1.7,
                       child: TextFormField(
                         controller: taskNameController,
                         autofocus: true,
@@ -112,7 +112,9 @@ class _AddTaskState extends State<AddTask> {
                             .map(((Priority, String) priorityQ) =>
                                 Text(priorityQ.$2))
                             .toList()),
-                            const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       children: [
                         const Spacer(),
@@ -135,7 +137,8 @@ class _AddTaskState extends State<AddTask> {
                                         //Task Name
                                         taskNameController.text.toString(),
                                         //Created Time
-                                        formatDate(DateTime.now(), [HH, ' : ', nn]),
+                                        formatDate(
+                                            DateTime.now(), [HH, ' : ', nn]),
                                         //Created Date
                                         formatDate(DateTime.now(),
                                             [dd, ' - ', mm, ' - ', yy]),
@@ -149,9 +152,9 @@ class _AddTaskState extends State<AddTask> {
                                         '',
                                         //Completed Time
                                         '');
-                        
+
                                 print("Added");
-                        
+
                                 await context
                                     .read<FirebaseProviderClass>()
                                     .updateData();
@@ -161,9 +164,21 @@ class _AddTaskState extends State<AddTask> {
                                 print("testing");
                                 taskNameController.clear();
                                 Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    elevation: 20,
+                                    // shape: CircleBorder(),
+                                    content: Text(
+                                      'Task Added',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
                               });
                             }
-                          }, child: const Text('Submit'),
+                          },
+                          child: const Text('Submit'),
                         ),
                         const Spacer()
                       ],

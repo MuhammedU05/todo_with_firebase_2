@@ -40,7 +40,9 @@ final selectedColor = Colors.yellow.shade400;
 final userCollection = FirebaseFirestore.instance.collection('Users');
 final document = FirebaseFirestore.instance.collection("Users").snapshots();
 final TextEditingController textController = TextEditingController();
+final TextEditingController textControllerSearch = TextEditingController();
 final TextEditingController inputValue = TextEditingController();
+
 
 bool isLoading = true;
 bool isLoadingSearch = true;

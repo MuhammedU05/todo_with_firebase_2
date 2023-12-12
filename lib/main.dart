@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/searchprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/themeprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/firebase_options.dart';
@@ -49,7 +48,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => LoginProviderClass()),
           ChangeNotifierProvider(create: (_) => FirebaseProviderClass()),
           ChangeNotifierProvider(create: (_) => ThemeProviderClass()),
-          ChangeNotifierProvider(create: (_) => SearchProviderClass()),
+          // ChangeNotifierProvider(create: (_) => SearchProviderClass()),
         ],
         child: Consumer<ThemeProviderClass>(
             builder: (context, themeProvider, child) {

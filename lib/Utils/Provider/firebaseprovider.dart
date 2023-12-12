@@ -252,7 +252,7 @@ class FirebaseProviderClass extends ChangeNotifier {
   }
 
   updateData() {
-    print('\n\nkkkkkkkkkkkkkkkk');
+    print('k\nk\nkkkkkkkkkkkkkkkk');
     dataFirebase = getFirebaseDatas();
     dataFirebaseC = getFirebaseDatasCompleted();
 

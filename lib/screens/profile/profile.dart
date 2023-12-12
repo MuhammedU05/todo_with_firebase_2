@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_with_firebase_2/Firebase/things.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
+import 'package:todo_with_firebase_2/Utils/variables.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,10 +13,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
+  void initState() {
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(firebaseInstance.currentUser!.displayName.toString()),
+        title: Text(firebaseAuthInstance.currentUser!.displayName.toString()),
       ),
       body: const Column(
         children: [
@@ -31,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
               context.read<LoginProviderClass>().clearDataSignOut(context);
             });
           },
-          child: Text('SignOut'),),
+          child: const Text('SignOut'),),
     );
   }
 }

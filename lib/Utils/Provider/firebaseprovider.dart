@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import 'package:todo_with_firebase_2/Firebase/things.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
@@ -22,7 +21,7 @@ class FirebaseProviderClass extends ChangeNotifier {
     try {
       var userDocRef = FirebaseFirestore.instance
           .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
+          .doc(firebaseAuthInstance.currentUser!.uid);
       var userDoc = await userDocRef.get();
 
       if (!userDoc.exists) {
@@ -38,7 +37,7 @@ class FirebaseProviderClass extends ChangeNotifier {
         'Created Time': time,
         'Created Date': date,
         'Assign To': selectedGroup,
-        'AA': firebaseInstance.currentUser!.displayName,
+        'AA': firebaseAuthInstance.currentUser!.displayName,
         'Priority': priority,
         'TimeStamp':
             "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
@@ -62,7 +61,7 @@ class FirebaseProviderClass extends ChangeNotifier {
 
       mapList.clear();
       var userDoc =
-          await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+          await userCollection.doc(firebaseAuthInstance.currentUser!.uid).get();
 
       if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
         var tasks = (userDoc.data()?['Tasks'] ?? []) as List<dynamic>;
@@ -93,14 +92,14 @@ class FirebaseProviderClass extends ChangeNotifier {
     }
   }
 
-    Future<void> getFirebaseDatasCompleted() async {
+  Future<void> getFirebaseDatasCompleted() async {
     try {
       isLoadingCompleted = true;
       // print('MapList Length : ${mapList.length}');
 
       mapListCompleted.clear();
       var userDoc =
-          await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+          await userCollection.doc(firebaseAuthInstance.currentUser!.uid).get();
 
       if (userDoc.exists && userDoc.data()!.containsKey('Completed Tasks')) {
         var tasks = (userDoc.data()?['Completed Tasks'] ?? []) as List<dynamic>;
@@ -136,7 +135,7 @@ class FirebaseProviderClass extends ChangeNotifier {
     try {
       var userDocRef = FirebaseFirestore.instance
           .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
+          .doc(firebaseAuthInstance.currentUser!.uid);
       var userDoc = await userDocRef.get();
 
       if (userDoc.exists &&
@@ -167,7 +166,7 @@ class FirebaseProviderClass extends ChangeNotifier {
                 'Created Time': task[TStrings.createdTimeFirebase],
                 'Created Date': task[TStrings.createdDateFirebase],
                 TStrings.assignedToFirebase: selectedGroup,
-                'AA': firebaseInstance.currentUser?.displayName,
+                'AA': firebaseAuthInstance.currentUser?.displayName,
                 TStrings.priorityFirebase: priority,
                 TStrings.timeStampFirebase: task[TStrings.timeStampFirebase],
                 TStrings.isCompletedFirebase: true,
@@ -199,7 +198,7 @@ class FirebaseProviderClass extends ChangeNotifier {
     try {
       var userDocRef = FirebaseFirestore.instance
           .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
+          .doc(firebaseAuthInstance.currentUser!.uid);
       var userDoc = await userDocRef.get();
 
       if (userDoc.exists && userDoc.data()?['Tasks'] != null) {
@@ -216,11 +215,12 @@ class FirebaseProviderClass extends ChangeNotifier {
           // Update the Tasks field in the document
           await userDocRef.update({'Tasks': tasks});
           print('Task Deleted');
-          notifyListeners();
+          // notifyListeners();
         } else {
           print('Task with TimeStamp $taskTimeStamp not found');
         }
       }
+      notifyListeners();
     } catch (e) {
       print("Error Deleting Task: $e");
       notifyListeners();
@@ -229,7 +229,7 @@ class FirebaseProviderClass extends ChangeNotifier {
 
   Future<void> checkFirebaseDataExist() async {
     var userDoc =
-        await userCollection.doc(firebaseInstance.currentUser!.uid).get();
+        await userCollection.doc(firebaseAuthInstance.currentUser!.uid).get();
     print('Checking Firebase Data Exist Or Not');
 
     if (userDoc.exists && userDoc.data()!.containsKey('Tasks')) {
@@ -284,7 +284,7 @@ class FirebaseProviderClass extends ChangeNotifier {
     try {
       var userDocRef = FirebaseFirestore.instance
           .collection('Users')
-          .doc(firebaseInstance.currentUser?.uid);
+          .doc(firebaseAuthInstance.currentUser?.uid);
       var userDoc = await userDocRef.get();
       print('User Doc : ${userDoc.exists}');
       print('User Doc : ${!userDoc.exists}');
@@ -302,7 +302,7 @@ class FirebaseProviderClass extends ChangeNotifier {
           'Created Time': DateTime.now().toString(),
           'Created Date': '',
           'Assign To': '',
-          'AA': firebaseInstance.currentUser?.displayName,
+          'AA': firebaseAuthInstance.currentUser?.displayName,
           'Priority': '',
           'TimeStamp': '',
           // "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
@@ -330,7 +330,7 @@ class FirebaseProviderClass extends ChangeNotifier {
     try {
       var userDocRef = FirebaseFirestore.instance
           .collection('Users')
-          .doc(firebaseInstance.currentUser!.uid);
+          .doc(firebaseAuthInstance.currentUser!.uid);
       var userDoc = await userDocRef.get();
 
       if (userDoc.exists && userDoc.data()?['Tasks'] != null) {

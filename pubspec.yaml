@@ -46,6 +46,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   fluttericon: ^2.0.0
   timeago: ^3.6.0
+  theme_manager: ^2.0.2
+  adaptive_theme: ^3.4.1
 
 dev_dependencies:
   flutter_test:

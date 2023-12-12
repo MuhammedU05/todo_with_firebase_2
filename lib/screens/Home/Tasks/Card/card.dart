@@ -6,7 +6,6 @@ import 'package:todo_with_firebase_2/Utils/Const/colors.dart';
 import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/Utils/custom/button.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
@@ -43,8 +42,7 @@ class _CardBuilderState extends State<CardBuilder> {
     return FutureBuilder(
         future: getDataFirebase,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return Consumer<ProviderClass>(
-              builder: (BuildContext context, snapshot, Widget? child) =>
+          return 
                   SizedBox(
                       height: MediaQuery.of(context).size.height,
                       child: ListView.builder(
@@ -74,14 +72,23 @@ class _CardBuilderState extends State<CardBuilder> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return SizedBox(
-                                          height: MediaQuery.of(context).size.height/10,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              9,
                                           child: StatefulBuilder(
                                               builder: ((context, setState) {
                                             return Column(
                                               children: [
-                                                const Text('You Want To Delete?',style: TextStyle(fontSize: 20),),
+                                                const Text(
+                                                    'You Want To Delete?',
+                                                    style: TextStyle(
+                                                        fontSize: 20)),
                                                 SizedBox(
-                                                  height: MediaQuery.of(context).size.height/90,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      90,
                                                 ),
                                                 Row(
                                                   children: [
@@ -91,19 +98,19 @@ class _CardBuilderState extends State<CardBuilder> {
                                                         Navigator.of(context)
                                                             .pop();
                                                       },
-                                                      child:
-                                                          const Text(TStrings.no),
+                                                      child: const Text(
+                                                          TStrings.no),
                                                     ),
                                                     const Spacer(),
                                                     ElevatedButton(
                                                       onPressed: () {
-                                                        print(task['TimeStamp']);
+                                                        print(
+                                                            task['TimeStamp']);
                                                         context
                                                             .read<
                                                                 FirebaseProviderClass>()
                                                             .deleteTask(task[
                                                                 'TimeStamp']);
-                                          
                                                         context
                                                             .read<
                                                                 FirebaseProviderClass>()
@@ -422,7 +429,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                     ),
                                   ),
                                 ));
-                          })));
+                          }));
         });
   }
 }

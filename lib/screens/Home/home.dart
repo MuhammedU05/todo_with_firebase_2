@@ -7,6 +7,7 @@ import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/Complete/completed.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/AppBar/appbar.dart';
+import 'package:todo_with_firebase_2/screens/Home/Tasks/Search%20Screen/searchscreen.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBarClass(context),
-        body: _body(),
+        body: _body(context),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedIndex,
           items: const [
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget _body() {
+Widget _body(BuildContext context) {
   return Column(
     // fit: StackFit.passthrough,
     children: [
@@ -88,54 +89,68 @@ Widget _body() {
           builder: (BuildContext context) => widgetOptions[selectedIndex],
         ),
       ),
-      _buildTextComposer()
+      _buildTextComposer(context)
     ],
   );
 }
 
-Widget _buildTextComposer() {
+Widget _buildTextComposer(BuildContext context) {
   if (selectedIndex != 1) {
     print('Not Selected Tasks');
     return Container();
   }
   // return const Center(child: AddTask());
-  return Container(
-      color: Colors.transparent,
-      padding: const EdgeInsets.all(8.0),
-      child: Row(children: <Widget>[
-        Expanded(
-            child: Container(
-                // color: Colors.transparent,
-                decoration: BoxDecoration(
-                  // backgroundBlendMode: BlendMode.dst,
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                child: Row(children: <Widget>[
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    child: TextField(
-                      controller: textController,
-                      onChanged: (changedValue) {
-                        changedText = changedValue;
-                        // print(changedValue);
-                      },
-                      decoration: const InputDecoration(
-                        hintText: "Search",
-                        border: InputBorder.none,
-                        // filled: true,
-                        // fillColor: Colors.transparent
+  return GestureDetector(
+    child: Container(
+        color: Colors.transparent,
+        padding: const EdgeInsets.all(8.0),
+        child: Row(children: <Widget>[
+          Expanded(
+              child: Container(
+                height: 48,
+                  // color: Colors.transparent,
+                  decoration: BoxDecoration(
+                    // backgroundBlendMode: BlendMode.dst,
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  child: Row(children: <Widget>[
+                    const SizedBox(width: 10.0),
+                    const Expanded(
+                      // child: TextField(
+                      //   // controller: textController,
+                      //   // onChanged: (changedValue) {
+                      //   //   changedText = changedValue;
+                      //   //   // print(changedValue);
+                      //   // },
+                      //   onTap: () {
+                      //     // Navigator.of(context).push(Builder(builder:(context)=>const SearchClass()) as Route<Object?>);
+                      //     Builder(builder: (context)=> const SearchClass());
+                      //   },
+                      //   decoration: const InputDecoration(
+                      //     hintText: "Search",
+                      //     border: InputBorder.none,
+                      //     // filled: true,
+                      //     // fillColor: Colors.transparent
+                      //   ),
+                      // ),
+                      child: SizedBox(
+                        child: Text('Search'),
                       ),
                     ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        print('Filter');
-                      },
-                      icon: Icon(MdiIcons.filter))
-                ]))),
-        const Center(child: AddTask())
-      ]));
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(MdiIcons.filter),
+                    )
+                  ]))),
+          const Center(child: AddTask())
+        ])),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>const SearchClass()));
+          // Navigator.of(context)
+          //       .push(MaterialPageRoute(builder: (context) => const SearchClass()));
+        },
+  );
 }
 
 final List<Widget> widgetOptions = <Widget>[

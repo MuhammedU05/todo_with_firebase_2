@@ -40,13 +40,13 @@ class ThemeProviderClass extends ChangeNotifier {
 
     // Define your start and end times for light and dark mode
     DateTime startTime =
-        DateTime(now.year, now.month, now.day, 2, 37); // Adjust the start time
+        DateTime(now.year, now.month, now.day, 1,4); // Adjust the start time
     DateTime endTime =
-        DateTime(now.year, now.month, now.day, 2, 38); // Adjust the end time
+        DateTime(now.year, now.month, now.day, 1,51); // Adjust the end time
 
     // Check if the current time is within the specified range
     bool isDayTime = now.isAfter(startTime) && now.isBefore(endTime);
-
+// print()
     return
         isDayTime
         ?

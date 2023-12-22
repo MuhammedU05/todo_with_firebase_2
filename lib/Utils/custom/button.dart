@@ -59,12 +59,17 @@ class CustomButtonCompleted extends StatefulWidget {
 class _CustomButtonCompletedState extends State<CustomButtonCompleted> {
   @override
   Widget build(BuildContext context) {
+    // selected = false;
+    // isCompletedSelected = false;
+    isCompletedSelected ? selected = true : selected = false;
     return SelectableButton(
         selected: selected,
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
+                // selected = false;
+                // isCompletedSelected = false;
                 return Colors.white;
               }
               return null; // defer to the defaults
@@ -73,6 +78,8 @@ class _CustomButtonCompletedState extends State<CustomButtonCompleted> {
           backgroundColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
+                // selected = true;
+                // isCompletedSelected = true;
                 return Colors.green;
               }
               return null; // defer to the defaults
@@ -83,6 +90,8 @@ class _CustomButtonCompletedState extends State<CustomButtonCompleted> {
           setState(() {
             selected = !selected;
             isCompletedSelected = !isCompletedSelected;
+            print('selected : $selected');
+            print('isCompletedSelected : $isCompletedSelected');
           });
         },
         child: const Text(TStrings.completed));

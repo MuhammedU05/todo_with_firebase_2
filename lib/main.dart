@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/groupprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/themeprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/firebase_options.dart';
@@ -29,7 +30,7 @@ Future<void> main() async {
       alignment: Alignment.center,
       child: Text(
         'Error!\n${details.exception}',
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: Color.fromARGB(255, 210, 145, 145)),
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
       ),
@@ -48,11 +49,16 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => LoginProviderClass()),
           ChangeNotifierProvider(create: (_) => FirebaseProviderClass()),
           ChangeNotifierProvider(create: (_) => ThemeProviderClass()),
-          // ChangeNotifierProvider(create: (_) => SearchProviderClass()),
+          ChangeNotifierProvider(create: (_) => GroupProviderClass()),
         ],
         child: Consumer<ThemeProviderClass>(
             builder: (context, themeProvider, child) {
           return MaterialApp(
+            // theme: themeProvider.currentTheme,
+            // darkTheme: themeProvider.currentTheme,
+            // theme: ThemeData.light(),
+            // darkTheme: ThemeData.dark(),
+            // themeMode: currentTime.isAfter(startTime) && currentTime.isBefore(endTime) ? ThemeMode.light : ThemeMode.dark,
             builder: (context, widget) {
               Widget error = Container(
                   height: MediaQuery.of(context).size.height,

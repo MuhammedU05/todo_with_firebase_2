@@ -3,7 +3,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/groupprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
+import 'package:uuid/uuid.dart';
 
 class SearchClass extends StatefulWidget {
   const SearchClass({super.key});
@@ -20,7 +24,12 @@ class _SearchClassState extends State<SearchClass> {
     super.initState();
     changedText = '';
     textControllerSearch.text = ' ';
+    context.read<GroupProviderClass>().groupCreation();
+    context.read<GroupProviderClass>().groupCreation();
   }
+
+//f8217500-e743-1e06-95da-57f3c2a5882a
+//34de6db0-e78d-1e06-ad33-2be5425785c4
 
   @override
   Widget build(BuildContext context) {
@@ -151,23 +160,48 @@ class _SearchClassState extends State<SearchClass> {
                       .toLowerCase()
                       .replaceAll(' ', '')
                       .contains(changedText.toLowerCase().replaceAll(' ', '')))
-                  .toList();           
-                   print('Filtered List : $filteredList');
-
-
+                  .toList();
+              print('Filtered List : $filteredList');
             }
             // You can display the filtered list as needed
             return ListView.builder(
               itemCount: filteredList.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    filteredList[index]['Task Name'],
-                    overflow: TextOverflow.fade,
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                return GestureDetector(
+                  onTap: () {},
+                  child: Card(
+                    color: const Color.fromARGB(255, 237, 232, 232),
+                    elevation: 2,
+                    child: SizedBox(
+                      height: 55,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              filteredList[index][TStrings.taskNameFirebase],
+                              overflow: TextOverflow.fade,
+                              style: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(filteredList[index]
+                                    [TStrings.isCompletedFirebase]
+                                ? 'Completed'
+                                : 'Not Completed'),
+                          )
+                          // trailing: Text(
+                          //     filteredList[index][TStrings.isCompletedFirebase])
+                          // Text(filteredList[index][TStrings.isCompletedFirebase]),
+                          // ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -178,6 +212,8 @@ class _SearchClassState extends State<SearchClass> {
       ),
     );
   }
+
+  String dropdownValue = 'Task Name';
 
   // Widget buildList(List<dynamic> items) {
   //   return ListView.builder(
@@ -205,7 +241,6 @@ class _SearchClassState extends State<SearchClass> {
 //   'Priority',
 //   'Assigned To'
 // ];
-String dropdownValue = 'Task Name';
 
 // class DropdownMenuItemFilter extends StatefulWidget {
 //   const DropdownMenuItemFilter({super.key});

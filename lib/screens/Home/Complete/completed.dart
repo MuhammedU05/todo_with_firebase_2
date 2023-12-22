@@ -7,6 +7,7 @@ import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo_with_firebase_2/screens/Home/Tasks/Card/carddesign.dart';
 
 // ignore_for_file: prefer_const_constructors
 
@@ -60,7 +61,7 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
   void initState() {
     super.initState();
     context.read<FirebaseProviderClass>().dataFirebaseC;
-    context.read<FirebaseProviderClass>().checkFirebaseDataExist();
+    // context.read<FirebaseProviderClass>().checkFirebaseDataExist();
     taskNameController.clear();
   }
 
@@ -75,6 +76,12 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
     return FutureBuilder(
         future: getDataFirebaseC,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text(
+                'Loading Please Wait...'); // or some loading indicator
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
           return Consumer<ProviderClass>(
               builder: (BuildContext context, snapshot, Widget? child) =>
                   SizedBox(
@@ -99,88 +106,7 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
                           priorityColor = TColors.white;
                         }
                         //Tap using a GestureDetector
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          elevation: 10,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: TColors.theme,
-                            ),
-                            width: double.maxFinite,
-                            height: 200,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.3,
-                                      child: Text(
-                                        '${TStrings.taskName} :\n  ${task[TStrings.taskName] ?? TStrings.na}',
-                                        textAlign: TextAlign.left,
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 4,
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          color: TColors.white,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          '${TStrings.createdOn}\n ${task[TStrings.createdTimeFirebase] ?? TStrings.na}',
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: TColors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '${TStrings.priority} : ${task[TStrings.priorityFirebase]}',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        color: priorityColor,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    SizedBox(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                              task['Is Completed'] == false
-                                                  ? TStrings.notCompleted
-                                                  : TStrings.completed,
-                                              softWrap: true,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: TColors.green,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 20)),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                        return cardDesign(task);
                       },
                     ),
                   ));

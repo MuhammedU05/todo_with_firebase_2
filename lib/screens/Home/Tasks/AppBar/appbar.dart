@@ -9,18 +9,19 @@ AppBar AppBarClass(BuildContext context) {
       backgroundColor: Colors.blueGrey,
       centerTitle: true,
       automaticallyImplyLeading: false,
-      title:
-          Text('Welcome, $currentUserFDetails'),
+      title: Text('Welcome, $currentUserFDetails'),
       actions: [
         GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const ProfilePage()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const ProfilePage()));
             // ProfilePage();
           },
-          child: CircleAvatar(
-            backgroundImage:
-                Image.network(pic).image,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundImage: Image.network(pic).image,
+            ),
           ),
           // child: Text('data')
         )

@@ -48,6 +48,10 @@ dependencies:
   timeago: ^3.6.0
   theme_manager: ^2.0.2
   adaptive_theme: ^3.4.1
+  scrollable_positioned_list: ^0.3.8
+  uuid: ^4.2.2
+  shared_preferences: ^2.2.2
+  anim_search_bar: ^2.0.3
 
 dev_dependencies:
   flutter_test:

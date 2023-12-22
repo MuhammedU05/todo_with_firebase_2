@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Assign/assign.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Login/login.dart';
@@ -27,16 +28,20 @@ class LoginProviderClass extends ChangeNotifier {
   }
 
   void clearDataSignOut(BuildContext context) {
-    signOut(context);
-    print('Signed Out');
-    mapList.clear();
-    print('MapList in Signout : $mapList');
-    context.read<FirebaseProviderClass>().updateUserMap();
-
-    // Clear the data here
-    print('Email : ${fireBaseClass?.getCurrentUserEmail()}');
-    print('object');
-    notifyListeners(); // Notify listeners after clearing the data
+    try {
+      signOut(context);
+      // Clear the data here
+      print('Signed Out');
+      mapList.clear();
+      print('MapList in Signout : $mapList');
+      context.read<FirebaseProviderClass>().updateUserMap();
+      print('Email : ${fireBaseClass?.getCurrentUserEmail()}');
+      print('object');
+      notifyListeners();
+    } on Exception catch (e) {
+      print('Error in Signing Out : $e');
+    }
+// Notify listeners after clearing the data
   }
 
   Future<UserCredential> signInWithGoogle() async {
@@ -54,17 +59,45 @@ class LoginProviderClass extends ChangeNotifier {
     print(
         'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
     print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
-    print('Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
+    print(
+        'Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
 
     // addFirebaseDataFirst();
     notifyListeners();
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  void dispose() {
-    super.dispose();
-    // Remove any additional cleanup code if necessary
+  // void dispose() {
+  //   super.dispose();
+  //   // Remove any additional cleanup code if necessary
+  // }
+
+  Future<void> addCollection() async {
+    try {
+      print('Add Collection Of Users Running');
+      var allUserGet = await allUserRef.get();
+      if (!allUserGet.exists ||
+          allUserGet.reference.id == firebaseAuthInstance.currentUser!.uid) {
+      print('Add Collection Of Users Running and Current User Doc Not Found');
+        await allUserRef.set({
+          'UID': firebaseAuthInstance.currentUser?.uid ??
+              FirebaseAuth.instance.currentUser?.uid,
+          'NAME': firebaseAuthInstance.currentUser?.displayName ??
+              currentUserFDetails,
+          'JOINED ON': DateTime.now().toString(),
+          'Photo': firebaseAuthInstance.currentUser?.photoURL
+        });
+        print('All User Collection Created');
+      } else {
+        print('All User Collection Exists');
+      }
+      notifyListeners();
+    } on Exception catch (e) {
+      print('Adding Collection Error : $e');
+    }
   }
+
+  Future<void> saveUser() async {}
 
   updateCurrentUser() {
     pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ?? defaultPic;

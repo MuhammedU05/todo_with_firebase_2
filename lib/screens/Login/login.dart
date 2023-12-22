@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
@@ -34,7 +33,7 @@ class _LoginState extends State<Login> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content:
-                Text('Pop Screen Disabled. You cannot go to previous screen.'),
+                Text('Use Home Button to go back'),
             backgroundColor: Colors.red,
           ),
         );
@@ -55,6 +54,7 @@ class _LoginState extends State<Login> {
                 );
               } else {
                 // Handle the case where sign-in was not successful
+
                 print('Google sign-in failed');
               }
             } catch (e) {

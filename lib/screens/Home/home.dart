@@ -2,13 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/Complete/completed.dart';
+import 'package:todo_with_firebase_2/screens/Home/Group/groupscreen.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/AppBar/appbar.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Search%20Screen/searchscreen.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
+// import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,11 +25,13 @@ class HomePage extends StatefulWidget {
 int selectedIndex = 1;
 Color themeButtonColor = Colors.green;
 var changedText;
-
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    context.read<FirebaseProviderClass>().addFirebaseDataFirst();
+    context.read<LoginProviderClass>().addCollection();
+
     // context.read<ProviderClass>().startTimer();
     // context.read<ProviderClass>().getData();
     // context.read<ProviderClass>().currentUser = FirebaseAuth.instance.currentUser;
@@ -42,7 +49,8 @@ class _HomePageState extends State<HomePage> {
       onWillPop: () async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('SignOut To Go Back'),
+            duration: Durations.medium2,
+            content: Text('Cannot Go Back'),
             backgroundColor: Colors.red,
           ),
         );
@@ -103,11 +111,11 @@ Widget _buildTextComposer(BuildContext context) {
   return GestureDetector(
     child: Container(
         color: Colors.transparent,
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
         child: Row(children: <Widget>[
           Expanded(
               child: Container(
-                height: 48,
+                  height: 50,
                   // color: Colors.transparent,
                   decoration: BoxDecoration(
                     // backgroundBlendMode: BlendMode.dst,
@@ -117,23 +125,6 @@ Widget _buildTextComposer(BuildContext context) {
                   child: Row(children: <Widget>[
                     const SizedBox(width: 10.0),
                     const Expanded(
-                      // child: TextField(
-                      //   // controller: textController,
-                      //   // onChanged: (changedValue) {
-                      //   //   changedText = changedValue;
-                      //   //   // print(changedValue);
-                      //   // },
-                      //   onTap: () {
-                      //     // Navigator.of(context).push(Builder(builder:(context)=>const SearchClass()) as Route<Object?>);
-                      //     Builder(builder: (context)=> const SearchClass());
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     hintText: "Search",
-                      //     border: InputBorder.none,
-                      //     // filled: true,
-                      //     // fillColor: Colors.transparent
-                      //   ),
-                      // ),
                       child: SizedBox(
                         child: Text('Search'),
                       ),
@@ -145,16 +136,15 @@ Widget _buildTextComposer(BuildContext context) {
                   ]))),
           const Center(child: AddTask())
         ])),
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>const SearchClass()));
-          // Navigator.of(context)
-          //       .push(MaterialPageRoute(builder: (context) => const SearchClass()));
-        },
+    onTap: () {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SearchClass()));
+    },
   );
 }
 
 final List<Widget> widgetOptions = <Widget>[
-  const Text('Group'),
+  const GroupScreen(),
   const TaskScreen(),
   const TaskScreenCompleted()
 ];

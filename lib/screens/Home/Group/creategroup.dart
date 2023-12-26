@@ -19,9 +19,9 @@ class _CreateGroupState extends State<CreateGroup> {
   var dataF = firebaseFirestoreInstance.collection('All Users').snapshots();
   // late List<bool> _selected;
   // var _selected;
-  late List<bool> _selected;
+  List<bool> _selected = [false];
 
-  List<String> selectedUsers = [];
+  // List<String> selectedUsers = [];
   // List<bool> _selected = List.filled(_selected.length, false, growable: true);
 
   @override
@@ -29,6 +29,7 @@ class _CreateGroupState extends State<CreateGroup> {
     super.initState();
     context.read<FirebaseProviderClass>().getAllUser();
     _showUserList = false;
+    _selected.clear();
   }
 
   @override
@@ -111,9 +112,9 @@ class _CreateGroupState extends State<CreateGroup> {
                             stream: dataF,
                             builder: (context, snapshot) {
                               var docDataF = snapshot.data;
-                              _selected = List.filled(
-                                  docDataF?.docs.length ?? 0, false,
-                                  growable: true);
+                              // _selected = List.filled(
+                              //     docDataF?.docs.length ?? 0, false,
+                              //     growable: true);
                               return ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: docDataF?.docs.length,
@@ -121,8 +122,9 @@ class _CreateGroupState extends State<CreateGroup> {
                                     var detailsData = docDataF?.docs[index];
 
                                     // selectedUsers.add(detailsData?['UID']);
-                                    if (_selected.isEmpty&&docDataF!.docs.isNotEmpty) {
-                                      for (var i = 0;
+                                    if (_selected.isEmpty &&
+                                        docDataF!.docs.isNotEmpty) {
+                                      for (var i = 1;
                                           i < docDataF.docs.length;
                                           i++) {
                                         _selected.add(false);
@@ -131,7 +133,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                       }
                                     }
                                     // _selected.add(false);
-                                    // print('Added $selected');
+                                    print('Added First $_selected');
 
                                     return Card(
                                       child: ListTile(
@@ -155,6 +157,10 @@ class _CreateGroupState extends State<CreateGroup> {
 
                                                   print('Added $_selected\n t');
                                                 });
+                                                print(
+                                                    'Added after $_selected\n t');
+                                                print('Added after 0 ${_selected[0]}\n t');
+                                                print('Added after 1 ${_selected[1]}\n t');
                                               },
                                               icon: Icon(
                                                 !_selected[index]

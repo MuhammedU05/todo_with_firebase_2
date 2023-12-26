@@ -1,5 +1,6 @@
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
@@ -15,6 +16,13 @@ class _CreateGroupState extends State<CreateGroup> {
   bool _showUserList = false;
   final TextEditingController _groupNameController = TextEditingController();
   final _myFocusNode = FocusNode();
+  var dataF = firebaseFirestoreInstance.collection('All Users').snapshots();
+  // late List<bool> _selected;
+  // var _selected;
+  late List<bool> _selected;
+
+  List<String> selectedUsers = [];
+  // List<bool> _selected = List.filled(_selected.length, false, growable: true);
 
   @override
   void initState() {
@@ -76,8 +84,8 @@ class _CreateGroupState extends State<CreateGroup> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(_showUserList
-                            ? Icons.arrow_downward_rounded
-                            : Icons.arrow_upward_outlined),
+                            ? Icons.arrow_upward_outlined
+                            : Icons.arrow_downward_rounded),
                       ),
                     ]),
                   ),
@@ -98,40 +106,86 @@ class _CreateGroupState extends State<CreateGroup> {
                         height: MediaQuery.of(context).size.height / 1.6,
                       )
                     : SizedBox(
-                        // decoration: BoxDecoration(
-                        //     border: Border.all(
-                        //       strokeAlign: BorderSide.strokeAlignOutside,
-                        //         color: Colors.grey.shade300.withOpacity(.5)),
-                        //     shape: BoxShape.rectangle, // to make it a rectangle
-                        //     boxShadow: const [
-                        //       // only want the shadow on one side
-                        //       BoxShadow(
-                        //           blurRadius: 14.0, // hardness of the shadow
-                        //           spreadRadius:
-                        //               2.0, // how far out the shadow goes as a fraction of the size of the box
-                        //           color: Color.fromARGB(
-                        //               100, 0, 0, 0) // shadow color
-                        //           )
-                        //     ]),
                         height: MediaQuery.of(context).size.height / 1.6,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 1,
-                            itemBuilder: ((context, index) {
-                              print('$allUsersDatas');
-                              return Card(
-                                  child: ListTile(
-                                title: Text('Member'),
-                                leading: Padding(
-                                  padding: const EdgeInsets.only(),
-                                  child: CircleAvatar(
-                                      radius: 25,
-                                      backgroundImage: Image.network(
-                                              'https://lh3.googleusercontent.com/a/ACg8ocLSGGjLUZ5K3WO-FHo7LO7DOZKfOINJM9NWTOT6efrhlrQ=s96-c')
-                                          .image),
-                                ),
-                              ));
-                            })),
+                        child: StreamBuilder(
+                            stream: dataF,
+                            builder: (context, snapshot) {
+                              var docDataF = snapshot.data;
+                              _selected = List.filled(
+                                  docDataF?.docs.length ?? 0, false,
+                                  growable: true);
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: docDataF?.docs.length,
+                                  itemBuilder: ((context, index) {
+                                    var detailsData = docDataF?.docs[index];
+
+                                    // selectedUsers.add(detailsData?['UID']);
+                                    if (_selected.isEmpty&&docDataF!.docs.isNotEmpty) {
+                                      for (var i = 0;
+                                          i < docDataF.docs.length;
+                                          i++) {
+                                        _selected.add(false);
+                                        print(
+                                            'adding false to _selected : $_selected');
+                                      }
+                                    }
+                                    // _selected.add(false);
+                                    // print('Added $selected');
+
+                                    return Card(
+                                      child: ListTile(
+                                        title: Row(
+                                          children: [
+                                            Text(detailsData?['NAME'] ??
+                                                "Name Not Found"),
+                                            const Spacer(),
+                                            IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  // _selected[_selected.indexOf(detailsData?['UID'])] = !_selected[_selected.indexOf(detailsData?['UID'])];
+
+                                                  // _selected[_selected.indexOf(detailsData?['UID'])]?
+                                                  // selectedUsers
+                                                  //     .add(detailsData?['UID'])
+                                                  // : selectedUsers.remove(
+                                                  //     detailsData?['UID']);
+                                                  _selected[index] =
+                                                      !_selected[index];
+
+                                                  print('Added $_selected\n t');
+                                                });
+                                              },
+                                              icon: Icon(
+                                                !_selected[index]
+                                                    ? Icons.add
+                                                    : Icons.done,
+                                                color: !_selected[index]
+                                                    ? Colors.white
+                                                    : Colors.green,
+                                              ),
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateColor
+                                                          .resolveWith((states) =>
+                                                              !_selected[index]
+                                                                  ? Colors.green
+                                                                      .shade600
+                                                                  : Colors
+                                                                      .white)),
+                                            )
+                                          ],
+                                        ),
+                                        leading: CircleAvatar(
+                                            radius: 25,
+                                            backgroundImage: Image.network(
+                                                    detailsData?['Photo'] ??
+                                                        'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1')
+                                                .image),
+                                      ),
+                                    );
+                                  }));
+                            }),
                         // ),
                       ),
                 //Create Group & Cancel Button

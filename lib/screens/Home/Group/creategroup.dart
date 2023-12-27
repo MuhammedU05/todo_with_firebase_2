@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
@@ -16,18 +17,22 @@ class _CreateGroupState extends State<CreateGroup> {
   bool _showUserList = false;
   final TextEditingController _groupNameController = TextEditingController();
   final _myFocusNode = FocusNode();
-  var dataF = firebaseFirestoreInstance.collection('All Users').snapshots();
+  // var dataF = firebaseFirestoreInstance.collection('All Users').snapshots();
+  var dataF = [];
+
   // late List<bool> _selected;
   // var _selected;
   List<bool> _selected = [false];
 
-  // List<String> selectedUsers = [];
+  List<String> selectedUsers = [];
   // List<bool> _selected = List.filled(_selected.length, false, growable: true);
 
   @override
   void initState() {
     super.initState();
-    context.read<FirebaseProviderClass>().getAllUser();
+
+    // context.read<FirebaseProviderClass>().getAllUser();
+    context.read<FirebaseProviderClass>().getFirebaseUserDatas();
     _showUserList = false;
     _selected.clear();
   }
@@ -35,6 +40,9 @@ class _CreateGroupState extends State<CreateGroup> {
   @override
   void dispose() {
     _myFocusNode.dispose();
+    selectedUsers.clear();
+    _groupNameController.clear();
+    _selected.clear();
     //...
     super.dispose();
   }
@@ -95,6 +103,8 @@ class _CreateGroupState extends State<CreateGroup> {
                       _myFocusNode.unfocus();
                       _showUserList = !_showUserList;
                       // context.read<FirebaseProviderClass>().getAllUser();
+                      _selected = List.filled(mapListUsers.length, false,
+                          growable: true);
                     });
                   },
                 ),
@@ -108,96 +118,153 @@ class _CreateGroupState extends State<CreateGroup> {
                       )
                     : SizedBox(
                         height: MediaQuery.of(context).size.height / 1.6,
-                        child: StreamBuilder(
-                            stream: dataF,
-                            builder: (context, snapshot) {
-                              var docDataF = snapshot.data;
-                              // _selected = List.filled(
-                              //     docDataF?.docs.length ?? 0, false,
-                              //     growable: true);
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: docDataF?.docs.length,
-                                  itemBuilder: ((context, index) {
-                                    var detailsData = docDataF?.docs[index];
+                        child:
+                            // StreamBuilder(
+                            //     stream: dataF,
+                            //     builder: (context, snapshot) {
+                            //       var docDataF = snapshot.data!.docs;
+                            // _selected = List.filled(
+                            //     docDataF?.docs.length ?? 0, false,
+                            //     growable: true);
+                            // return
+                            FutureBuilder(
+                                future: context
+                                    .read<FirebaseProviderClass>()
+                                    .getFirebaseUserDatas(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  print('Maplist Users : $mapListUsers');
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Text(
+                                        'Loading Please Wait..'); // or some loading indicator
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else if (mapListUsers.isEmpty) {
+                                    return const Text('No User Found');
+                                  }
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      // itemCount: 1,
+                                      itemCount: mapListUsers.length,
+                                      itemBuilder: ((context, index) {
+                                        // sIndex = index.toString();
+                                        print('String Index : $index');
+                                        // print(
+                                        //     'Users Index : ${mapListUsers.length}');
+                                        // String taskName =
+                                        //     mapListUsers.keys.elementAt(index);
+                                        // Map<String, dynamic> task =
+                                        //     mapListUsers[taskName] ?? {};
+                                        // // var detailsData = docDataF[index];
+                                        // print('Added First ${task['NAME']}');
+                                        // var user1 = mapListUsers['0'];
 
-                                    // selectedUsers.add(detailsData?['UID']);
-                                    if (_selected.isEmpty &&
-                                        docDataF!.docs.isNotEmpty) {
-                                      for (var i = 1;
-                                          i < docDataF.docs.length;
-                                          i++) {
-                                        _selected.add(false);
-                                        print(
-                                            'adding false to _selected : $_selected');
-                                      }
-                                    }
-                                    // _selected.add(false);
-                                    print('Added First $_selected');
+                                        // print('#######################\n${mapListUsers[0]['NAME']}');
+                                        // print(
+                                        //     '#######################\n${user1}');
+                                        // print(
+                                        //     '##########(--)############\n${mapListUsers}');
 
-                                    return Card(
-                                      child: ListTile(
-                                        title: Row(
-                                          children: [
-                                            Text(detailsData?['NAME'] ??
-                                                "Name Not Found"),
-                                            const Spacer(),
-                                            IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  // _selected[_selected.indexOf(detailsData?['UID'])] = !_selected[_selected.indexOf(detailsData?['UID'])];
+                                        return Card(
+                                          child: ListTile(
+                                            title: Row(
+                                              children: [
+                                                // Text(mapListUsers[index]['NAME']),
+                                                Text(mapListUsers[
+                                                    index.toString()]['NAME']),
+                                                const Spacer(),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _myFocusNode.unfocus();
+                                                      // _selected[_selected.indexOf(detailsData?['UID'])] = !_selected[_selected.indexOf(detailsData?['UID'])];
 
-                                                  // _selected[_selected.indexOf(detailsData?['UID'])]?
-                                                  // selectedUsers
-                                                  //     .add(detailsData?['UID'])
-                                                  // : selectedUsers.remove(
-                                                  //     detailsData?['UID']);
-                                                  _selected[index] =
-                                                      !_selected[index];
+                                                      // _selected[_selected.indexOf(detailsData?['UID'])]?
 
-                                                  print('Added $_selected\n t');
-                                                });
-                                                print(
-                                                    'Added after $_selected\n t');
-                                                print('Added after 0 ${_selected[0]}\n t');
-                                                print('Added after 1 ${_selected[1]}\n t');
-                                              },
-                                              icon: Icon(
-                                                !_selected[index]
-                                                    ? Icons.add
-                                                    : Icons.done,
-                                                color: !_selected[index]
-                                                    ? Colors.white
-                                                    : Colors.green,
-                                              ),
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateColor
+                                                      _selected[index] =
+                                                          !_selected[index];
+                                                      _selected[index]
+                                                          ? selectedUsers.add(
+                                                              mapListUsers[index
+                                                                      .toString()]
+                                                                  ['UID'])
+                                                          : selectedUsers.remove(
+                                                              mapListUsers[index
+                                                                      .toString()]
+                                                                  ['UID']);
+
+                                                      print(
+                                                          'Added $_selected\n t');
+                                                      print(
+                                                          'Added(++++++++++++++++)\n $selectedUsers\n t');
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                    !_selected[index]
+                                                        ? Icons.add
+                                                        : Icons.done,
+                                                    color: !_selected[index]
+                                                        ? Colors.white
+                                                        : Colors.green,
+                                                  ),
+                                                  style: ButtonStyle(
+                                                      backgroundColor: MaterialStateColor
                                                           .resolveWith((states) =>
                                                               !_selected[index]
                                                                   ? Colors.green
                                                                       .shade600
                                                                   : Colors
                                                                       .white)),
-                                            )
-                                          ],
-                                        ),
-                                        leading: CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage: Image.network(
-                                                    detailsData?['Photo'] ??
-                                                        'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1')
-                                                .image),
-                                      ),
-                                    );
-                                  }));
-                            }),
+                                                )
+                                              ],
+                                            ),
+                                            leading: CircleAvatar(
+                                                radius: 25,
+                                                backgroundImage: Image.network(
+                                                        mapListUsers[index
+                                                                    .toString()]
+                                                                ['Photo'] ??
+                                                            TStrings
+                                                                .userNotFound)
+                                                    .image),
+                                          ),
+                                        );
+                                      }));
+                                })
+                        // }),
                         // ),
-                      ),
+                        ),
                 //Create Group & Cancel Button
                 Row(mainAxisSize: MainAxisSize.min, children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_groupNameController.text.isNotEmpty &&
+                            selectedUsers.isNotEmpty) {
+                          print('Created group Successfully');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  duration: Durations.long4,
+                                  content: Text('Created group Successfully'),
+                                  backgroundColor: Colors.green));
+                          Navigator.pop(context);
+                        } else if (_groupNameController.text.isEmpty &&
+                            selectedUsers.isNotEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  duration: Durations.long4,
+                                  content: Text('Please Enter Group Name'),
+                                  backgroundColor: Colors.red));
+                        } else if (_groupNameController.text.isNotEmpty &&
+                            selectedUsers.length <= 1) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  duration: Durations.long4,
+                                  content: Text(
+                                      'Please Select At Least 2 Group Members'),
+                                  backgroundColor: Colors.red));
+                        }
+                      },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateColor.resolveWith(
                               (_) => Colors.green)),
@@ -206,7 +273,8 @@ class _CreateGroupState extends State<CreateGroup> {
                   const SizedBox(width: 14),
                   OutlinedButton(
                       onPressed: () {
-                        _groupNameController.clear();
+                        // mapListUsers.clear();
+                        // _groupNameController.clear();
                         Navigator.pop(context);
                       },
                       child: const Text('Cancel'))

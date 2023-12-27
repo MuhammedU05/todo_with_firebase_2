@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
@@ -21,8 +20,9 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     mapList.clear();
+    context.read<LoginProviderClass>().currentUserSaver();
     // context.read<ProviderClass>().allData?.clear();
-    print('Email in login : ${FirebaseAuth.instance.currentUser?.email}');
+    print('Email in login : ${currentUserAll?.email}');
     print('All Data in login : $mapList');
   }
 
@@ -32,8 +32,7 @@ class _LoginState extends State<Login> {
       onWillPop: () async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content:
-                Text('Use Home Button to go back'),
+            content: Text('Use Home Button to go back'),
             backgroundColor: Colors.red,
           ),
         );

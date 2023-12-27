@@ -2,7 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
 class FirebaseProviderClass extends ChangeNotifier {
@@ -82,12 +84,12 @@ class FirebaseProviderClass extends ChangeNotifier {
           userDoc.data()!.containsKey(TStrings.tasksFirebase)) {
         var tasks =
             (userDoc.data()?[TStrings.tasksFirebase] ?? []) as List<dynamic>;
-        tasks.forEach((task) {
+        for (var task in tasks) {
           // Assuming TStrings.timeStampFirebase field contains the user's name
           var timeStamp = task[TStrings.timeStampFirebase] ?? 'N/A';
           mapList[timeStamp] = task;
           // notifyListeners();
-        });
+        }
         // print('MapList Length : ${mapList.length}');
         // if (mapList.length > 1) {
         //   isLoading = false;
@@ -125,12 +127,12 @@ class FirebaseProviderClass extends ChangeNotifier {
           userDoc.data()!.containsKey(TStrings.completedTasksFirebase)) {
         var tasks = (userDoc.data()?[TStrings.completedTasksFirebase] ?? [])
             as List<dynamic>;
-        tasks.forEach((task) {
+        for (var task in tasks) {
           // Assuming TStrings.timeStampFirebase field contains the user's name
           var taskName = task[TStrings.timeStampFirebase] ?? 'N/A';
           mapListCompleted[taskName] = task;
           // notifyListeners();
-        });
+        }
 
         isLoadingCompleted = false;
 
@@ -301,12 +303,13 @@ class FirebaseProviderClass extends ChangeNotifier {
     }
   }
 
-  updateUserMap() async {
+  updateUserMap(BuildContext context) async {
     try {
       print('pppppppppppppppppppppppppppppppppppppppp');
       mapList.clear();
       mapListCompleted.clear();
       print(mapList);
+      context.read<LoginProviderClass>().updateCurrentUser();
       print('ssssssssssssssssss');
       Future.delayed(Duration.zero, () => notifyListeners());
     } on Exception catch (e) {
@@ -415,25 +418,62 @@ class FirebaseProviderClass extends ChangeNotifier {
     }
   }
 
-  Future<void> getAllUser() async {
+  // Future<void> getAllUser() async {
+  //   try {
+  //     var querySnapshot = await savingUser.get();
+  //     if (querySnapshot.docs.isNotEmpty) {
+  //       allUsersDatas.clear();
+  //       for (var doc in querySnapshot.docs) {
+  //         var memberData = doc.data();
+  //         // Assuming each document has a field 'uid' representing the member's UID
+  //         memberData['UID'] = doc.id;
+  //         allUsersDatas.add(memberData);
+  //       }
+  //       print('getAllUsers Completed');
+  //       Future.delayed(Duration.zero, () => notifyListeners());
+  //     } else {
+  //       print('No data found in the collection');
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching data: $e');
+  //     // Handling the error if any
+  //   }
+  // }
+
+  Future<void> getFirebaseUserDatas() async {
     try {
-      var querySnapshot = await savingUser.get();
-      if (querySnapshot.docs.isNotEmpty) {
-        allUsersDatas.clear();
-        querySnapshot.docs.forEach((doc) {
-          var memberData = doc.data();
-          // Assuming each document has a field 'uid' representing the member's UID
-          memberData['UID'] = doc.id;
-          allUsersDatas.add(memberData);
-        });
+      mapListUsers.clear();
+      var userDoc = await savingUser.doc('All Users').get();
+      int i = 0;
+      if (userDoc.exists && userDoc.data()!.containsKey('Users')) {
+        var tasks = (userDoc.data()?['Users'] ?? []) as List<dynamic>;
+
+        for (var task in tasks) {
+          // Assuming task['UID'] contains the user's UID
+          print('UID of task : ${task['UID']} ');
+          if (task['UID'] != currentUserUid) {
+            print('Not Current User');
+            var uid = i.toString();
+            mapListUsers[uid] = task;
+            print('object');
+            print('#$mapListUsers');
+            // Perform additional actions for each user here
+            // For example, you can access specific fields like task['NAME']
+            // and perform operations on them.
+          i++;
+          }
+        }
+        tasks.clear();
+        // print('#######################\n${mapListUsers[0]['NAME']}');
+        // print('#######################\n${mapListUsers['UID']}');
+        // print('##########(--)############\n${mapListUsers[0]}');
         Future.delayed(Duration.zero, () => notifyListeners());
       } else {
-        print('No data found in the collection');
+        Future.delayed(Duration.zero, () => notifyListeners());
       }
     } catch (e) {
-      print('Error fetching data: $e');
-      // Handling the error if any
+      print("Error getting data: $e");
+      Future.delayed(Duration.zero, () => notifyListeners());
     }
-
   }
 }

@@ -13,7 +13,6 @@ import 'package:todo_with_firebase_2/screens/Home/Tasks/Add%20Task/addtask.dart'
 import 'package:todo_with_firebase_2/screens/Home/Tasks/AppBar/appbar.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/Search%20Screen/searchscreen.dart';
 import 'package:todo_with_firebase_2/screens/Home/Tasks/task.dart';
-// import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,27 +23,19 @@ class HomePage extends StatefulWidget {
 
 int selectedIndex = 1;
 Color themeButtonColor = Colors.green;
-var changedText;
+
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
     context.read<FirebaseProviderClass>().addFirebaseDataFirst();
     context.read<LoginProviderClass>().addCollection();
-
-    // context.read<ProviderClass>().startTimer();
-    // context.read<ProviderClass>().getData();
-    // context.read<ProviderClass>().currentUser = FirebaseAuth.instance.currentUser;
+    context.read<LoginProviderClass>().currentUserSaver();
+    print("Current User : $currentUserAll");
   }
 
   @override
   Widget build(BuildContext context) {
-    void _handleSubmitted(String text) {
-      textController.clear();
-
-      setState(() {});
-    }
-
     return WillPopScope(
       onWillPop: () async {
         ScaffoldMessenger.of(context).showSnackBar(

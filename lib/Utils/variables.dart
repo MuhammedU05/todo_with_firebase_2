@@ -16,19 +16,18 @@ var userDocRef = firebaseFirestoreInstance
     .doc(firebaseAuthInstance.currentUser?.uid);
 var allUserRef = firebaseFirestoreInstance
     .collection('All Users')
-    .doc(firebaseAuthInstance.currentUser?.uid);
-var savingUser =
-    firebaseFirestoreInstance.collection('All Users');
+    .doc('All Users');
+var savingUser = firebaseFirestoreInstance.collection('All Users');
 var groupCollection = firebaseFirestoreInstance.collection('Groups');
 
 List<bool> toggleButtonsSelection =
     Priority.values.map((Priority e) => e == Priority.mid).toList();
 List<String> groups = ['Me'];
-  var allUsersDatas;
+var allUsersDatas;
 
 final firebaseAuthInstance = FirebaseAuth.instance;
 final firebaseFirestoreInstance = FirebaseFirestore.instance;
-final user = FirebaseAuth.instance.currentUser;
+// final user = FirebaseAuth.instance.currentUser;
 final TextEditingController taskNameController = TextEditingController();
 final userCollection = FirebaseFirestore.instance.collection('Users');
 final document = FirebaseFirestore.instance.collection("Users").snapshots();
@@ -45,6 +44,7 @@ bool signedIn = false;
 bool isCompletedSelected = false;
 
 Map<String, dynamic> mapList = {};
+Map<String, dynamic> mapListUsers = {};
 // Map<String, dynamic> allUsersDatas = {};
 Map<String, dynamic> mapListSearch = {};
 Map<String, dynamic> mapListCompleted = {};
@@ -63,12 +63,17 @@ Color selectedColor = Colors.yellow;
 const String defaultPic =
     "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";
 
-String currentUserFDetails =
-    FirebaseAuth.instance.currentUser?.displayName ?? "";
+// var currentUserFDetails = FirebaseAuth.instance.currentUser;
 
-String pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ??
+String pic = currentUserAll?.photoURL?.toString() ??
     "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";
 
 String time = formatDate(DateTime.now(), [HH, ' : ', nn]);
 String date = formatDate(DateTime.now(), [dd, ' - ', mm, ' - ', yy]);
 late String? selectedGroup;
+
+var currentUserAll = FirebaseAuth.instance.currentUser;
+var currentUserName;
+var currentUserEmail;
+var currentUserPhoto;
+var currentUserUid;

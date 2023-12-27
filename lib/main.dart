@@ -98,10 +98,10 @@ class _LoginCheckerState extends State<LoginChecker> {
 
   @override
   Widget build(BuildContext context) {
-    if (user != null &&
-        user!.email != null &&
-        user!.email!.isNotEmpty &&
-        user!.emailVerified) {
+    if (currentUserAll != null &&
+        currentUserAll!.email != null &&
+        currentUserAll!.email!.isNotEmpty &&
+        currentUserAll!.emailVerified) {
       return const HomePage();
     } else {
       return const Login();

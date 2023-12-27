@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
@@ -14,6 +15,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+
+    context.read<LoginProviderClass>().currentUserSaver();
   }
 
   @override
@@ -52,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: CircleAvatar(
                           radius: 60,
                           backgroundImage: Image.network(
-                            user!.photoURL.toString(),
+                            currentUserPhoto??TStrings.userNotFound,
                             filterQuality: FilterQuality.high,
                           ).image,
                         ),
@@ -69,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              user!.displayName ?? 'User',
+                              currentUserName ?? 'User',
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
@@ -77,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              user!.email ?? 'Email Not Found',
+                              currentUserEmail ?? 'Email Not Found',
                               style: const TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),

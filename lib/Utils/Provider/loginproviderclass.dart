@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,7 +22,7 @@ class LoginProviderClass extends ChangeNotifier {
           MaterialPageRoute(builder: (BuildContext context) => const Login()));
       mapList.clear();
       print('Map List Cleared : $mapList');
-      notifyListeners();
+      Future.delayed(Duration.zero, () => notifyListeners());
     } catch (e) {
       print("Error signing out with Google: $e");
     }
@@ -34,10 +35,10 @@ class LoginProviderClass extends ChangeNotifier {
       print('Signed Out');
       mapList.clear();
       print('MapList in Signout : $mapList');
-      context.read<FirebaseProviderClass>().updateUserMap();
+      context.read<FirebaseProviderClass>().updateUserMap(context);
       print('Email : ${fireBaseClass?.getCurrentUserEmail()}');
-      print('object');
-      notifyListeners();
+      print('currentUser (-) : $currentUserAll ');
+      Future.delayed(Duration.zero, () => notifyListeners());
     } on Exception catch (e) {
       print('Error in Signing Out : $e');
     }
@@ -63,7 +64,7 @@ class LoginProviderClass extends ChangeNotifier {
         'Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
 
     // addFirebaseDataFirst();
-    notifyListeners();
+    Future.delayed(Duration.zero, () => notifyListeners());
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
@@ -76,33 +77,60 @@ class LoginProviderClass extends ChangeNotifier {
     try {
       print('Add Collection Of Users Running');
       var allUserGet = await allUserRef.get();
-      if (!allUserGet.exists ||
-          allUserGet.reference.id == firebaseAuthInstance.currentUser!.uid) {
-      print('Add Collection Of Users Running and Current User Doc Not Found');
-        await allUserRef.set({
+      // print('Add Collection Of Users Running');
+      var map = (allUserGet.data()?['Users'] ?? []) as List<dynamic>;
+      // map.clear();
+      if (!allUserGet.exists) {
+        await allUserRef.set({'Users': []}, SetOptions(merge: true));
+      }
+      print(map);
+      if (
+        !map.any((value) => value['UID'] == currentUserUid /*|| value is Map*/) &&
+        currentUserUid != null
+      ){
+      
+        print('found new user');
+        map.add({
           'UID': firebaseAuthInstance.currentUser?.uid ??
               FirebaseAuth.instance.currentUser?.uid,
           'NAME': firebaseAuthInstance.currentUser?.displayName ??
-              currentUserFDetails,
+              currentUserAll?.displayName.toString(),
           'JOINED ON': DateTime.now().toString(),
           'Photo': firebaseAuthInstance.currentUser?.photoURL
         });
-        print('All User Collection Created');
-      } else {
-        print('All User Collection Exists');
+
+        // if (allUserGet.data()?['Users']) {
+
+        await allUserRef.update({'Users': map});
+        print('All User Doc Updated');
       }
-      notifyListeners();
+      // }
+      map.clear();
+      // } else {
+      // }
+      print('All User Collection Exists');
+      Future.delayed(Duration.zero, () => notifyListeners());
     } on Exception catch (e) {
       print('Adding Collection Error : $e');
     }
   }
 
-  Future<void> saveUser() async {}
+  // Future<void> saveUser() async {}
 
   updateCurrentUser() {
-    pic = FirebaseAuth.instance.currentUser?.photoURL?.toString() ?? defaultPic;
-    currentUserFDetails = FirebaseAuth.instance.currentUser?.displayName ?? "";
+    currentUserAll = FirebaseAuth.instance.currentUser;
+    pic = currentUserAll?.photoURL?.toString() ?? defaultPic;
+    // user = FirebaseAuth.instance.currentUser;
     // currentUser = FirebaseAuth.instance.currentUser;
-    notifyListeners();
+    Future.delayed(Duration.zero, () => notifyListeners());
+  }
+
+  currentUserSaver() {
+    currentUserAll = FirebaseAuth.instance.currentUser;
+    currentUserName = currentUserAll?.displayName;
+    currentUserEmail = currentUserAll?.email;
+    currentUserPhoto = currentUserAll?.photoURL ?? TStrings.userNotFound;
+    currentUserUid = currentUserAll?.uid;
+    Future.delayed(Duration.zero, () => notifyListeners());
   }
 }

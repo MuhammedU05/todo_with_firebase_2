@@ -79,7 +79,7 @@ class _CardBuilderState extends State<CardBuilder> {
                 child: ListView.builder(
                     shrinkWrap: true,
                     // reverse: true,
-                    itemCount: mapList.length - 1,
+                    itemCount: mapList.isEmpty ? 0 : mapList.length - 1,
                     itemBuilder: (context, index) {
                       print('Index : $index');
                       String taskName = mapList.keys.elementAt(index + 1);

@@ -18,7 +18,7 @@ Widget cardDesign(var task) {
     shadowColor: shadowColor,
     margin: const EdgeInsets.all(16.0),
     elevation: 8.0,
-    surfaceTintColor: shadowColor ?? Colors.teal,
+    surfaceTintColor: shadowColor,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16.0),
     ),
@@ -27,70 +27,72 @@ Widget cardDesign(var task) {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Task Name:',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Task Name:',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                task[TStrings.taskNameFirebase],
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12.0),
+              Row(
+                children: [
+                  const Icon(Icons.priority_high, size: 16.0),
+                  const SizedBox(width: 4.0),
+                  Text(
+                    'Priority: ${task[TStrings.priorityFirebase]}',
+                overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 14.0),
                   ),
-                ),
-                Text(
-                  task[TStrings.taskNameFirebase],
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                children: [
+                  Icon(
+                    task[TStrings.isCompletedFirebase]
+                        ? Icons.check_circle
+                        : Icons.radio_button_unchecked,
+                    size: 16.0,
+                    color: task[TStrings.isCompletedFirebase]
+                        ? Colors.green
+                        : Colors.red,
                   ),
-                ),
-                const SizedBox(height: 12.0),
-                Row(
-                  children: [
-                    const Icon(Icons.priority_high, size: 16.0),
-                    const SizedBox(width: 4.0),
-                    Text(
-                      'Priority: ${task[TStrings.priorityFirebase]}',
-                      style: const TextStyle(fontSize: 14.0),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    Icon(
-                      task[TStrings.isCompletedFirebase]
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
-                      size: 16.0,
-                      color: task[TStrings.isCompletedFirebase]
-                          ? Colors.green
-                          : Colors.red,
-                    ),
-                    const SizedBox(width: 4.0),
-                    Text(
-                      'Is Completed: ${task[TStrings.isCompletedFirebase] ? 'Yes' : 'No'}',
-                      style: const TextStyle(fontSize: 14.0),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    const Icon(Icons.calendar_today, size: 16.0),
-                    const SizedBox(width: 4.0),
-                    Text(
-                      'Due Date To: ${task['Edited DueDate']}',
-                      style: const TextStyle(fontSize: 14.0),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  const SizedBox(width: 4.0),
+                  Text(
+                    'Is Completed: ${task[TStrings.isCompletedFirebase] ? 'Yes' : 'No'}',
+                overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 14.0),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                children: [
+                  const Icon(Icons.calendar_today, size: 16.0),
+                  const SizedBox(width: 4.0),
+                  Text(
+                    'Due Date To: ${task['Edited DueDate']}',
+                overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 14.0),
+                  ),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(width: 16.0),
+          Spacer(),
+          const SizedBox(width: 10.0),
           SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,6 +101,7 @@ Widget cardDesign(var task) {
                 const SizedBox(height: 4.0),
                 Text(
                   'Created on\n${task[TStrings.createdDateFirebase]}',
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 14.0),
                   textAlign: TextAlign.center,
                 ),

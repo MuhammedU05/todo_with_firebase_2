@@ -40,53 +40,58 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: const Icon(Icons.arrow_back_ios_new)),
             ),
             SizedBox(
-              height: 330,
-              child: Row(
+              height: 350,
+              child: Column(
                 children: [
+                  
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Stack(children: [
-                      const CircleAvatar(
-                        radius: 65,
-                        backgroundColor: Colors.grey,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: CircleAvatar(
-                          radius: 60,
-                          backgroundImage: Image.network(
-                            currentUserPhoto??TStrings.userNotFound,
-                            filterQuality: FilterQuality.high,
-                          ).image,
-                        ),
-                      ),
-                    ]),
-                  ),
-                  SizedBox(
-                    height: 110,
-                    width: MediaQuery.of(context).size.width / 1.7,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              currentUserName ?? 'User',
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
+                        padding: const EdgeInsets.only(top:40.0,bottom: 10),
+                        child: Stack(children: [
+                          const CircleAvatar(
+                            radius: 65,
+                            backgroundColor: Colors.grey,
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              currentUserEmail ?? 'Email Not Found',
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            padding: const EdgeInsets.all(5.0),
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundImage: Image.network(
+                                currentUserPhoto??TStrings.userNotFound,
+                                filterQuality: FilterQuality.high,
+                              ).image,
                             ),
                           ),
                         ]),
-                  )
+                      ),
+                  Center(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 5.5,
+                      width: double.infinity,
+                      child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top:8.0),
+                              child: Text(
+                                currentUserName ?? 'User',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                currentUserEmail ?? 'Email Not Found',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ]),
+                    ),
+                  ),
                 ],
               ),
             ),

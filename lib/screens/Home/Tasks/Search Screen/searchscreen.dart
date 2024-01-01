@@ -3,11 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
-import 'package:todo_with_firebase_2/Utils/Provider/groupprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
-import 'package:uuid/uuid.dart';
 
 class SearchClass extends StatefulWidget {
   const SearchClass({super.key});
@@ -24,8 +21,6 @@ class _SearchClassState extends State<SearchClass> {
     super.initState();
     changedText = '';
     textControllerSearch.text = ' ';
-    context.read<GroupProviderClass>().groupCreation();
-    context.read<GroupProviderClass>().groupCreation();
   }
 
 //f8217500-e743-1e06-95da-57f3c2a5882a

@@ -355,7 +355,9 @@ class FirebaseProviderClass extends ChangeNotifier {
           // TStrings.priorityFirebase: '',
           // TStrings.timeStampFirebase: '',
           // TStrings.dueToFirebase: '',
-          // // "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}${DateTime.timestamp().microsecond}",
+          // // "${DateTime.timestamp().year}${DateTime.timestamp().month}${DateTime.timestamp().day}
+          // ${DateTime.timestamp().hour}${DateTime.timestamp().second}${DateTime.timestamp().millisecond}
+          // ${DateTime.timestamp().microsecond}",
           // TStrings.isCompletedFirebase: false,
           // TStrings.completedDateFirebase: '',
           // TStrings.completedTimeFirebase: '',
@@ -460,7 +462,7 @@ class FirebaseProviderClass extends ChangeNotifier {
             // Perform additional actions for each user here
             // For example, you can access specific fields like task['NAME']
             // and perform operations on them.
-          i++;
+            i++;
           }
         }
         tasks.clear();
@@ -476,4 +478,5 @@ class FirebaseProviderClass extends ChangeNotifier {
       Future.delayed(Duration.zero, () => notifyListeners());
     }
   }
+
 }

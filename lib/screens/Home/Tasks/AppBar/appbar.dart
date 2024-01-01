@@ -16,7 +16,6 @@ AppBar AppBarClass(BuildContext context) {
           onTap: () {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const ProfilePage()));
-            // ProfilePage();
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -24,7 +23,6 @@ AppBar AppBarClass(BuildContext context) {
               backgroundImage: Image.network(currentUserAll?.photoURL.toString()??TStrings.userNotFound).image,
             ),
           ),
-          // child: Text('data')
         )
       ]);
 }

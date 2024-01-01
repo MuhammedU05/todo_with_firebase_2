@@ -21,6 +21,7 @@ class _LoginState extends State<Login> {
     super.initState();
     mapList.clear();
     context.read<LoginProviderClass>().currentUserSaver();
+    login(context);
     // context.read<ProviderClass>().allData?.clear();
     print('Email in login : ${currentUserAll?.email}');
     print('All Data in login : $mapList');
@@ -41,25 +42,26 @@ class _LoginState extends State<Login> {
       child: Scaffold(
         body: GestureDetector(
           onTap: () async {
-            //Login Button -> Google SignIn Function
-            try {
-              await context.read<LoginProviderClass>().signInWithGoogle();
-              // Updating Current User
-              context.read<LoginProviderClass>().updateCurrentUser();
-              if (signedIn == false) {
-                // If The User is Signed in -> Navigate to HomePage
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              } else {
-                // Handle the case where sign-in was not successful
+            // //Login Button -> Google SignIn Function
+            // try {
+            //   await context.read<LoginProviderClass>().signInWithGoogle();
+            //   // Updating Current User
+            //   context.read<LoginProviderClass>().updateCurrentUser();
+            //   if (signedIn == false) {
+            //     // If The User is Signed in -> Navigate to HomePage
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(builder: (context) => const HomePage()),
+            //     );
+            //   } else {
+            //     // Handle the case where sign-in was not successful
 
-                print('Google sign-in failed');
-              }
-            } catch (e) {
-              // Handle other errors that might occur during sign-in
-              print('Error signing in with Google: $e');
-            }
+            //     print('Google sign-in failed');
+            //   }
+            // } catch (e) {
+            //   // Handle other errors that might occur during sign-in
+            //   print('Error signing in with Google: $e');
+            // }
+            login(context);
           },
           child: Column(
             children: [
@@ -81,5 +83,27 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+}
+
+Future<void> login(BuildContext context) async {
+  //Login Button -> Google SignIn Function
+  try {
+    await context.read<LoginProviderClass>().signInWithGoogle();
+    // Updating Current User
+    context.read<LoginProviderClass>().updateCurrentUser();
+    if (signedIn == false) {
+      // If The User is Signed in -> Navigate to HomePage
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      // Handle the case where sign-in was not successful
+
+      print('Google sign-in failed');
+    }
+  } catch (e) {
+    // Handle other errors that might occur during sign-in
+    print('Error signing in with Google: $e');
   }
 }

@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
@@ -14,16 +15,19 @@ var allUserUid;
 var userDocRef = firebaseFirestoreInstance
     .collection('Users')
     .doc(firebaseAuthInstance.currentUser?.uid);
-var allUserRef = firebaseFirestoreInstance
-    .collection('All Users')
-    .doc('All Users');
+var allUserRef =
+    firebaseFirestoreInstance.collection('All Users').doc('All Users');
 var savingUser = firebaseFirestoreInstance.collection('All Users');
 var groupCollection = firebaseFirestoreInstance.collection('Groups');
+final DatabaseReference databaseReference =
+    FirebaseDatabase.instance.ref().child('Groups');
 
 List<bool> toggleButtonsSelection =
     Priority.values.map((Priority e) => e == Priority.mid).toList();
+List<dynamic> currentMessages = [];
 List<String> groups = ['Me'];
 var allUsersDatas;
+  final List<String> gMessages = [];
 
 final firebaseAuthInstance = FirebaseAuth.instance;
 final firebaseFirestoreInstance = FirebaseFirestore.instance;

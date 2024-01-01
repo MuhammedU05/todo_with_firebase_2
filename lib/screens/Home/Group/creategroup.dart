@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
+import 'package:todo_with_firebase_2/Utils/Provider/groupprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
 class CreateGroup extends StatefulWidget {
@@ -24,7 +25,7 @@ class _CreateGroupState extends State<CreateGroup> {
   // var _selected;
   List<bool> _selected = [false];
 
-  List<String> selectedUsers = [];
+  List<String> selectedUsers = [currentUserUid];
   // List<bool> _selected = List.filled(_selected.length, false, growable: true);
 
   @override
@@ -114,10 +115,10 @@ class _CreateGroupState extends State<CreateGroup> {
                 ),
                 !_showUserList
                     ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.6,
+                        height: MediaQuery.of(context).size.height / 1.8,
                       )
                     : SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.6,
+                        height: MediaQuery.of(context).size.height / 1.8,
                         child:
                             // StreamBuilder(
                             //     stream: dataF,
@@ -197,7 +198,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                                       print(
                                                           'Added $_selected\n t');
                                                       print(
-                                                          'Added(++++++++++++++++)\n $selectedUsers\n t');
+                                                          'Added(++++++++++++++++):$selectedUsers\n t');
                                                     });
                                                   },
                                                   icon: Icon(
@@ -237,10 +238,21 @@ class _CreateGroupState extends State<CreateGroup> {
                         ),
                 //Create Group & Cancel Button
                 Row(mainAxisSize: MainAxisSize.min, children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      // mapListUsers.clear();
+                      // _groupNameController.clear();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 14),
                   ElevatedButton(
                       onPressed: () {
-                        if (_groupNameController.text.isNotEmpty &&
-                            selectedUsers.isNotEmpty) {
+                        if (_groupNameController.text
+                                .replaceAll(' ', '')
+                                .isNotEmpty &&
+                            selectedUsers.length > 1) {
                           print('Created group Successfully');
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -248,14 +260,14 @@ class _CreateGroupState extends State<CreateGroup> {
                                   content: Text('Created group Successfully'),
                                   backgroundColor: Colors.green));
                           Navigator.pop(context);
-                        } else if (_groupNameController.text.isEmpty &&
+                        } else if (_groupNameController.text.replaceAll(' ', '').isEmpty &&
                             selectedUsers.isNotEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   duration: Durations.long4,
                                   content: Text('Please Enter Group Name'),
                                   backgroundColor: Colors.red));
-                        } else if (_groupNameController.text.isNotEmpty &&
+                        } else if (_groupNameController.text.replaceAll(' ', '').isNotEmpty &&
                             selectedUsers.length <= 1) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -264,20 +276,14 @@ class _CreateGroupState extends State<CreateGroup> {
                                       'Please Select At Least 2 Group Members'),
                                   backgroundColor: Colors.red));
                         }
+                        context.read<GroupProviderClass>().createGroupFunction(
+                            _groupNameController.text, context, selectedUsers);
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateColor.resolveWith(
                               (_) => Colors.green)),
                       child: const Text('Create Group',
                           style: TextStyle(color: Colors.white))),
-                  const SizedBox(width: 14),
-                  OutlinedButton(
-                      onPressed: () {
-                        // mapListUsers.clear();
-                        // _groupNameController.clear();
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Cancel'))
                 ])
               ],
             ),

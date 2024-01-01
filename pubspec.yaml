@@ -52,6 +52,7 @@ dependencies:
   uuid: ^4.2.2
   shared_preferences: ^2.2.2
   anim_search_bar: ^2.0.3
+  firebase_database: ^10.3.8
 
 dev_dependencies:
   flutter_test:

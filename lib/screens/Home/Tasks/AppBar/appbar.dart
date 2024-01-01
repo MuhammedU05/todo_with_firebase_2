@@ -20,7 +20,7 @@ AppBar AppBarClass(BuildContext context) {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundImage: Image.network(currentUserAll?.photoURL.toString()??TStrings.userNotFound).image,
+              backgroundImage: Image.network(currentUserAll?.photoURL.toString()??CONSTANTS.userNotFound).image,
             ),
           ),
         )

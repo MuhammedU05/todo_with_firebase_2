@@ -226,7 +226,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                                         mapListUsers[index
                                                                     .toString()]
                                                                 ['Photo'] ??
-                                                            TStrings
+                                                            CONSTANTS
                                                                 .userNotFound)
                                                     .image),
                                           ),

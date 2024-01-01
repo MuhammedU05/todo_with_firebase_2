@@ -79,7 +79,7 @@ class _AddTaskState extends State<AddTask> {
                             controller: taskNameController,
                             autofocus: true,
                             decoration: const InputDecoration(
-                              labelText: TStrings.addTask,
+                              labelText: CONSTANTS.addTask,
                             ),
                           ),
                         ),
@@ -161,7 +161,7 @@ class _AddTaskState extends State<AddTask> {
                                 taskNameController.clear();
                                 Navigator.of(context).pop();
                               },
-                              child: const Text(TStrings.cancel),
+                              child: const Text(CONSTANTS.cancel),
                             ),
                             const Spacer(),
                             const Spacer(),
@@ -301,7 +301,7 @@ class _AddTaskState extends State<AddTask> {
 //                     controller: taskNameController,
 //                     autofocus: true,
 //                     decoration: const InputDecoration(
-//                       labelText: TStrings.addTask,
+//                       labelText: CONSTANTS.addTask,
 //                     ),
 //                   ),
 //                   const SizedBox(height: 16.0),

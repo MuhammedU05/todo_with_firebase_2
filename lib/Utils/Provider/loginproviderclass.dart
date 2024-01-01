@@ -57,11 +57,9 @@ class LoginProviderClass extends ChangeNotifier {
 
     print(" google User : $googleUser");
     print(" Credential : $credential");
-    print(
-        'Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
+    print('Photo URL : ${FirebaseAuth.instance.currentUser?.photoURL?.toString()}');
     print('Display Name : ${FirebaseAuth.instance.currentUser?.displayName}');
-    print(
-        'Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
+    print('Current User In Login Provider: ${FirebaseAuth.instance.currentUser}');
 
     // addFirebaseDataFirst();
     Future.delayed(Duration.zero, () => notifyListeners());
@@ -129,7 +127,7 @@ class LoginProviderClass extends ChangeNotifier {
     currentUserAll = FirebaseAuth.instance.currentUser;
     currentUserName = currentUserAll?.displayName;
     currentUserEmail = currentUserAll?.email;
-    currentUserPhoto = currentUserAll?.photoURL ?? TStrings.userNotFound;
+    currentUserPhoto = currentUserAll?.photoURL ?? CONSTANTS.userNotFound;
     currentUserUid = currentUserAll?.uid;
     Future.delayed(Duration.zero, () => notifyListeners());
   }

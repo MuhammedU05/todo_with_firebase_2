@@ -1,4 +1,4 @@
-class TStrings {
+class CONSTANTS {
   //Login
   static const String gButton = 'G';
 

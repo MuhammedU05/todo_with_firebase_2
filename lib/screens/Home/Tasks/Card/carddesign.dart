@@ -4,11 +4,11 @@ import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
 
 Widget cardDesign(var task) {
   Color shadowColor;
-  if (task[TStrings.priorityFirebase] == TStrings.high) {
+  if (task[CONSTANTS.priorityFirebase] == CONSTANTS.high) {
     shadowColor = Colors.red;
-  } else if (task[TStrings.priorityFirebase] == TStrings.mid) {
+  } else if (task[CONSTANTS.priorityFirebase] == CONSTANTS.mid) {
     shadowColor = Colors.yellow;
-  } else if (task[TStrings.priorityFirebase] == TStrings.low) {
+  } else if (task[CONSTANTS.priorityFirebase] == CONSTANTS.low) {
     shadowColor = Colors.green;
   } else {
     shadowColor = Colors.black;
@@ -38,7 +38,7 @@ Widget cardDesign(var task) {
                 ),
               ),
               Text(
-                task[TStrings.taskNameFirebase],
+                task[CONSTANTS.taskNameFirebase],
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 20.0,
@@ -51,7 +51,7 @@ Widget cardDesign(var task) {
                   const Icon(Icons.priority_high, size: 16.0),
                   const SizedBox(width: 4.0),
                   Text(
-                    'Priority: ${task[TStrings.priorityFirebase]}',
+                    'Priority: ${task[CONSTANTS.priorityFirebase]}',
                 overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 14.0),
                   ),
@@ -61,17 +61,17 @@ Widget cardDesign(var task) {
               Row(
                 children: [
                   Icon(
-                    task[TStrings.isCompletedFirebase]
+                    task[CONSTANTS.isCompletedFirebase]
                         ? Icons.check_circle
                         : Icons.radio_button_unchecked,
                     size: 16.0,
-                    color: task[TStrings.isCompletedFirebase]
+                    color: task[CONSTANTS.isCompletedFirebase]
                         ? Colors.green
                         : Colors.red,
                   ),
                   const SizedBox(width: 4.0),
                   Text(
-                    'Is Completed: ${task[TStrings.isCompletedFirebase] ? 'Yes' : 'No'}',
+                    'Is Completed: ${task[CONSTANTS.isCompletedFirebase] ? 'Yes' : 'No'}',
                 overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 14.0),
                   ),
@@ -100,7 +100,7 @@ Widget cardDesign(var task) {
                 const Icon(Icons.calendar_today, size: 16.0),
                 const SizedBox(height: 4.0),
                 Text(
-                  'Created on\n${task[TStrings.createdDateFirebase]}',
+                  'Created on\n${task[CONSTANTS.createdDateFirebase]}',
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 14.0),
                   textAlign: TextAlign.center,

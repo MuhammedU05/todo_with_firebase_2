@@ -94,6 +94,6 @@ class _CustomButtonCompletedState extends State<CustomButtonCompleted> {
             print('isCompletedSelected : $isCompletedSelected');
           });
         },
-        child: const Text(TStrings.completed));
+        child: const Text(CONSTANTS.completed));
   }
 }

@@ -54,11 +54,11 @@ class _HomePageState extends State<HomePage> {
           currentIndex: selectedIndex,
           items: const [
             BottomNavigationBarItem(
-                icon: Icon(Icons.group), label: TStrings.group),
+                icon: Icon(Icons.group), label: CONSTANTS.group),
             BottomNavigationBarItem(
-                icon: Icon(Icons.task), label: TStrings.task),
+                icon: Icon(Icons.task), label: CONSTANTS.task),
             BottomNavigationBarItem(
-                icon: Icon(Icons.done_outline), label: TStrings.completed)
+                icon: Icon(Icons.done_outline), label: CONSTANTS.completed)
           ],
           selectedItemColor: themeButtonColor,
           // unselectedItemColor: Colors.grey,

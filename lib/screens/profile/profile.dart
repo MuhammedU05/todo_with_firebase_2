@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: CircleAvatar(
                               radius: 60,
                               backgroundImage: Image.network(
-                                currentUserPhoto??TStrings.userNotFound,
+                                currentUserPhoto??CONSTANTS.userNotFound,
                                 filterQuality: FilterQuality.high,
                               ).image,
                             ),

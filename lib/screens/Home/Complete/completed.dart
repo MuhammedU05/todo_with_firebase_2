@@ -69,7 +69,7 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
   Widget build(BuildContext context) {
     if (mapListCompleted.length <= 1) {
       return const Center(
-        child: Text(TStrings.notCompleted),
+        child: Text(CONSTANTS.notCompleted),
       );
     }
     //Card
@@ -96,11 +96,11 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
                             mapListCompleted.keys.elementAt(index + 1);
                         Map<String, dynamic> task =
                             mapListCompleted[taskName] ?? {};
-                        if (task[TStrings.priority] == TStrings.mid) {
+                        if (task[CONSTANTS.priority] == CONSTANTS.mid) {
                           priorityColor = TColors.white;
-                        } else if (task[TStrings.priority] == TStrings.low) {
+                        } else if (task[CONSTANTS.priority] == CONSTANTS.low) {
                           priorityColor = TColors.green;
-                        } else if (task[TStrings.priority] == TStrings.high) {
+                        } else if (task[CONSTANTS.priority] == CONSTANTS.high) {
                           priorityColor = TColors.red;
                         } else {
                           priorityColor = TColors.white;

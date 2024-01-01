@@ -34,7 +34,7 @@ class _CardBuilderState extends State<CardBuilder> {
     // context.read<FirebaseProviderClass>().checkFirebaseDataExist();
     Future.delayed(Duration.zero, () => taskNameController.clear());
     // taskNameController.clear();
-    // selectedDate = tasks[TStrings.dueToFirebase];
+    // selectedDate = tasks[CONSTANTS.dueToFirebase];
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -61,7 +61,7 @@ class _CardBuilderState extends State<CardBuilder> {
     if (mapList.isEmpty || mapList.length == 1) {
       getDataFirebase;
       return const Center(
-        child: Text(TStrings.addTask),
+        child: Text(CONSTANTS.addTask),
       );
     }
     //Card
@@ -84,16 +84,16 @@ class _CardBuilderState extends State<CardBuilder> {
                       print('Index : $index');
                       String taskName = mapList.keys.elementAt(index + 1);
                       Map<String, dynamic> task = mapList[taskName] ?? {};
-                      if (task[TStrings.priority] == TStrings.mid) {
+                      if (task[CONSTANTS.priority] == CONSTANTS.mid) {
                         priorityColor = TColors.white;
-                      } else if (task[TStrings.priority] == TStrings.low) {
+                      } else if (task[CONSTANTS.priority] == CONSTANTS.low) {
                         priorityColor = TColors.green;
-                      } else if (task[TStrings.priority] == TStrings.high) {
+                      } else if (task[CONSTANTS.priority] == CONSTANTS.high) {
                         priorityColor = TColors.red;
                       } else {
                         priorityColor = TColors.white;
                       }
-                      // selectedDate = task[TStrings.dueToFirebase] ?? DateTime.now();
+                      // selectedDate = task[CONSTANTS.dueToFirebase] ?? DateTime.now();
                       //Tap using a GestureDetector
                       return GestureDetector(
                           onLongPress: () {
@@ -123,7 +123,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: const Text(TStrings.no),
+                                                child: const Text(CONSTANTS.no),
                                               ),
                                               const Spacer(),
                                               ElevatedButton(
@@ -140,7 +140,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                                       .updateData();
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: const Text(TStrings.yes),
+                                                child: const Text(CONSTANTS.yes),
                                               ),
                                               const Spacer(),
                                             ],
@@ -153,36 +153,36 @@ class _CardBuilderState extends State<CardBuilder> {
                           },
                           onTap: () {
                             Timestamp convertedSelectedDate =
-                                task[TStrings.dueToFirebase] ?? DateTime.now();
+                                task[CONSTANTS.dueToFirebase] ?? DateTime.now();
                             selectedDate = convertedSelectedDate.toDate();
                             // isCompletedSelected = false;
                             taskNameController.text =
-                                task[TStrings.taskNameFirebase];
+                                task[CONSTANTS.taskNameFirebase];
                             print(
-                                'Priority on tap : ${task[TStrings.priorityFirebase]}');
+                                'Priority on tap : ${task[CONSTANTS.priorityFirebase]}');
                             print(
-                                "$taskName \n  ${task[TStrings.createdDateFirebase]} \n ${task[TStrings.createdTimeFirebase]} \n ${task[TStrings.priorityFirebase]}");
-                            if (task[TStrings.priorityFirebase] ==
-                                TStrings.low) {
-                              selectedPriority = TStrings.low;
+                                "$taskName \n  ${task[CONSTANTS.createdDateFirebase]} \n ${task[CONSTANTS.createdTimeFirebase]} \n ${task[CONSTANTS.priorityFirebase]}");
+                            if (task[CONSTANTS.priorityFirebase] ==
+                                CONSTANTS.low) {
+                              selectedPriority = CONSTANTS.low;
                               selectedColor = Colors.green;
                               toggleButtonsSelection[2] = true;
                               toggleButtonsSelection[1] = false;
                               toggleButtonsSelection[0] = false;
-                            } else if (task[TStrings.priorityFirebase] ==
-                                TStrings.mid) {
+                            } else if (task[CONSTANTS.priorityFirebase] ==
+                                CONSTANTS.mid) {
                               selectedColor = Colors.yellow;
                               toggleButtonsSelection[0] = false;
                               toggleButtonsSelection[1] = true;
                               toggleButtonsSelection[2] = false;
-                              selectedPriority = TStrings.mid;
-                            } else if (task[TStrings.priorityFirebase] ==
-                                TStrings.high) {
+                              selectedPriority = CONSTANTS.mid;
+                            } else if (task[CONSTANTS.priorityFirebase] ==
+                                CONSTANTS.high) {
                               selectedColor = Colors.red;
                               toggleButtonsSelection[2] = false;
                               toggleButtonsSelection[1] = false;
                               toggleButtonsSelection[0] = true;
-                              selectedPriority = TStrings.high;
+                              selectedPriority = CONSTANTS.high;
                             }
                             showBottomSheet(
                               context: context,
@@ -192,11 +192,11 @@ class _CardBuilderState extends State<CardBuilder> {
                                   return Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Text(TStrings.edit),
+                                        const Text(CONSTANTS.edit),
                                         TextFormField(
                                           controller: taskNameController,
                                           decoration: InputDecoration(
-                                            labelText: TStrings.edit,
+                                            labelText: CONSTANTS.edit,
                                             icon: profileIcon,
                                           ),
                                         ),
@@ -232,11 +232,11 @@ class _CardBuilderState extends State<CardBuilder> {
                                             ),
                                             onPressed: (int value) {
                                               print(
-                                                  'Priority on tap : ${task[TStrings.priorityFirebase]}');
+                                                  'Priority on tap : ${task[CONSTANTS.priorityFirebase]}');
                                               setState(() {
                                                 print(toggleButtonsSelection);
                                                 selectedPriority = task[
-                                                    TStrings.priorityFirebase];
+                                                    CONSTANTS.priorityFirebase];
 
                                                 if (value == 1) {
                                                   toggleButtonsSelection[1] =
@@ -296,7 +296,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                                 Navigator.of(context).pop();
                                               },
                                               child:
-                                                  const Text(TStrings.cancel),
+                                                  const Text(CONSTANTS.cancel),
                                             ),
                                             const Spacer(),
                                             ElevatedButton(
@@ -308,7 +308,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                             ElevatedButton(
                                               onPressed: () {
                                                 try {
-                                                  print(task[TStrings
+                                                  print(task[CONSTANTS
                                                       .timeStampFirebase]);
 
                                                   // Schedule the code to run after the build is complete
@@ -323,7 +323,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                                         .read<
                                                             FirebaseProviderClass>()
                                                         .updateMessage(
-                                                          task[TStrings
+                                                          task[CONSTANTS
                                                               .timeStampFirebase],
                                                           isCompletedSelected,
                                                           taskNameController
@@ -365,7 +365,7 @@ class _CardBuilderState extends State<CardBuilder> {
                                                 }
                                               },
                                               child:
-                                                  const Text(TStrings.submit),
+                                                  const Text(CONSTANTS.submit),
                                             ),
                                             const Spacer()
                                           ],

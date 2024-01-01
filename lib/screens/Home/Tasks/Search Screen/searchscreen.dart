@@ -174,7 +174,7 @@ class _SearchClassState extends State<SearchClass> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              filteredList[index][TStrings.taskNameFirebase],
+                              filteredList[index][CONSTANTS.taskNameFirebase],
                               overflow: TextOverflow.fade,
                               style: const TextStyle(
                                 color: Colors.black54,
@@ -187,13 +187,13 @@ class _SearchClassState extends State<SearchClass> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(filteredList[index]
-                                    [TStrings.isCompletedFirebase]
+                                    [CONSTANTS.isCompletedFirebase]
                                 ? 'Completed'
                                 : 'Not Completed'),
                           )
                           // trailing: Text(
-                          //     filteredList[index][TStrings.isCompletedFirebase])
-                          // Text(filteredList[index][TStrings.isCompletedFirebase]),
+                          //     filteredList[index][CONSTANTS.isCompletedFirebase])
+                          // Text(filteredList[index][CONSTANTS.isCompletedFirebase]),
                           // ),
                         ],
                       ),
@@ -284,13 +284,13 @@ class _SearchClassState extends State<SearchClass> {
 //                         print('Index : $index');
 //                         String taskName = mapListCompleted.keys.elementAt(index + 1);
 //                         Map<String, dynamic> task = mapListCompleted[taskName] ?? {};
-//                         if (task[TStrings.priority] == TStrings.mid) {
+//                         if (task[CONSTANTS.priority] == CONSTANTS.mid) {
 //                           priorityColor = TColors.white;
-//                         } else if (task[TStrings.priority] ==
-//                             TStrings.low) {
+//                         } else if (task[CONSTANTS.priority] ==
+//                             CONSTANTS.low) {
 //                           priorityColor = TColors.green;
-//                         } else if (task[TStrings.priority] ==
-//                             TStrings.high) {
+//                         } else if (task[CONSTANTS.priority] ==
+//                             CONSTANTS.high) {
 //                           priorityColor = TColors.red;
 //                         } else {
 //                           priorityColor = TColors.white;
@@ -330,7 +330,7 @@ class _SearchClassState extends State<SearchClass> {
 //                                                         .pop();
 //                                                   },
 //                                                   child: const Text(
-//                                                       TStrings.no),
+//                                                       CONSTANTS.no),
 //                                                 ),
 //                                                 const Spacer(),
 //                                                 ElevatedButton(
@@ -350,7 +350,7 @@ class _SearchClassState extends State<SearchClass> {
 //                                                         .pop();
 //                                                   },
 //                                                   child: const Text(
-//                                                       TStrings.yes),
+//                                                       CONSTANTS.yes),
 //                                                 ),
 //                                                 const Spacer(),
 //                                               ],
@@ -365,27 +365,27 @@ class _SearchClassState extends State<SearchClass> {
 //                               isCompletedSelected = false;
 //                               taskNameController.text = task['Task Name'];
 //                               print(
-//                                   'Priority on tap : ${task[TStrings.priorityFirebase]}');
+//                                   'Priority on tap : ${task[CONSTANTS.priorityFirebase]}');
 //                               print(
-//                                   "$taskName \n  ${task[TStrings.createdDateFirebase]} \n ${task[TStrings.createdTimeFirebase]} \n ${task[TStrings.priorityFirebase]}");
-//                               if (task[TStrings.priorityFirebase] ==
-//                                   TStrings.low) {
-//                                 selectedPriority = TStrings.low;
+//                                   "$taskName \n  ${task[CONSTANTS.createdDateFirebase]} \n ${task[CONSTANTS.createdTimeFirebase]} \n ${task[CONSTANTS.priorityFirebase]}");
+//                               if (task[CONSTANTS.priorityFirebase] ==
+//                                   CONSTANTS.low) {
+//                                 selectedPriority = CONSTANTS.low;
 //                                 toggleButtonsSelection[2] = true;
 //                                 toggleButtonsSelection[1] = false;
 //                                 toggleButtonsSelection[0] = false;
-//                               } else if (task[TStrings.priorityFirebase] ==
-//                                   TStrings.mid) {
+//                               } else if (task[CONSTANTS.priorityFirebase] ==
+//                                   CONSTANTS.mid) {
 //                                 toggleButtonsSelection[0] = false;
 //                                 toggleButtonsSelection[1] = true;
 //                                 toggleButtonsSelection[2] = false;
-//                                 selectedPriority = TStrings.mid;
-//                               } else if (task[TStrings.priorityFirebase] ==
-//                                   TStrings.high) {
+//                                 selectedPriority = CONSTANTS.mid;
+//                               } else if (task[CONSTANTS.priorityFirebase] ==
+//                                   CONSTANTS.high) {
 //                                 toggleButtonsSelection[2] = false;
 //                                 toggleButtonsSelection[1] = false;
 //                                 toggleButtonsSelection[0] = true;
-//                                 selectedPriority = TStrings.high;
+//                                 selectedPriority = CONSTANTS.high;
 //                               }
 //                               showBottomSheet(
 //                                 context: context,
@@ -395,11 +395,11 @@ class _SearchClassState extends State<SearchClass> {
 //                                     return Column(
 //                                         mainAxisSize: MainAxisSize.min,
 //                                         children: [
-//                                           const Text(TStrings.edit),
+//                                           const Text(CONSTANTS.edit),
 //                                           TextFormField(
 //                                             controller: taskNameController,
 //                                             decoration: InputDecoration(
-//                                               labelText: TStrings.edit,
+//                                               labelText: CONSTANTS.edit,
 //                                               icon: profileIcon,
 //                                             ),
 //                                           ),
@@ -439,12 +439,12 @@ class _SearchClassState extends State<SearchClass> {
 //                                               ),
 //                                               onPressed: (int value) {
 //                                                 print(
-//                                                     'Priority on tap : ${task[TStrings.priorityFirebase]}');
+//                                                     'Priority on tap : ${task[CONSTANTS.priorityFirebase]}');
 //                                                 setState(() {
 //                                                   print(
 //                                                       toggleButtonsSelection);
 //                                                   selectedPriority = task[
-//                                                       TStrings
+//                                                       CONSTANTS
 //                                                           .priorityFirebase];
 
 //                                                   if (value == 1) {
@@ -510,7 +510,7 @@ class _SearchClassState extends State<SearchClass> {
 //                                                       .pop();
 //                                                 },
 //                                                 child: const Text(
-//                                                     TStrings.cancel),
+//                                                     CONSTANTS.cancel),
 //                                               ),
 //                                               const Spacer(),
 //                                               ElevatedButton(
@@ -560,7 +560,7 @@ class _SearchClassState extends State<SearchClass> {
 //                                                   textController.clear();
 //                                                 },
 //                                                 child: const Text(
-//                                                     TStrings.submit),
+//                                                     CONSTANTS.submit),
 //                                               ),
 //                                               const Spacer()
 //                                             ],
@@ -591,7 +591,7 @@ class _SearchClassState extends State<SearchClass> {
 //                                                   .width /
 //                                               1.3,
 //                                           child: Text(
-//                                             '${TStrings.taskName} :\n  ${task[TStrings.taskName] ?? TStrings.na}',
+//                                             '${CONSTANTS.taskName} :\n  ${task[CONSTANTS.taskName] ?? CONSTANTS.na}',
 //                                             textAlign: TextAlign.left,
 //                                             softWrap: true,
 //                                             overflow: TextOverflow.ellipsis,
@@ -609,7 +609,7 @@ class _SearchClassState extends State<SearchClass> {
 //                                               CrossAxisAlignment.end,
 //                                           children: [
 //                                             Text(
-//                                               '${TStrings.createdOn}\n ${task[TStrings.createdTimeFirebase] ?? TStrings.na}',
+//                                               '${CONSTANTS.createdOn}\n ${task[CONSTANTS.createdTimeFirebase] ?? CONSTANTS.na}',
 //                                               textAlign: TextAlign.right,
 //                                               style: TextStyle(
 //                                                 fontSize: 14,
@@ -624,7 +624,7 @@ class _SearchClassState extends State<SearchClass> {
 //                                     Row(
 //                                       children: [
 //                                         Text(
-//                                           '${TStrings.priority} : ${task[TStrings.priorityFirebase]}',
+//                                           '${CONSTANTS.priority} : ${task[CONSTANTS.priorityFirebase]}',
 //                                           textAlign: TextAlign.left,
 //                                           style: TextStyle(
 //                                             fontSize: 25,
@@ -639,9 +639,9 @@ class _SearchClassState extends State<SearchClass> {
 //                                               Text(
 //                                                   task['Is Completed'] ==
 //                                                           false
-//                                                       ? TStrings
+//                                                       ? CONSTANTS
 //                                                           .notCompleted
-//                                                       : TStrings.completed,
+//                                                       : CONSTANTS.completed,
 //                                                   softWrap: true,
 //                                                   overflow:
 //                                                       TextOverflow.ellipsis,

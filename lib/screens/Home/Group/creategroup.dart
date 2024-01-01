@@ -260,14 +260,18 @@ class _CreateGroupState extends State<CreateGroup> {
                                   content: Text('Created group Successfully'),
                                   backgroundColor: Colors.green));
                           Navigator.pop(context);
-                        } else if (_groupNameController.text.replaceAll(' ', '').isEmpty &&
+                        } else if (_groupNameController.text
+                                .replaceAll(' ', '')
+                                .isEmpty &&
                             selectedUsers.isNotEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   duration: Durations.long4,
                                   content: Text('Please Enter Group Name'),
                                   backgroundColor: Colors.red));
-                        } else if (_groupNameController.text.replaceAll(' ', '').isNotEmpty &&
+                        } else if (_groupNameController.text
+                                .replaceAll(' ', '')
+                                .isNotEmpty &&
                             selectedUsers.length <= 1) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -276,6 +280,8 @@ class _CreateGroupState extends State<CreateGroup> {
                                       'Please Select At Least 2 Group Members'),
                                   backgroundColor: Colors.red));
                         }
+                        // _groupNameController.text = _groupNameController.text.toUpperCase();
+                        print("GRoup Name : ${_groupNameController.text}");
                         context.read<GroupProviderClass>().createGroupFunction(
                             _groupNameController.text, context, selectedUsers);
                       },

@@ -96,61 +96,9 @@ class _CardBuilderState extends State<CardBuilder> {
                       // selectedDate = task[CONSTANTS.dueToFirebase] ?? DateTime.now();
                       //Tap using a GestureDetector
                       return GestureDetector(
-                          onLongPress: () {
-                            showBottomSheet(
-                                backgroundColor: Colors.grey.shade200,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height / 9,
-                                    child: StatefulBuilder(
-                                        builder: ((context, setState) {
-                                      return Column(
-                                        children: [
-                                          const Text('You Want To Delete?',
-                                              style: TextStyle(fontSize: 20)),
-                                          SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                90,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Spacer(),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text(CONSTANTS.no),
-                                              ),
-                                              const Spacer(),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  print(task['TimeStamp']);
-                                                  context
-                                                      .read<
-                                                          FirebaseProviderClass>()
-                                                      .deleteTask(
-                                                          task['TimeStamp']);
-                                                  context
-                                                      .read<
-                                                          FirebaseProviderClass>()
-                                                      .updateData();
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text(CONSTANTS.yes),
-                                              ),
-                                              const Spacer(),
-                                            ],
-                                          )
-                                        ],
-                                      );
-                                    })),
-                                  );
-                                });
-                          },
+            // onLongPress: () {
+                            
+            //               },              
                           onTap: () {
                             Timestamp convertedSelectedDate =
                                 task[CONSTANTS.dueToFirebase] ?? DateTime.now();
@@ -375,7 +323,7 @@ class _CardBuilderState extends State<CardBuilder> {
                               },
                             );
                           },
-                          child: cardDesign(task));
+                          child: cardDesign(task,context));
                     }));
           }
         });

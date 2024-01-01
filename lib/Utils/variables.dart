@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:todo_with_firebase_2/Utils/Const/icons.dart';
@@ -12,6 +11,7 @@ var userDocData;
 var tasks;
 var selectedPriority;
 var allUserUid;
+var groupNumbers;
 var userDocRef = firebaseFirestoreInstance
     .collection('Users')
     .doc(firebaseAuthInstance.currentUser?.uid);
@@ -19,15 +19,13 @@ var allUserRef =
     firebaseFirestoreInstance.collection('All Users').doc('All Users');
 var savingUser = firebaseFirestoreInstance.collection('All Users');
 var groupCollection = firebaseFirestoreInstance.collection('Groups');
-final DatabaseReference databaseReference =
-    FirebaseDatabase.instance.ref().child('Groups');
 
 List<bool> toggleButtonsSelection =
     Priority.values.map((Priority e) => e == Priority.mid).toList();
 List<dynamic> currentMessages = [];
 List<String> groups = ['Me'];
 var allUsersDatas;
-  final List<String> gMessages = [];
+final List<String> gMessages = [];
 
 final firebaseAuthInstance = FirebaseAuth.instance;
 final firebaseFirestoreInstance = FirebaseFirestore.instance;
@@ -63,6 +61,12 @@ final currentTime = DateTime.now();
 // currentTime.isAfter(startTime) && currentTime.isBefore(endTime),
 
 Color selectedColor = Colors.yellow;
+Color yellowShade = const Color.fromARGB(255, 246, 236, 169);
+Color yellowShade2 = const Color.fromARGB(255, 251, 242, 177);
+Color darkBlue = const Color.fromARGB(255, 17, 35, 90);
+Color lightBlue = const Color.fromARGB(255, 89, 111, 183);
+// Color lightBlueShade =  const Color.fromARGB(255,255, 255, 255);
+Color lightBlueShade = const Color.fromARGB(255,89, 111, 183);
 
 const String defaultPic =
     "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg";
@@ -74,6 +78,7 @@ String pic = currentUserAll?.photoURL?.toString() ??
 
 String time = formatDate(DateTime.now(), [HH, ' : ', nn]);
 String date = formatDate(DateTime.now(), [dd, ' - ', mm, ' - ', yy]);
+
 late String? selectedGroup;
 
 var currentUserAll = FirebaseAuth.instance.currentUser;
@@ -81,3 +86,5 @@ var currentUserName;
 var currentUserEmail;
 var currentUserPhoto;
 var currentUserUid;
+
+  int? count;

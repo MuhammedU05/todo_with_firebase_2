@@ -30,7 +30,9 @@ class GroupProviderClass extends ChangeNotifier {
       "groupName": groupName,
       "members": members,
       "admin": currentUserEmail,
-      "last Message": 'Last Message',
+      "last Message": 'Group Created',
+      "last Message senderUID": currentUserUid,
+      "last Message senderName": currentUserName,
       "updated on": formatDate(DateTime.now(), /*[dd, ' - ', mm, ' - ', yy]*/ [
         dd,
         ' - ',
@@ -144,6 +146,9 @@ class GroupProviderClass extends ChangeNotifier {
   Future<void> sendGroupMessage(String group, String message) async {
     final userRef = FirebaseFirestore.instance.collection('Groups').doc(group);
     await userRef.update({
+      "last Message": message,
+      "last Message senderUID": currentUserUid,
+      "last Message senderName": currentUserName,
       "messages": FieldValue.arrayUnion([
         {
           "name": currentUserName,
@@ -153,19 +158,19 @@ class GroupProviderClass extends ChangeNotifier {
           "time":
               formatDate(DateTime.now(), [yy, mm, dd, HH, nn, ss, SSS, uuu]),
         },
-      ]),"updated on": formatDate(
-              DateTime.now(), /*[dd, ' - ', mm, ' - ', yy]*/ [
-            dd,
-            ' - ',
-            mm,
-            ' - ',
-            yy,
-            ' (',
-            HH,
-            ':',
-            nn,
-            ')'
-          ]),
+      ]),
+      "updated on": formatDate(DateTime.now(), /*[dd, ' - ', mm, ' - ', yy]*/ [
+        dd,
+        ' - ',
+        mm,
+        ' - ',
+        yy,
+        ' (',
+        HH,
+        ':',
+        nn,
+        ')'
+      ]),
     });
   }
 
@@ -204,6 +209,22 @@ class GroupProviderClass extends ChangeNotifier {
       // context.read<GroupProviderClass>().groupMessageReceiver(id);
     }
     notifyListeners();
+  }
+
+    Future<void> countGetter() async {
+    try {
+      count = await FirebaseFirestore.instance
+          .collection('Groups')
+          .get()
+          .then((value) => value.size);
+      if (count.toString() == 'null') {
+        count = 0;
+      }
+
+      print("count : $count");
+    } on Exception catch (e) {
+      print("Error getting doc count : $e");
+    }
   }
 }
 // New Uid  :16e2d9c7-a445-40d2-b1c1-35c385a36f98

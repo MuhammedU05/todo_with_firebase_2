@@ -27,48 +27,98 @@ class ChatScreenState extends State<ChatScreen> {
     // context.read<GroupProviderClass>().groupMessageReceiver(id);
   }
 
-  Widget _buildTextComposer() {
-    return IconTheme(
-      data: const IconThemeData(color: Colors.blue),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: TextField(
-                controller: _textController,
-                autofocus: true,
-                // onSubmitted: context.read<GroupProviderClass>().handleSubmitted,
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Type your message...',
+  // Widget _buildTextComposer() {
+  //   return IconTheme(
+  //     data: const IconThemeData(color: Colors.blue),
+  //     child: Container(
+  //       margin: const EdgeInsets.symmetric(horizontal: 8.0),
+  //       child: Row(
+  //         children: <Widget>[
+  //           Expanded(
+  //             child: TextField(
+  //               controller: _textController,
+  //               autofocus: true,
+  //               decoration: const InputDecoration.collapsed(
+  //                 hintText: 'Type your message...',
+  //               ),
+  //             ),
+  //           ),
+  //           IconButton(
+  //             icon: const Icon(Icons.send),
+  //             onPressed: () {
+  //               setState(() {
+  //                 context
+  //                     .read<GroupProviderClass>()
+  //                     .handleSubmitted(_textController.text, id);
+
+  //                 _textController.clear();
+  //               });
+  //             },
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+Widget _buildTextComposer() {
+ return IconTheme(
+    data: IconThemeData(color: darkBlue),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: TextField(
+              controller: _textController,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: 'Type your message...',
+                filled: true,
+                fillColor: yellowShade2,
+                contentPadding: const EdgeInsets.all(12.0),
+                enabledBorder: OutlineInputBorder(
+                 borderRadius: BorderRadius.circular(20.0),
+                 borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                 borderRadius: BorderRadius.circular(20.0),
+                 borderSide: BorderSide.none,
                 ),
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.send),
-              onPressed: () {
-                setState(() {
-                  context
-                      .read<GroupProviderClass>()
-                      .handleSubmitted(_textController.text, id);
+          ),
+          IconButton(
+            icon: const Icon(Icons.send),
+            color: yellowShade2,
+            onPressed: () {
+              setState(() {
+                context
+                    .read<GroupProviderClass>()
+                    .handleSubmitted(_textController.text, id);
 
-                  _textController.clear();
-                  // context.read<GroupProviderClass>().groupMessageReceiver(id);
-                });
-              },
-            ),
-          ],
-        ),
+                _textController.clear();
+              });
+            },
+          ),
+        ],
       ),
-    );
-  }
-
+    ),
+ );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        backgroundColor: lightBlueShade,
+        title: Text(name,style: TextStyle(
+          // fontFamily: "Roboto",
+          fontWeight: FontWeight.w600,
+          fontSize: 28,
+          color: yellowShade2
+        ),),
       ),
+      backgroundColor: darkBlue,
       body: Column(
         children: <Widget>[
           Flexible(
@@ -102,7 +152,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   _buildMessage(var currentMsg) /*async*/ {
-    // context.read<GroupProviderClass>().groupMessageReceiver(id);
+    // // context.read<GroupProviderClass>().groupMessageReceiver(id);
     if (currentMsg['senderUID'] == currentUserUid) {
       return ListTile(
         title: Container(
@@ -112,21 +162,26 @@ class ChatScreenState extends State<ChatScreen> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.circular(8.0)),
+                      color: lightBlue,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                        )
+                      // borderRadius: BorderRadius.circular(8.0),
+                      ),
                   // margin: const EdgeInsets.only(right: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                       Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0,top: 3.5),
                         child: Text(
                           'You',
                           overflow: TextOverflow.fade,
                           style: TextStyle(
                               fontSize: 13,
-                              color: Colors.black,
+                              color: yellowShade,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -145,6 +200,7 @@ class ChatScreenState extends State<ChatScreen> {
                                 // textAlign: TextAlign.right,
                                 style: const TextStyle(
                                   overflow: TextOverflow.visible,
+                              color: Colors.white,
                                   fontSize: 13,
                                 ),
                               ),
@@ -165,7 +221,7 @@ class ChatScreenState extends State<ChatScreen> {
             )),
       );
     } else {
-      print("currentMsg : ${currentMsg['msg']}");
+      // print("currentMsg : ${currentMsg['msg']}");
       return ListTile(
         title: Container(
             alignment: Alignment.centerLeft,
@@ -179,22 +235,27 @@ class ChatScreenState extends State<ChatScreen> {
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.circular(8.0)),
+                  decoration:BoxDecoration(
+                      color: lightBlue,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                        )
+                      // borderRadius: BorderRadius.circular(8.0),
+                      ),
                   margin: const EdgeInsets.only(right: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0,top: 3.5),
                         child: Text(
                           currentMsg['name'] ?? 'User',
                           overflow: TextOverflow.fade,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 13,
-                              color: Colors.black,
+                              color: yellowShade,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -211,8 +272,9 @@ class ChatScreenState extends State<ChatScreen> {
                                 currentMsg['msg'],
                                 softWrap: true,
                                 // textAlign: TextAlign.right,
-                                style: const TextStyle(
+                                style:  const TextStyle(
                                   overflow: TextOverflow.visible,
+                              color: Colors.white,
                                   fontSize: 13,
                                 ),
                               ),
@@ -228,6 +290,102 @@ class ChatScreenState extends State<ChatScreen> {
             )),
       );
     }
+
+//     ListTile(
+//  title: Container(
+//     alignment: Alignment.centerLeft,
+//     child: Row(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         CircleAvatar(
+//           backgroundColor: Colors.blueAccent,
+//           backgroundImage: Image.network(currentMsg['senderProfile']).image,
+//         ),
+//         const SizedBox(width: 8),
+//         if (currentMsg['senderId'] == currentUserUid)
+//           Expanded(
+//             child: Container(
+//               padding: const EdgeInsets.symmetric(
+//                 horizontal: 8.0,
+//                 vertical: 4.0,
+//               ),
+//               margin: const EdgeInsets.only(right: 10.0),
+//               decoration: BoxDecoration(
+//                 color: yellowShade,
+//                 borderRadius: const BorderRadius.only(
+//                  topLeft: Radius.circular(24.0),
+//                  topRight: Radius.circular(24.0),
+//                  bottomLeft: Radius.circular(24.0),
+//                 ),
+//               ),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                  Text(
+//                     currentMsg['name'] ?? 'User',
+//                     overflow: TextOverflow.fade,
+//                     style: const TextStyle(
+//                       fontSize: 13,
+//                       color: Colors.black,
+//                       fontWeight: FontWeight.bold,
+//                     ),
+//                  ),
+//                  Text(
+//                     currentMsg['msg'],
+//                     softWrap: true,
+//                     style: const TextStyle(
+//                       overflow: TextOverflow.visible,
+//                       fontSize: 13,
+//                     ),
+//                  ),
+//                 ],
+//               ),
+//             ),
+//           ),
+        
+//           Expanded(
+//             child: Container(
+//               padding: const EdgeInsets.symmetric(
+//                 horizontal: 8.0,
+//                 vertical: 4.0,
+//               ),
+//               margin: const EdgeInsets.only(right: 10.0),
+//               decoration: BoxDecoration(
+//                 color: yellowShade2,
+//                 borderRadius: BorderRadius.only(
+//                  topLeft: Radius.circular(24.0),
+//                  topRight: Radius.circular(24.0),
+//                  bottomRight: Radius.circular(24.0),
+//                 ),
+//               ),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                  Text(
+//                     currentMsg['name'] ?? 'User',
+//                     overflow: TextOverflow.fade,
+//                     style: const TextStyle(
+//                       fontSize: 13,
+//                       color: Colors.black,
+//                       fontWeight: FontWeight.bold,
+//                     ),
+//                  ),
+//                  Text(
+//                     currentMsg['msg'],
+//                     softWrap: true,
+//                     style: const TextStyle(
+//                       overflow: TextOverflow.visible,
+//                       fontSize: 13,
+//                     ),
+//                  ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//       ],
+//     ),
+//  ),
+// );
   }
 }
 

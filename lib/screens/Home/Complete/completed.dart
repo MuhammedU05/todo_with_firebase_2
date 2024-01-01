@@ -106,7 +106,7 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
                           priorityColor = TColors.white;
                         }
                         //Tap using a GestureDetector
-                        return cardDesign(task);
+                        return cardDesign(task,context);
                       },
                     ),
                   ));

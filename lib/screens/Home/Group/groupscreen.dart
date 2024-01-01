@@ -62,7 +62,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                   doc['groupName'] ?? '',
                                   style: const TextStyle(fontSize: 20),
                                 ),
-                                subtitle: Text(doc['last Message'] ?? ''),
+                                subtitle: Text(doc['last Message senderUID'] == currentUserUid ? "You : ${doc['last Message']}" :"${doc['last senderName']} : ${doc['last Message']}"),
                                 trailing: Text(doc['updated on'] ?? ''),
                                 onTap: () {
                                   print('Tapped on Group name');
@@ -87,26 +87,26 @@ class _GroupScreenState extends State<GroupScreen> {
               ),
             ],
           ),
-          Positioned(
-            top: -20,
-            right: 7,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 7, top: 7),
-              child: AnimSearchBar(
-                autoFocus: true,
-                color: Colors.indigoAccent,
-                searchIconColor: Colors.white,
-                textFieldColor: Colors.blueAccent,
-                textFieldIconColor: Colors.white,
-                width: 400,
-                textController: textController,
-                onSuffixTap: () {
-                  setState(() {});
-                },
-                onSubmitted: (v) {},
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: -20,
+          //   right: 7,
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(right: 7, top: 7),
+          //     child: AnimSearchBar(
+          //       autoFocus: true,
+          //       color: Colors.indigoAccent,
+          //       searchIconColor: Colors.white,
+          //       textFieldColor: Colors.blueAccent,
+          //       textFieldIconColor: Colors.white,
+          //       width: 400,
+          //       textController: textController,
+          //       onSuffixTap: () {
+          //         setState(() {});
+          //       },
+          //       onSubmitted: (v) {},
+          //     ),
+          //   ),
+          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -117,7 +117,7 @@ class _GroupScreenState extends State<GroupScreen> {
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(
-          Icons.add,
+          Icons.group_add,
           color: Colors.white,
         ),
       ),

@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBarClass(context),
+        appBar: AppBarClass(context) as AppBar,
         body: _body(context),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedIndex,

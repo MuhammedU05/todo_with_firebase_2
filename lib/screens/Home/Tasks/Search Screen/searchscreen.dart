@@ -3,8 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:todo_with_firebase_2/Utils/Const/strings.dart';
-import 'package:todo_with_firebase_2/Utils/variables.dart';
+
+import '../../../../Utils/Const/strings.dart';
+import '../../../../Utils/variables.dart';
 
 class SearchClass extends StatefulWidget {
   const SearchClass({super.key});
@@ -36,10 +37,11 @@ class _SearchClassState extends State<SearchClass> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor:Colors.transparent,
           title: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: Colors.black54,
+              color: Colors.black,
               borderRadius: BorderRadius.circular(25.0),
             ),
             child: Row(children: <Widget>[
@@ -49,6 +51,10 @@ class _SearchClassState extends State<SearchClass> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: TextField(
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                     autofocus: true,
                     controller: textControllerSearch,
                     onChanged: (changedValue) {
@@ -57,6 +63,9 @@ class _SearchClassState extends State<SearchClass> {
                       });
                     },
                     decoration: const InputDecoration(
+                      hintStyle: TextStyle(
+                        color: Colors.white
+                      ),
                       hintText: "Search",
                       border: InputBorder.none,
                     ),
@@ -71,10 +80,17 @@ class _SearchClassState extends State<SearchClass> {
               //       return
               DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
+                  borderRadius: const BorderRadius.all(Radius.circular(35)),
+                  dropdownColor: Colors.black,
+                  focusColor: Colors.white,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                   icon: Icon(MdiIcons.filter),
                   iconSize: 35,
-                  iconEnabledColor: Colors.black,
-                  iconDisabledColor: Colors.black,
+                  iconEnabledColor: Colors.white,
+                  iconDisabledColor: Colors.white,
                   items: <String>[
                     'Task Name',
                     // 'Created Date',
@@ -106,6 +122,7 @@ class _SearchClassState extends State<SearchClass> {
             ]),
           ),
         ),
+        backgroundColor: Colors.transparent,
         body: StreamBuilder<DocumentSnapshot>(
           stream: firebaseFirestoreInstance
               .collection('Users')

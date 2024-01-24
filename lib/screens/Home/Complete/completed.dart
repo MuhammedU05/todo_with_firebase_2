@@ -97,13 +97,13 @@ class _CompletedCardBuilderState extends State<CompletedCardBuilder> {
                         Map<String, dynamic> task =
                             mapListCompleted[taskName] ?? {};
                         if (task[CONSTANTS.priority] == CONSTANTS.mid) {
-                          priorityColor = TColors.white;
+                          priorityColor = COLORCONST.white;
                         } else if (task[CONSTANTS.priority] == CONSTANTS.low) {
-                          priorityColor = TColors.green;
+                          priorityColor = COLORCONST.green;
                         } else if (task[CONSTANTS.priority] == CONSTANTS.high) {
-                          priorityColor = TColors.red;
+                          priorityColor = COLORCONST.red;
                         } else {
-                          priorityColor = TColors.white;
+                          priorityColor = COLORCONST.white;
                         }
                         //Tap using a GestureDetector
                         return cardDesign(task,context);

@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
+// import 'package:todo_with_firebase_2/packages/custom_motion_widget/custom_motion_widget.dart';
 import 'package:todo_with_firebase_2/screens/Home/home.dart';
-
+import '../../packages/custom_motion_widget/lib/custom_motion_widget.dart';
+import '/Utils/imports.dart';
 //Login Page
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -65,6 +67,8 @@ class _LoginState extends State<Login> {
           },
           child: Column(
             children: [
+              // const Spacer(),
+              //  const CustomMotionWidget(),
               const Spacer(),
               Center(
                 // Google Logo
@@ -74,7 +78,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               const Text(
-                'Sign In',
+                'Click To Sign In',
                 style: TextStyle(fontSize: 20),
               ),
               const Spacer()

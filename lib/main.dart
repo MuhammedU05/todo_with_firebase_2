@@ -13,10 +13,30 @@ import 'package:todo_with_firebase_2/screens/Login/login.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/providerclass.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/firebaseprovider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/loginproviderclass.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 // Connecting Firebase in Main
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+// String appName = packageInfo.appName;
+// String packageName = packageInfo.packageName;
+  try {
+    String version = packageInfo.version;
+    // String buildNumber = packageInfo.buildNumber;
+
+    String? serverVersion = FirebaseRemoteConfig.instance.getString('Version');
+    if (serverVersion == version) {
+      _isUpdated = true;
+    } else {
+      _isUpdated = false;
+    }
+  } on Exception catch (e) {
+    print('Error Getting APP Version : $e');
+  }
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   ErrorWidget.builder = (FlutterErrorDetails details) {
@@ -79,6 +99,32 @@ class MyApp extends StatelessWidget {
             home: const LoginChecker(),
           );
         }));
+  }
+}
+
+late bool _isUpdated;
+
+class VersionChecker extends StatelessWidget {
+  const VersionChecker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+// PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+// String appName = packageInfo.appName;
+// String packageName = packageInfo.packageName;
+// String version = packageInfo.version;
+// String buildNumber = packageInfo.buildNumber;
+    //fetching version from remote config
+    if (_isUpdated) {
+      return const LoginChecker();
+    }
+    return AlertDialog.adaptive(
+        backgroundColor: Theme.of(context).primaryColorDark,
+        contentPadding: const EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        titleTextStyle: const TextStyle(color: Colors.white),
+        content: Text("Update To Latest Version"));
   }
 }
 

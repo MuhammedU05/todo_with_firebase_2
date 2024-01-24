@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_with_firebase_2/Utils/Provider/groupprovider.dart';
 import 'package:todo_with_firebase_2/Utils/variables.dart';
 
+import '../../../Utils/Const/colors.dart';
+
 class ChatScreen extends StatefulWidget {
   final Chat chat;
   const ChatScreen({super.key, required this.chat});
@@ -63,7 +65,7 @@ class ChatScreenState extends State<ChatScreen> {
 
 Widget _buildTextComposer() {
  return IconTheme(
-    data: IconThemeData(color: darkBlue),
+    data: IconThemeData(color: COLORCONST.darkBlue),
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -75,7 +77,7 @@ Widget _buildTextComposer() {
               decoration: InputDecoration(
                 hintText: 'Type your message...',
                 filled: true,
-                fillColor: yellowShade2,
+                fillColor: COLORCONST.yellowShade2,
                 contentPadding: const EdgeInsets.all(12.0),
                 enabledBorder: OutlineInputBorder(
                  borderRadius: BorderRadius.circular(20.0),
@@ -90,7 +92,7 @@ Widget _buildTextComposer() {
           ),
           IconButton(
             icon: const Icon(Icons.send),
-            color: yellowShade2,
+            color: COLORCONST.yellowShade2,
             onPressed: () {
               setState(() {
                 context
@@ -110,15 +112,15 @@ Widget _buildTextComposer() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: lightBlueShade,
+        backgroundColor: COLORCONST.lightBlueShade,
         title: Text(name,style: TextStyle(
           // fontFamily: "Roboto",
           fontWeight: FontWeight.w600,
           fontSize: 28,
-          color: yellowShade2
+          color: COLORCONST.yellowShade2
         ),),
       ),
-      backgroundColor: darkBlue,
+      backgroundColor: COLORCONST.darkBlue,
       body: Column(
         children: <Widget>[
           Flexible(
@@ -162,7 +164,7 @@ Widget _buildTextComposer() {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      color: lightBlue,
+                      color: COLORCONST.lightBlue,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(12),
                         bottomLeft: Radius.circular(12),
@@ -181,7 +183,7 @@ Widget _buildTextComposer() {
                           overflow: TextOverflow.fade,
                           style: TextStyle(
                               fontSize: 13,
-                              color: yellowShade,
+                              color: COLORCONST.yellowShade,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -236,7 +238,7 @@ Widget _buildTextComposer() {
                 const SizedBox(width: 8),
                 Container(
                   decoration:BoxDecoration(
-                      color: lightBlue,
+                      color: COLORCONST.lightBlue,
                       borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(12),
                         bottomRight: Radius.circular(12),
@@ -255,7 +257,7 @@ Widget _buildTextComposer() {
                           overflow: TextOverflow.fade,
                           style: TextStyle(
                               fontSize: 13,
-                              color: yellowShade,
+                              color: COLORCONST.yellowShade,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -351,7 +353,7 @@ Widget _buildTextComposer() {
 //               ),
 //               margin: const EdgeInsets.only(right: 10.0),
 //               decoration: BoxDecoration(
-//                 color: yellowShade2,
+//                 color: COLORCONST.yellowShade2,
 //                 borderRadius: BorderRadius.only(
 //                  topLeft: Radius.circular(24.0),
 //                  topRight: Radius.circular(24.0),

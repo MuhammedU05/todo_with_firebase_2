@@ -85,13 +85,13 @@ class _CardBuilderState extends State<CardBuilder> {
                       String taskName = mapList.keys.elementAt(index + 1);
                       Map<String, dynamic> task = mapList[taskName] ?? {};
                       if (task[CONSTANTS.priority] == CONSTANTS.mid) {
-                        priorityColor = TColors.white;
+                        priorityColor = COLORCONST.white;
                       } else if (task[CONSTANTS.priority] == CONSTANTS.low) {
-                        priorityColor = TColors.green;
+                        priorityColor = COLORCONST.green;
                       } else if (task[CONSTANTS.priority] == CONSTANTS.high) {
-                        priorityColor = TColors.red;
+                        priorityColor = COLORCONST.red;
                       } else {
-                        priorityColor = TColors.white;
+                        priorityColor = COLORCONST.white;
                       }
                       // selectedDate = task[CONSTANTS.dueToFirebase] ?? DateTime.now();
                       //Tap using a GestureDetector

@@ -479,4 +479,8 @@ class FirebaseProviderClass extends ChangeNotifier {
     }
   }
 
+  Future<void> getPic() async {
+    k = await savingUser.doc('All Users').get();
+    // kSnapshot = savingUser.where('Users', arrayContainsAny: currentUserUid);
+  }
 }
